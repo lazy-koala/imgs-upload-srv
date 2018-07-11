@@ -1,6 +1,6 @@
 ![license](https://img.shields.io/badge/license-GNU-100000.svg)
-![node](https://img.shields.io/badge/platform-node-green.svg)
-![vue](https://img.shields.io/badge/platform-vue-lightred.svg)
+![node](https://img.shields.io/badge/>-nodejs-green.svg)
+![vue](https://img.shields.io/badge/>-vue-lightred.svg)
 
 [![org](https://img.shields.io/badge/org-@LazyKoala-yellow.svg)](https://github.com/lazy-koala/)
 [![author](https://img.shields.io/badge/author-@acexy-blue.svg)](https://github.com/acexy/)
