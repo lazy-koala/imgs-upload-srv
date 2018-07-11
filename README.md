@@ -1,9 +1,12 @@
-> #### 提供在线图片存储的服务
-![](https://img.shields.io/badge/license-GNU-000000.svg)
-![](https://img.shields.io/badge/platform-node-green.svg)
-![](https://img.shields.io/badge/platform-vue-lightred.svg)
-[![](https://img.shields.io/badge/org-@LazyKoala-red.svg)](https://github.com/lazy-koala/)
+![license](https://img.shields.io/badge/license-GNU-100000.svg)
+![node](https://img.shields.io/badge/platform-node-green.svg)
+![vue](https://img.shields.io/badge/platform-vue-lightred.svg)
 
+[![org](https://img.shields.io/badge/org-@LazyKoala-yellow.svg)](https://github.com/lazy-koala/)
+[![author](https://img.shields.io/badge/author-@acexy-blue.svg)](https://github.com/acexy/)
+[![author](https://img.shields.io/badge/author-@qazyuan-blue.svg)](https://github.com/qazyan/)
+
+> #### 提供在线图片存储的服务
 
 - Why
 
