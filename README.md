@@ -3,7 +3,7 @@
 ![vue](https://img.shields.io/badge/>-vue-lightred.svg)
 
 [![org](https://img.shields.io/badge/org-@LazyKoala-yellow.svg)](https://github.com/lazy-koala/)
-[![author](https://img.shields.io/badge/author-@thankjava-blue.svg)](https://github.com/acexy/)
+[![author](https://img.shields.io/badge/author-@thankjava-blue.svg)](https://github.com/thankjava/)
 [![author](https://img.shields.io/badge/author-@qazyuan-blue.svg)](https://github.com/qazyuan/)
 
 > #### 提供在线图片存储的服务
