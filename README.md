@@ -1,7 +1,7 @@
 ![license](https://img.shields.io/badge/license-GNU-100000.svg)
-![node](https://img.shields.io/badge/>-nodejs-green.svg)
 ![vue](https://img.shields.io/badge/>-vue-lightred.svg)
-![vue](https://img.shields.io/badge/>-koa2-lightred.svg)
+![node](https://img.shields.io/badge/>-nodejs-green.svg)
+![vue](https://img.shields.io/badge/>-koa2-blue.svg)
 
 
 [![org](https://img.shields.io/badge/org-@LazyKoala-yellow.svg)](https://github.com/lazy-koala/)
