@@ -26,16 +26,16 @@
 ```
 
 > #### 技术栈
-- Server
-    - Node
-    - Koa2
-    
-- HTML
-    - Vue
-    
-- DB
-    - MongoDB
-    - Redis
+```
+    1. Server:
+            Node
+            Koa2
+    2. HTML:
+            Vue
+    3. DataBase:
+            MongoDB
+            Redis
+```
     
 > #### 关于我们
 
