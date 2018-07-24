@@ -30,8 +30,11 @@
     1. Server:
             Node
             Koa2
-    2. HTML:
+            
+    2. WEB:
+            HTML5
             Vue
+            
     3. DataBase:
             MongoDB
             Redis
@@ -43,4 +46,6 @@
 
 ```
     若工作不高效，则生活不自由。Do Something Meaningful!
+    
+    目前正在进行第一版的功能开发，预计月底完成后提供全量服务，并迁移代码至GitHub.
 ```
