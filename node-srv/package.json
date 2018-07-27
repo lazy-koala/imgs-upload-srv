@@ -14,6 +14,19 @@
     "node",
     "srv"
   ],
+  "dependencies": {
+    "bluebird": "^3.5.1",
+    "busboy": "^0.2.14",
+    "colour": "^0.7.1",
+    "koa": "^2.5.1",
+    "koa-bodyparser": "^4.2.1",
+    "koa-router": "^7.4.0",
+    "md5": "^2.2.1",
+    "mongoose": "^5.1.5",
+    "nodemailer": "^4.6.7",
+    "redis": "^2.8.0",
+    "uuid": "^3.2.1"
+  }
   "author": "acexy@thankjava.com",
   "license": "ISC",
   "bugs": {

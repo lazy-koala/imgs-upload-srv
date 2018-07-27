@@ -1,0 +1,6 @@
+{
+  "host": "",
+  "port": 6379,
+  "password": "",
+  "no_ready_check": true
+}

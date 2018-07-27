@@ -1,0 +1,10 @@
+{
+  "host": "smtp.qq.com",
+  "port": 587,
+  "secure": false,
+  "from": "",
+  "auth": {
+    "user": "",
+    "pass": ""
+  }
+}
