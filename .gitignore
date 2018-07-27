@@ -90,4 +90,4 @@ resources/.arch-internal-preview.css
 # 自定义
 .idea
 .DS_Store
-node-srv/config/*.json
+#node-srv/config/*.json
