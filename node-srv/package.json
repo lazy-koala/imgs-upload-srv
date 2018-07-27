@@ -1,0 +1,23 @@
+{
+  "name": "imgs-node-srv",
+  "version": "1.0.0",
+  "description": "在线图片服务服务端",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lazy-koala/imgs-upload-srv.git"
+  },
+  "keywords": [
+    "node",
+    "srv"
+  ],
+  "author": "acexy@thankjava.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lazy-koala/imgs-upload-srv/issues"
+  },
+  "homepage": "https://github.com/lazy-koala/imgs-upload-srv#readme"
+}
