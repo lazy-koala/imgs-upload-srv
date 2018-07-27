@@ -37,20 +37,15 @@
 ```
 ---    
 > #### 关于我们
-[![author](https://img.shields.io/badge/author-@qazyuan-blue.svg)](https://github.com/qazyuan/)
-```
-倾力渲染
-```
-
-[![author](https://img.shields.io/badge/author-@thankjava-blue.svg)](https://github.com/thankjava/)
-```
-强力驱动
-```
 
 ```
-    imgs-upload-srv  https://imgs.thankjava.com
-
-    若工作不高效，则生活不自由。Do Something Meaningful!
-    
-    目前正在进行第一版的功能开发，预计月底完成后提供全量服务，并迁移代码至GitHub.
+该项目为在线图片提供服务。
 ```
+
+- **倾力渲染** & **强力驱动**
+
+[![author](https://img.shields.io/badge/author-@qazyuan-blue.svg)](https://github.com/qazyuan/)[![author](https://img.shields.io/badge/author-@thankjava-blue.svg)](https://github.com/thankjava/)
+
+- 在线使用[https://imgs.thankjava.com](https://imgs.thankjava.com)
+- 自建部署指南(TODO)
+
