@@ -10,14 +10,45 @@
 
   - git clone https://github.com/lazy-koala/imgs-upload-srv.git
   
-  - 调整 node-srv/config 下相关配置
+  - node-srv/config 新建下相关配置
     - basic.json  基本配置
-      imgsDomain：上传的图片可访问的域名
+      ```
+        "imgsDomain": "" // 图片可访问的域名配置
+      ```
+      ```json
+      {
+        "port": 8005,
+        "imgsDomain": ""
+      ```
     - mongo.json mongodb数据库配置
+      ```json
+      {
+        "host": "",
+        "port": 6330,
+        "username": "",
+        "password": "",
+        "dbname": ""
+      }
+      ```
     - redis.json redis缓存配置
+      ```json
+      {
+        "host": "",
+        "port": 6379,
+        "password": "",
+        "no_ready_check": true
+      }
+      ```
     - upload.json 图片上传配置
+      ```
       path: 图片上传的物理服务器路径 (文件夹)
+      ```
+      ```json
+      {
+        "path": ""
+      }
+      ```
       
   - 切换至 node-srv 目录执行 npm install 安装服务端依赖的相关组件
   
-  - node app.js 启动后端服务 (使用nohup或采用pm2管理)
+  - node app.js 启动后端服务 (推荐使用nohup或采用pm2管理)
