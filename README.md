@@ -3,7 +3,6 @@
 ![node](https://img.shields.io/badge/>-nodejs-green.svg)
 ![vue](https://img.shields.io/badge/>-koa2-blue.svg)
 
-[![org](https://img.shields.io/badge/org-@LazyKoala-yellow.svg)](https://github.com/lazy-koala/)
 > #### 在线图片服务
 
 - Why
@@ -38,14 +37,14 @@
 ---    
 > #### 关于我们
 
-```
-该项目为在线图片提供服务。
-```
+[![org](https://img.shields.io/badge/org-@LazyKoala-yellow.svg)](https://github.com/lazy-koala/)
 
-- **倾力渲染** & **强力驱动**
+[![author](https://img.shields.io/badge/author-@qazyuan-blue.svg)](https://github.com/qazyuan/) [![author](https://img.shields.io/badge/author-@thankjava-blue.svg)](https://github.com/thankjava/)
 
-[![author](https://img.shields.io/badge/author-@qazyuan-blue.svg)](https://github.com/qazyuan/)[![author](https://img.shields.io/badge/author-@thankjava-blue.svg)](https://github.com/thankjava/)
+**倾力渲染** & **强力驱动**
 
+---
+> 备注
 - 在线使用[https://imgs.thankjava.com](https://imgs.thankjava.com)
 - 自建部署指南(TODO)
 
