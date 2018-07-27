@@ -10,7 +10,7 @@
 
   - git clone https://github.com/lazy-koala/imgs-upload-srv.git
   
-  - node-srv/config 新建下相关配置
+  - node-srv/config 新建以下相关配置
     - basic.json  基本配置
       ```
         "imgsDomain": "" // 图片可访问的域名配置
