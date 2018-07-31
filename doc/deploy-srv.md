@@ -19,6 +19,7 @@
       {
         "port": 8005,
         "imgsDomain": ""
+      }
       ```
     - mongo.json mongodb数据库配置
       ```json
