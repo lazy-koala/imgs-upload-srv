@@ -13,6 +13,6 @@ module.exports = {
     SEND_MAIL_FAILED: "1006",           // 邮件发送失败
     EXPIRED_MAIL_CODE: "1007",          // 验证码过期
     INVALID_MAIL_CODE: "1008",          // 验证码错误
-    ERROR_REGISTE_DATA: "1009",         // 注册提交数据异常
+    ERROR_REGISTE_DATA: "1009",         // 邮箱验证数据异常
     ERROR_ACCOUNT_OR_EMAIL: "1010",     // 无效的邮箱或者帐号
 };

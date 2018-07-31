@@ -26,7 +26,7 @@ module.exports.fsDel = uris => {
     for (let i in uris) {
         fs.unlink(uris[i], err => {
             if (err) {
-                console.log('=> util.fsDel: '.cyan + ' error'.red);
+                console.log('=> util.fsDel: '.cyan + 'uri = '.grey + uris[i] + ' error'.red);
                 console.error(err)
             }
         });

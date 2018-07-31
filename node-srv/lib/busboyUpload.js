@@ -73,11 +73,29 @@ module.exports.upload = (ctx) => new Promise(resolve => {
 
     });
 
+    let fields = {};
+
+    busboy.on('field', function (fieldname, val, fieldnameTruncated, valTruncated, encoding, mimetype) {
+        if (fields[fieldname]) {
+            if (Array.isArray(fields[fieldname])) {
+                let array = fields[fieldname];
+                array.push(val);
+                fields[fieldname] = array;
+            } else {
+                fields[fieldname] = [fields[fieldname], val];
+            }
+        } else {
+            fields[fieldname] = val;
+        }
+    });
+
     busboy.on('finish', function () {
         resolve({
             flag: true,
-            uploadResult: uploadResult
+            uploadResult: uploadResult,
+            fields: fields
         });
+
     });
 
     busboy.on('error', function (err) {

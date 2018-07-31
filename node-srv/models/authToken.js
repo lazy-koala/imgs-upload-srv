@@ -55,6 +55,20 @@ class authToken extends baseModel {
     selectByUserIdSortByCreateTime(userId) {
         return this.model.find({userId: userId}).sort({createTime: -1}).exec();
     }
+
+    selectOwnByIds(ids, userId) {
+        let condition = {userId: userId};
+        if (typeof ids === 'string') {
+            condition._id = ids;
+        } else if (Array.isArray(ids)) {
+            condition._id = {
+                '$in': ids
+            };
+        } else {
+            return false;
+        }
+        return this.model.find(condition).exec();
+    }
 }
 
 module.exports = new authToken();

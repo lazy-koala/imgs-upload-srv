@@ -18,7 +18,7 @@ const baseConfig = require('../config/basic');
 
 module.exports = new Router(
 
-).post('/change_pwd', async ctx => {
+).post('change_pwd', async ctx => {
 
     let params = ctx.request.body;
     if (!params) return baseController.response400(ctx);
@@ -59,42 +59,66 @@ module.exports = new Router(
 
 }).post('update_uinfo', async ctx => {
 
-    let params = ctx.request.body;
-    if (!params) return baseController.response400(ctx);
-    if ((params.token && !params.mail) || (params.mail && !params.token)) return baseController.response400(ctx);
-
     let uploadResult = await busboyUpload.upload(ctx);
     if (!uploadResult.flag) return baseController.response500(ctx, '图片上传异常');
+
+    let params = uploadResult.fields;
+
+    if ((params.token && !params.mail && !params.mailCode) || (params.mail && !params.token && !params.mailCode) || (params.mailCode && !params.token && !params.mail))
+        return baseController.response400(ctx);
 
     uploadResult = uploadResult.uploadResult;
     let update = {};
     let headImg = null;
     if (uploadResult) {
-        let result = uploadResult[0];
-        if (!result.flag) return baseController.response500(ctx, '图片上传异常');
-        headImg = result.path;
-        update.headImg = headImg;
+        if (uploadResult.length > 0) {
+            let result = uploadResult[0];
+            if (!result.flag) return baseController.response500(ctx, '图片上传异常');
+            headImg = result.path;
+            update.headImg = headImg;
+        }
     }
 
     let user = await userModel.selectById(ctx.state.authInfo.id);
     if (headImg && user.headImg) {
-        util.fsDel(uploadConfig.path + user.headImg);
+        util.fsDel([uploadConfig.path + user.headImg]);
     }
 
     if (params.nickname) {
         update.nickname = params.nickname;
     }
 
-    await userModel.updateByUsername(update, user.username);
-    baseController.response(ctx);
+    if (params.token && params.mail && params.mailCode) {
+        let authMail = await asyncRedisClient.getAsync(redisKey.UPDATE_MAIL_CODE(params.token));
+        if (!authMail) return baseController.responseWithCode(ctx, baseController.CODE.EXPIRED_MAIL_CODE, '验证码已过期或未获取验证码');
+        authMail = authMail.split('|');
+        if (params.mailCode != authMail[0]) {
+            return baseController.responseWithCode(ctx, baseController.CODE.INVALID_MAIL_CODE, '邮箱验证码错误');
+        } else if (params.mail != authMail[1]) {
+            return baseController.responseWithCode(ctx, baseController.CODE.ERROR_REGISTE_DATA, '该验证码仅可用于验证指定的邮箱操作');
+        }
+        await asyncRedisClient.delAsync(redisKey.UPDATE_MAIL_CODE(params.token));
+        update.email = params.mail;
+    }
+
+    if (Object.keys(update).length > 0) {
+        await userModel.updateByUsername(update, user.username);
+    }
+
+    baseController.response(ctx, await getUserInfo(ctx));
 
 }).get('uinfo', async ctx => {
+    baseController.response(ctx, await getUserInfo(ctx));
+}).routes();
+
+
+const getUserInfo = async ctx => {
     let user = await userModel.selectById(ctx.state.authInfo.id);
-    baseController.response(ctx, {
+    return {
         id: user._id,
         username: user.username,
         nickname: user.nickname,
         email: user.email.replace(baseController.REG.MAIL_ENCODE, '$1****$2'),
         headImg: user.headImg ? baseConfig.imgsDomain + user.headImg : null
-    });
-}).routes();
+    };
+};
