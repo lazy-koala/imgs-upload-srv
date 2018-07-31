@@ -13,7 +13,7 @@
   - node-srv/config 新建以下相关配置
     - basic.json  基本配置
       ```
-        "imgsDomain": "" // 图片可访问的域名配置
+      imgsDomain: 图片可访问的域名配置
       ```
       ```json
       {
