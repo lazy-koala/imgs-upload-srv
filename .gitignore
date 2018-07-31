@@ -67,7 +67,7 @@ bootstrap.css
 bootstrap.js
 bootstrap.json
 bootstrap.jsonp
-build/
+dist/
 classic.json
 classic.jsonp
 ext/
@@ -77,8 +77,6 @@ resources/sass/.sass-cache/
 resources/.arch-internal-preview.css
 .arch-internal-preview.css
 
-
-/dist/
 
 # Editor directories and files
 .vscode
