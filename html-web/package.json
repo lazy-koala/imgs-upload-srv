@@ -1,7 +1,7 @@
 {
   "name": "html-web",
   "version": "1.0.0",
-  "description": "A Vue.js project",
+  "description": "在线图片服务UI",
   "author": "ZhiyuanYang <yzhuiyi@126.com>",
   "private": true,
   "scripts": {
