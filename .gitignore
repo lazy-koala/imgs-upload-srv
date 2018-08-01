@@ -91,5 +91,5 @@ resources/.arch-internal-preview.css
 node-srv/config/*.json
 pm2.json
 
-package-lock.json
+html-web/package-lock.json
 
