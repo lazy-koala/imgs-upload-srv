@@ -48,7 +48,7 @@ server{
         root **/dist/; # 编译生产的dist资源目录位置
     }
     
-    # 由于部署的图片服务器域名和服务域名不一直 该配置用于将图片服务器的下载资源映射到当前域名下以解决前端跨域下载
+    # 由于部署的图片服务器域名和服务域名不一致 该配置用于将图片服务器的下载资源映射到当前域名下以解决前端跨域下载
     location /download/ {
         alias */*/;    # 服务图片上传的物理位置目录 同 node-srv/config/upload.json
         autoindex off;
