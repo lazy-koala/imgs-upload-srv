@@ -18,10 +18,23 @@ module.exports = new Router(
     let userId = ctx.state.authInfo.id;
     let tokens = await authTokenModel.selectByUserIdSortByCreateTime(userId);
     if (tokens) {
+        let now = Date.now();
+        let expirationToken = [];
         for (let index in tokens) {
             tokens[index].token = tokens[index].token.replace(baseController.REG.TOKEN_ENCODE, '$1******$2');
+            if (now >= tokens[index].expiration) {
+                // 过期token移除
+                tokens.splice(index, 1);
+                expirationToken.push(tokens[index]._id.toString());
+                continue;
+            }
             delete tokens[index].userId;
         }
+
+        if (expirationToken.length > 0) {
+            await authTokenModel.removeOwnByIds(expirationToken, userId);
+        }
+
         return baseController.response(ctx, {list: tokens});
     }
     baseController.response(ctx);
