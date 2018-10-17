@@ -23,9 +23,9 @@ module.exports = new Router(
         for (let index in tokens) {
             tokens[index].token = tokens[index].token.replace(baseController.REG.TOKEN_ENCODE, '$1******$2');
             if (now >= tokens[index].expiration) {
+                expirationToken.push(tokens[index]._id.toString());
                 // 过期token移除
                 tokens.splice(index, 1);
-                expirationToken.push(tokens[index]._id.toString());
                 continue;
             }
             delete tokens[index].userId;
