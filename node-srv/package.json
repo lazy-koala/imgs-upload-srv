@@ -1,7 +1,7 @@
 {
   "name": "imgs-node-srv",
   "version": "1.0.1",
-  "description": "在线图片服务服务端",
+  "description": "图床服务Srv",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

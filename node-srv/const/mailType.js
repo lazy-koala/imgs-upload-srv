@@ -6,15 +6,15 @@
 module.exports.config = {
     // 注册邮件验证码
     REGISTE_CODE: {
-        title: "在线图片服务：注册",
+        title: "图床服务：注册",
         templateName: "RegisteCode.html"
     },
     FORGET_CODE: {
-        title: "在线图片服务：找回密码",
+        title: "图床服务：找回密码",
         templateName: "ForgetCode.html"
     },
     UPDATE_MAIL_CODE: {
-        title: '在线图片服务：修改邮箱',
+        title: '图床服务：修改邮箱',
         templateName: "UpdateMailCode.html"
     }
 };
