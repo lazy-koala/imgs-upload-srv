@@ -14,10 +14,19 @@
     ...
     ```
 
-- #### [imgs.thankjava.com](https://imgs.thankjava.com)
+- #### [在线使用](https://imgs.thankjava.com)
 ```
     免费的，简洁的图片在线服务。
 即开即用，开源免费。基于GNU通用公共许可证v3.0，提供在线图片服务解决方案。
+```
+
+- #### CHANGELOG
+```
+1.0.1
+    bugfix: #3 #4 #2
+    
+1.0.0
+    基础标准版本上线
 ```
 
 > #### 技术栈
