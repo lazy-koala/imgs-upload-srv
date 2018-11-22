@@ -147,6 +147,15 @@
 
       stop () {
         if (this.cropper) {
+          this.update({
+            cropped: false,
+            cropping: false,
+            loaded: false,
+            name: '',
+            previousUrl: '',
+            type: '',
+            url: ''
+          });
           this.cropper.destroy();
           this.cropper = null;
         }
@@ -305,14 +314,14 @@
 
 <style scoped>
   .editor {
-    height: 100%;
+    height: 50%;
     position: relative;
   }
 
   .canvas {
     align-items: center;
     display: flex;
-    height: 100%;
+    height: 350px;
     justify-content: center;
 
     & > img {

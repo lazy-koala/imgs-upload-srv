@@ -48,8 +48,9 @@
         <el-dialog
         title="图片编辑"
         :visible.sync="data.loaded"
-        width="50%"
+        width="45%"
         center
+        :before-close="handleClose"
         >
             <img-edit @refresh="getImgList" ref="editor" :data="data"></img-edit>
         </el-dialog>
@@ -190,6 +191,8 @@ export default {
             var alink = document.createElement("a");
             var typeIndex = downLoadUrl.lastIndexOf(".");
             var ext = downLoadUrl.substr(typeIndex + 1);
+            document.body.appendChild(alink);
+            alink.style.display='none';
             alink.href = downLoadUrl;
             alink.download = id + '.' + ext;
             alink.click();
@@ -247,6 +250,10 @@ export default {
             } else {
                 this.$refs[id][0].style.display = "block";
             }
+        },
+
+        handleClose: function (done) {
+            this.$refs.editor.stop();
         }
     },
     mounted () {
