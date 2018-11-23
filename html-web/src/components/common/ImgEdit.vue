@@ -13,7 +13,7 @@
       <button type="text" class="toolbar__button" data-action="remove" title="Delete (Delete)" v-if="data.loaded && !data.cropping"><span class="el-icon-delete-copy"></span></button>
       <button type="text" class="toolbar__button" data-action="restore" title="Undo (Ctrl + Z)" v-if="data.cropped"><span class="el-icon-undo"></span></button>
       <button type="text" class="toolbar__button" data-action="clear" title="Cancel (Esc)" v-if="data.cropping"><span class="el-icon-cancel"></span></button>
-      <button type="text" class="toolbar__button" data-action="ok" title="OK (Enter)" v-if="data.cropping"><span class="el-icon-ok"></span></button>
+      <!-- <button type="text" class="toolbar__button" data-action="ok" title="OK (Enter)" v-if="data.cropping"><span class="el-icon-ok"></span></button> -->
     </div>
     <div class="btn">
         <el-button type="primary" @click="uploadImg">确认</el-button>
@@ -146,7 +146,6 @@
       },
 
       stop () {
-        if (this.cropper) {
           this.update({
             cropped: false,
             cropping: false,
@@ -156,6 +155,7 @@
             type: '',
             url: ''
           });
+        if (this.cropper) {
           this.cropper.destroy();
           this.cropper = null;
         }
@@ -171,10 +171,12 @@
           this.update({
             cropped: true,
             cropping: false,
+            loaded: true,
             previousUrl: data.url,
             url: cropper.getCroppedCanvas().toDataURL(data.type),
           });
-          this.stop ();
+          this.uploadImg();
+          this.reset();
         }
       },
 
@@ -199,15 +201,15 @@
 
       reset () {
         this.stop();
-        this.update({
-          cropped: false,
-          cropping: false,
-          loaded: false,
-          name: '',
-          previousUrl: '',
-          type: '',
-          url: ''
-        });
+        // this.update({
+        //   cropped: false,
+        //   cropping: false,
+        //   loaded: false,
+        //   name: '',
+        //   previousUrl: '',
+        //   type: '',
+        //   url: ''
+        // });
       },
 
       update (data) {
@@ -237,15 +239,15 @@
 
       initUpload: function () {
         this.stop();
-        this.update({
-            cropped: false,
-            cropping: false,
-            loaded: false,
-            name: '',
-            previousUrl: '',
-            type: '',
-            url: ''
-        });
+        // this.update({
+        //     cropped: false,
+        //     cropping: false,
+        //     loaded: false,
+        //     name: '',
+        //     previousUrl: '',
+        //     type: '',
+        //     url: ''
+        // });
       },
 
       confirmUploadImg: function (formData) {
