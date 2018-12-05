@@ -98,7 +98,9 @@ export default {
                 name: '',
                 previousUrl: '',
                 type: '',
-                url: ''
+                url: '',
+                isGif: false,
+                base64Url: ''
             },
             page: {
                 pageNumber: 1,

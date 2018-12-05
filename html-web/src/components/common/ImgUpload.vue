@@ -2,15 +2,15 @@
     <div>
         <div class="upload" @change="change" v-if="!isEditHead && !isAddHead">
             <i  class="el-icon-upload"></i>
-            <input type="file" name="file" accept="image/jpeg,image/x-png,image/gif">
+            <input type="file" name="file" accept="image/*">
         </div>
         <div v-if="isEditHead" @change="change" class="head-icon">
             <i>点击修改头像</i>
-            <input type="file" name="file" accept="image/jpeg,image/x-png,image/gif">
+            <input type="file" name="file" accept="image/*">
         </div>
         <div v-if="isAddHead" @change="change" class="head-icon edit">
             <i>点击上传头像</i>
-            <input type="file" name="file" accept="image/jpeg,image/x-png,image/gif">
+            <input type="file" name="file" accept="image/*">
         </div>
     </div>
 </template>
@@ -49,6 +49,9 @@
                 }
                 var reader = new window.FileReader();
                 reader.readAsDataURL(file);
+                reader.onload = function() {
+                    this.result;
+                };
                 this.imgUrl = reader.result;//将图片读取为DataURL
                 // this.$refs.imgTest.cropper({
 
@@ -68,19 +71,40 @@
                     }
 
                     const file = files[0];
-                    if (/^image\/\w+$/.test(file.type)) {
-                        if (URL) {
+                    const isGif = (file.type == 'image/gif') ? true : false;
+                    var imgUrl = '';
+
+                    if (!/^image\/\w+$/.test(file.type)) {
+                        reject(new Error('Please choose an image file.'));
+                    }
+
+                    if (!URL) {
+                        reject(new Error('Your browser is not supported.'));
+                    }
+
+                    if (isGif) {
+                        var reader = new window.FileReader();
+                        reader.readAsDataURL(file);
+                        reader.onload = function() {
+                            imgUrl = this.result;
                             resolve({
                                 loaded: true,
                                 name: file.name,
                                 type: file.type,
-                                url: URL.createObjectURL(file)
+                                isGif: isGif,
+                                url: URL.createObjectURL(file),
+                                base64Url: imgUrl
                             });
-                        } else {
-                            reject(new Error('Your browser is not supported.'));
-                        }
+                        };
                     } else {
-                        reject(new Error('Please choose an image file.'));
+                        resolve({
+                            loaded: true,
+                            name: file.name,
+                            type: file.type,
+                            isGif: isGif,
+                            url: URL.createObjectURL(file),
+                            base64Url: imgUrl
+                        });
                     }
                 });
             },

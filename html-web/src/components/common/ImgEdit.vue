@@ -116,6 +116,11 @@
           return;
         }
 
+
+        if (data.isGif) {
+          return;
+        }
+
         this.cropper = new Cropper(this.$refs.image, {
           autoCrop: false,
           dragMode: 'move',
@@ -153,7 +158,9 @@
             name: '',
             previousUrl: '',
             type: '',
-            url: ''
+            url: '',
+            isGif: false,
+            base64Url: ''
           });
         if (this.cropper) {
           this.cropper.destroy();
@@ -219,10 +226,10 @@
       uploadImg: function () {
           const { cropper, data } = this;
           let that = this;
-          let $Blob = data.url;
+          let $Blob = data.isGif ? data.base64Url : data.url;
           let formData = new FormData();
           let type = data.type ? data.type.split('/')[1] : '';
-          if (data.url.search('base64') < 0) {
+          if (data.url.search('base64') < 0 && !data.isGif) {
             $Blob = cropper.getCroppedCanvas().toDataURL(data.type);
           }
 
