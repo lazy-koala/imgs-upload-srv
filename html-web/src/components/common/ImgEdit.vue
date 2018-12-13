@@ -1,5 +1,5 @@
 <template>
-  <div class="editor">
+  <div class="editor" ref="editor">
     <div class="canvas" @dblclick="dblclick">
       <img ref="image" :alt="data.name" :src="data.url" @load="start">
     </div>
@@ -25,7 +25,7 @@
 <script>
   import Cropper from 'cropperjs';
   import $axios from 'axios'
-  import { Message } from 'element-ui';
+  import { Message, Loading } from 'element-ui';
 
   export default {
     props: {
@@ -52,7 +52,8 @@
         canvasData: null,
         cropBoxData: null,
         croppedData: null,
-        cropper: null
+        cropper: null,
+        loading: null
       };
     },
 
@@ -226,6 +227,10 @@
       uploadImg: function () {
           const { cropper, data } = this;
           let that = this;
+          //show Loading
+          that.loading = Loading.service({
+                target: that.$refs.editor
+          });
           let $Blob = data.isGif ? data.base64Url : data.url;
           let formData = new FormData();
           let type = data.type ? data.type.split('/')[1] : '';
@@ -262,6 +267,7 @@
         $axios.post('/api/imgs/upload', formData).then((res) => {
           if (res.data && res.data.data) {
             let data = res.data.data;
+
             for (let i = 0; i < data.length; i++) {
               let item = data[i];
               if (item.flag) {

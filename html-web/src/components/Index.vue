@@ -14,8 +14,8 @@
                         </div>
                     </div>
                     <div class="list-item" v-if="imgList.length > 0" v-for="item in imgList">
-                        <div class="imgage-wrapper" @mouseover="toggleShow(item._id, 1)" @mouseleave="toggleShow(item._id, 0)">
-                            <img class="image" :src="item.url">
+                        <div class="imgage-wrapper" :id="item._id + '-loading'" :ref="item._id + '-loading'"  @mouseover="toggleShow(item._id, 1)" @mouseleave="toggleShow(item._id, 0)">
+                            <img class="image" :src="item.url" @load="hideLoading(item._id)">
                             <div class="mask-wrapper animated fadeIn" :ref="item._id">
                                 <div class="mask">
                                     <el-button type="text" class="button icon el-icon-delete" @click="delBox(item._id)"></el-button>
@@ -31,7 +31,7 @@
                     </div>
                 </div>
             </div>
-            <div class="pagation" v-if="imgList.length > 0">
+            <div class="pagation" v-show="imgList.length > 0">
                 <el-pagination
                     layout="total, prev, pager, next"
                     :total="page.totalCount"
@@ -84,7 +84,7 @@ import CommonFooter from "./common/CommonFooter";
 import ImgUpload from "./common/ImgUpload";
 import ImgEdit from "./common/ImgEdit";
 import $axios from 'axios';
-import { Message } from 'element-ui';
+import { Message, Loading } from 'element-ui';
 import Common from '../assets/scripts/common.js';
 import Cookies from "js-cookie";
 export default {
@@ -115,7 +115,8 @@ export default {
             delId: '',
             showZoomIn: false,
             zoomInImg: '',
-            defaultPageSize: 14
+            defaultPageSize: 14,
+            loadingArr: {}
         }
     },
     components: {
@@ -136,6 +137,20 @@ export default {
               if (res.data.data) {
                 var data = res.data.data;
                 that.imgList = data.list || [];
+                var imgList = that.imgList;
+
+                setTimeout(function () {
+                    for (var i = 0; i < imgList.length; i++) {
+                        var item = imgList[i];
+                        that.loadingArr[item._id] = Loading.service({
+                            target: that.$refs[item._id + '-loading'][0],
+                            lock: true,
+                            fullscreen: false
+                        });
+                    }
+                }, 0)
+
+                // loading.close();
                 that.update({
                     pageCount: data.pageCount,
                     currentPage: num,
@@ -146,6 +161,12 @@ export default {
             }).catch(function (error) {
                 that.catchError(error);
             })
+        },
+        hideLoading (id) {
+            if (this.loadingArr[id]) {
+                this.loadingArr[id].close();
+            }
+
         },
         update (data) {
             Object.assign(this.page, data);
