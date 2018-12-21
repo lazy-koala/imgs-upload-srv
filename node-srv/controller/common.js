@@ -15,6 +15,10 @@ const userModel = require('../models/user');
 const authTokenModel = require('../models/authToken');
 const mailSender = require('../lib/mailSender');
 const mailType = require('../const/mailType');
+const imagesModel = require('../models/images');
+const fs = require('fs');
+const uploadConfig = require('../config/upload');
+
 
 module.exports = new Router(
 
@@ -195,6 +199,21 @@ module.exports = new Router(
     await doLogin(ctx, info, false, util.uuid(), Date.now());
 
     baseController.response(ctx);
+
+}).get('view/:urn', async ctx => { // 读取图片信息
+
+    let params = ctx.params;
+    if (!params.urn) return baseController.response400(ctx, '无效的请求链接');
+    let urn = '/' + params.urn;
+
+    let image = await imagesModel.selectByUrn(urn);
+    if (!image) {
+        return baseController.response400(ctx, '无效的请求链接');
+    }
+
+    ctx.set('Content-Type', 'image/' + image.url.split('.')[1]);
+    ctx.body = fs.readFileSync(uploadConfig.path + image.url);
+
 }).routes();
 
 

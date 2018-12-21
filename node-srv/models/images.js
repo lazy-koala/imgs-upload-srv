@@ -59,6 +59,10 @@ class images extends baseModel {
         return this.model.remove(condition).exec();
     }
 
+    selectByUrn(urn) {
+        return this.model.findOne({urn: urn}).exec();
+    }
+
 }
 
 module.exports = new images();

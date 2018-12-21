@@ -9,5 +9,6 @@ module.exports = [
     '/send_reg_mail_code',
     '/registe',
     '/forget_pwd',
-    '/reset_pwd'
+    '/reset_pwd',
+    '/view',
 ];
