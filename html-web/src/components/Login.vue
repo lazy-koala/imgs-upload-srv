@@ -139,7 +139,7 @@ export default {
     overflow: hidden;
     width: 100%;
     background-image: url('../assets/images/bg.jpg');
-    background-size: 100%;
+    background-size: 300%;
 }
 .login-wrapper {
     width: 400px;

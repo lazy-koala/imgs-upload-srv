@@ -104,7 +104,7 @@ export default {
             },
             page: {
                 pageNumber: 1,
-                pageSize: this.defaultPageSize,
+                pageSize: this.pageSize || this.defaultPageSize,
                 pageCount: 0,
                 currentPage: 1,
                 totalCount: 0
@@ -116,6 +116,7 @@ export default {
             showZoomIn: false,
             zoomInImg: '',
             defaultPageSize: 14,
+            pageSize: 14,
             loadingArr: {}
         }
     },
@@ -126,10 +127,14 @@ export default {
         'common-footer': CommonFooter
     },
     methods: {
-        getImgList: function (num, size) {
+        getImgList: function (num) {
             var that = this;
+            var clientWidth = +document.body.clientWidth;
+            var picWidth = 200;
+            var size = +parseInt(clientWidth/picWidth) * 3 - 1;
+            that.pageSize = size;
             var params = {
-              pageSize: size || that.defaultPageSize,
+              pageSize: size,
               pageNumber: num
             };
             // console.log(reqData);
@@ -178,7 +183,7 @@ export default {
         },
 
         handleCurrentChange: function (val) {
-            this.getImgList(val, this.defaultPageSize);
+            this.getImgList(val);
         },
 
         copyUrl: function (url) {
@@ -244,7 +249,7 @@ export default {
                         center: true
                     });
                     that.showDel = false;
-                    that.getImgList(1, that.defaultPageSize);
+                    that.getImgList(1);
                 }
             }).catch(function (error) {
                 that.catchError(error);
@@ -286,7 +291,7 @@ export default {
             that.$router.push('/');
             return false;
         }
-        that.getImgList(this.page.pageNumber, this.page.pageSize);
+        that.getImgList(this.page.pageNumber);
         $axios.get('/api/user/uinfo').then((res) => {
             if (res.data && res.data.data) {
                 var info = res.data.data || {};
@@ -313,7 +318,7 @@ export default {
     }
     .scroll-wrapper {
         position: relative;
-        width: 95%;
+        width: 100%;
         height: 100%;
         overflow:hidden;
         margin: 0 auto;
