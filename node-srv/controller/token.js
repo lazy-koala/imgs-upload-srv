@@ -16,7 +16,7 @@ module.exports = new Router(
 
 ).get('list', async ctx => {
     let userId = ctx.state.authInfo.id;
-    let tokens = await authTokenModel.selectByUserIdSortByCreateTime(userId);
+    let tokens = await authTokenModel.selectByUserIdSortByCreateTimeDesc(userId);
     if (tokens) {
         let now = Date.now();
         let expirationToken = [];
