@@ -5,7 +5,7 @@
         </template>
         <div class="list-wrapper">
             <div class="scroll-wrapper">
-                <div class="list">
+                <div class="list" ref="list">
                     <div class="list-item">
                         <img-upload :data="data"></img-upload>
                         <div class="bottom">
@@ -35,7 +35,7 @@
                 <el-pagination
                     layout="total, prev, pager, next"
                     :total="page.totalCount"
-                    :page-size='defaultPageSize'
+                    :page-size='page.pageSize'
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
                 >
@@ -129,9 +129,12 @@ export default {
     methods: {
         getImgList: function (num) {
             var that = this;
+            var ref = that.$refs['list'];
             var clientWidth = +document.body.clientWidth;
+            var clientHeight = +ref.offsetHeight;
             var picWidth = 200;
-            var size = +parseInt(clientWidth/picWidth) * 3 - 1;
+            var picHeight =210;
+            var size = +parseInt(clientWidth/picWidth) * (+parseInt(clientHeight/picHeight)) - 1;
             that.pageSize = size;
             var params = {
               pageSize: size,
@@ -147,7 +150,7 @@ export default {
                 setTimeout(function () {
                     for (var i = 0; i < imgList.length; i++) {
                         var item = imgList[i];
-                        that.loadingArr[item._id] = Loading.service({
+                        that.loadingArr[item._id] = that.$refs[item._id + '-loading'][0].$loading({
                             target: that.$refs[item._id + '-loading'][0],
                             lock: true,
                             fullscreen: false
@@ -160,7 +163,7 @@ export default {
                     pageCount: data.pageCount,
                     currentPage: num,
                     totalCount: data.totalCount,
-                    pageSize: size || that.defaultPageSize
+                    pageSize: size
                 });
               }
             }).catch(function (error) {
@@ -171,7 +174,6 @@ export default {
             if (this.loadingArr[id]) {
                 this.loadingArr[id].close();
             }
-
         },
         update (data) {
             Object.assign(this.page, data);
