@@ -43,3 +43,5 @@ module.exports = {
 // for (let i = 1000000; i < 1000083; i ++) {
 //     process.stdout.write(number10to64(i)+',');
 // }
+
+// console.log(string64to10('D0KS'));
