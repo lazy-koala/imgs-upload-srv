@@ -218,16 +218,14 @@ module.exports = new Router(
 
 
 const doLogin = async (ctx, info, keepLogged, token, nowTime) => {
+
     let userInfo = {
         id: info._id,
         username: info.username
     };
     let userInfoJsonStr = JSON.stringify(userInfo);
 
-    let authEx = baseController.CONSTS.AUTH_COOKIE_EXPIRES_DAY * 24 * 60 * 60;
-
-    // 写入redis验证数据
-    await asyncRedisClient.setAsync(redisKey.AUTH_TOKEN(token), userInfoJsonStr, 'EX', authEx);
+    let authEx = baseController.CONSTS.SHORT_AUTH_COOKIE_EXPIRES_DAY * 24 * 60 * 60;
 
     // 登录成功
     let cookieOpt = {
@@ -236,6 +234,8 @@ const doLogin = async (ctx, info, keepLogged, token, nowTime) => {
     };
 
     if (keepLogged) { // 长期登录
+
+        authEx = baseController.CONSTS.AUTH_COOKIE_EXPIRES_DAY * 24 * 60 * 60;
 
         let tokens = await authTokenModel.selectByUserIdSortByCreateTimeAsc(userInfo.id);
 
@@ -261,8 +261,12 @@ const doLogin = async (ctx, info, keepLogged, token, nowTime) => {
         cookieOpt.maxAge = authEx * 1000;
     }
 
+    // 写入redis验证数据
+    await asyncRedisClient.setAsync(redisKey.AUTH_TOKEN(token), userInfoJsonStr, 'EX', authEx);
+
     // 创建cookies会话凭证信息
     baseController.setCookie(ctx, cookiesName.COOKIE_NAME_TOKEN, token, cookieOpt);
     cookieOpt.httpOnly = false;
     baseController.setCookie(ctx, cookiesName.COOKIE_NAME_UINFO, encodeURI(userInfoJsonStr), cookieOpt);
+
 };

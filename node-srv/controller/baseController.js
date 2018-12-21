@@ -95,9 +95,10 @@ module.exports.CODE = code;
 module.exports.REG = reg;
 
 module.exports.CONSTS = {
-    AUTH_COOKIE_EXPIRES_DAY: 30,    // 认证cookie的过期时间 (天)
-    REG_MAIL_MINUTE: 15,            // 注册邮件验证码邮箱时间
-    FORGET_MAIL_MINUTE: 15,         // 忘记密码邮件验证码邮箱时间
-    MAX_LIVING_TOKEN_NUMBER: 5,     // 最大长期登录的token数
-    UPDATE_MAIL_MINUTE: 15,         // 修改邮箱验证时间
+    AUTH_COOKIE_EXPIRES_DAY: 30,        // 认证cookie的过期时间 (天)
+    SHORT_AUTH_COOKIE_EXPIRES_DAY: 0.1, // 非长期登录的token过期时间
+    REG_MAIL_MINUTE: 15,                // 注册邮件验证码邮箱时间
+    FORGET_MAIL_MINUTE: 15,             // 忘记密码邮件验证码邮箱时间
+    MAX_LIVING_TOKEN_NUMBER: 5,         // 最大长期登录的token数
+    UPDATE_MAIL_MINUTE: 15,             // 修改邮箱验证时间
 };
