@@ -10,6 +10,10 @@ const baseConfig = require('../config/basic');
 const busboyUpload = require('../lib/busboyUpload');
 const baseController = require('./baseController');
 const imagesModel = require('../models/images');
+const asyncRedisClient = require('../lib/asyncRedis').client;
+const redisKey = require('../const/redisKey');
+
+const algorithm10to64 = require('../lib/algorithm10to64');
 const util = require('../lib/util');
 
 
@@ -22,16 +26,36 @@ module.exports = new Router(
     uploadResult = uploadResult.uploadResult;
     let saveImages = [];
     let userId = ctx.state.authInfo.id;
-    uploadResult.every(result => {
-        if (result.flag) {
+
+    let incr;
+
+    for (let index in uploadResult) {
+
+        incr = await asyncRedisClient.incrAsync(redisKey.IMG_INCR_NO);
+
+        if (uploadResult[index].flag) {
+
             saveImages.push({
                 userId: userId,
-                url: result.path
+                url: uploadResult[index].path,
+                urn: '/' + algorithm10to64.number10to64(incr)
             });
-            result.path = baseConfig.imgsDomain + result.path;
+
+            uploadResult[index].path = baseConfig.imgsDomain + uploadResult[index].urn;
         }
-        return true;
-    });
+    }
+
+    // uploadResult.every(result => {
+    //     if (result.flag) {
+    //         saveImages.push({
+    //             userId: userId,
+    //             url: result.path,
+    //         });
+    //         result.path = baseConfig.imgsDomain + result.path;
+    //     }
+    //     return true;
+    // });
+
     if (saveImages.length > 0) {
         imagesModel.saveMany(saveImages);
     }
@@ -57,7 +81,7 @@ module.exports = new Router(
     if (response.list) {
         let list = response.list;
         for (var index = 0; index < list.length; index++) {
-            list[index].url = baseConfig.imgsDomain + list[index].url; // 拼装图片服务器主域名
+            list[index].url = baseConfig.imgsDomain + list[index].urn; // 拼装图片服务器主域名
         }
     }
     baseController.response(ctx, response);

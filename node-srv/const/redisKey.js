@@ -20,3 +20,6 @@ module.exports.FORGET_MAIL_CODE = token => {
 module.exports.UPDATE_MAIL_CODE = token => {
     return util.format('imgs-upload-srv:update_mail_code:%s', token);
 };// 修改邮箱验证码
+
+// 图片编号
+module.exports.IMG_INCR_NO = _ => "imgs-upload-srv:img_incr_no";
