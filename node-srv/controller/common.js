@@ -237,7 +237,7 @@ const doLogin = async (ctx, info, keepLogged, token, nowTime) => {
 
     if (keepLogged) { // 长期登录
 
-        let tokens = await authTokenModel.selectByUserIdSortByCreateTime(userInfo.id);
+        let tokens = await authTokenModel.selectByUserIdSortByCreateTimeAsc(userInfo.id);
 
         // 已经达到token上限 则移除最早的token信息
         if (tokens && tokens.length >= baseController.CONSTS.MAX_LIVING_TOKEN_NUMBER) {

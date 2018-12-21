@@ -52,8 +52,12 @@ class authToken extends baseModel {
         return this.model.remove(condition).exec();
     }
 
-    selectByUserIdSortByCreateTime(userId) {
+    selectByUserIdSortByCreateTimeDesc(userId) {
         return this.model.find({userId: userId}).sort({createTime: -1}).exec();
+    }
+
+    selectByUserIdSortByCreateTimeAsc(userId) {
+        return this.model.find({userId: userId}).sort({createTime: 1}).exec();
     }
 
     selectOwnByIds(ids, userId) {
