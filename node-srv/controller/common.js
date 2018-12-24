@@ -218,7 +218,7 @@ module.exports = new Router(
         url: "https://source.thankjava.com" + image.url,
         method: "get"
     });
-    console.log(result.body);
+    console.log(Buffer.isBuffer(result.body));
     ctx.body = Buffer.from(result.body);
 
 }).routes();
