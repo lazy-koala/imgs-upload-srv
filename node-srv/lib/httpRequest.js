@@ -5,15 +5,20 @@
  */
 const request = require('request');
 
-module.exports.doRequest = requestParam => new Promise(resolve => {
+module.exports.doRequestBuffer = requestParam => new Promise(resolve => {
+    let bufs = [];
+    let data = {flag: false};
+
     request(requestParam, (err, response, body) => {
-        let data = {flag: false};
         if (err) {
             resolve(data);
         } else {
             data.flag = true;
-            data.body = body;
-            resolve(data);
         }
+    }).on('data', buf => {
+        bufs.push(buf);
+    }).on('end', () => {
+        data.buffer = Buffer.concat(bufs);
+        resolve(data);
     });
 });

@@ -214,12 +214,11 @@ module.exports = new Router(
 
     ctx.set('Content-Type', 'image/' + image.url.split('.')[1]);
     // ctx.body = fs.readFileSync(uploadConfig.path + image.url);
-    let result = await request.doRequest({
-        url: "https://source.thankjava.com" + image.url,
+    let result = await request.doRequestBuffer({
+        url: "http://source.thankjava.com" + image.url,
         method: "get"
     });
-    console.log(Buffer.isBuffer(result.body));
-    ctx.body = Buffer.from(result.body);
+    ctx.body = result.buffer;
 
 }).routes();
 
