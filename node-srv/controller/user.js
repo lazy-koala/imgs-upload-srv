@@ -119,6 +119,6 @@ const getUserInfo = async ctx => {
         username: user.username,
         nickname: user.nickname,
         email: user.email.replace(baseController.REG.MAIL_ENCODE, '$1****$2'),
-        headImg: user.headImg ? baseConfig.imgUri + user.headImg : null
+        headImg: user.headImg ? baseConfig.headImgUri + user.headImg : null
     };
 };
