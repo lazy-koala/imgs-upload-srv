@@ -150,7 +150,7 @@ export default {
                 setTimeout(function () {
                     for (var i = 0; i < imgList.length; i++) {
                         var item = imgList[i];
-                        that.loadingArr[item._id] = that.$refs[item._id + '-loading'][0].$loading({
+                        that.loadingArr[item._id] = Loading.service({
                             target: that.$refs[item._id + '-loading'][0],
                             lock: true,
                             fullscreen: false
@@ -171,9 +171,11 @@ export default {
             })
         },
         hideLoading (id) {
-            if (this.loadingArr[id]) {
-                this.loadingArr[id].close();
-            }
+            this.$nextTick(() => {
+                if (this.loadingArr[id]) {
+                    this.loadingArr[id].close();
+                }
+            })
         },
         update (data) {
             Object.assign(this.page, data);

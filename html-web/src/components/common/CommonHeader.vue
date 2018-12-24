@@ -1,6 +1,6 @@
 <template>
 <div class="menu">
-    <h1>在线图片服务</h1>
+    <h1>在线图床服务</h1>
     <div class="tip">
         <img class="head-img" :src="headImg">
         <span>{{nickname}},欢迎你~</span>

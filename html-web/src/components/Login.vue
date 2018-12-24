@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <div class="login-wrapper">
-        <h1 class="title">在线图片服务</h1>
+        <h1 class="title">在线图床服务</h1>
         <el-form class="form" status-icon :model="loginForm" ref="loginForm" :rules="rules">
             <el-form-item prop="username">
                 <el-input clearable
