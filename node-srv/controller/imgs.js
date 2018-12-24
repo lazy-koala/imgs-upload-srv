@@ -31,7 +31,7 @@ module.exports = new Router(
 
     for (let index in uploadResult) {
 
-        incr = await asyncRedisClient.incrAsync(redisKey.IMG_INCR_NO);
+        incr = await asyncRedisClient.incrAsync(redisKey.IMG_INCR_NO());
 
         if (uploadResult[index].flag) {
 
