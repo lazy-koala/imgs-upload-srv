@@ -212,10 +212,16 @@ module.exports = new Router(
     }
 
     ctx.set('Content-Type', 'image/' + image.url.split('.')[1]);
-    ctx.body = fs.readFileSync(uploadConfig.path + image.url);
+    // ctx.body = fs.readFileSync(uploadConfig.path + image.url);
+    ctx.body = await read(uploadConfig.path + image.url);
 
 }).routes();
 
+const read = async path => new Promise(resolve => {
+    fs.readFile(path, (err, buffer) => {
+        resolve(buffer);
+    });
+});
 
 const doLogin = async (ctx, info, keepLogged, token, nowTime) => {
 
