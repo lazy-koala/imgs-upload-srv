@@ -81,8 +81,8 @@ module.exports = new Router(
     if (response.list) {
         let list = response.list;
         for (let index = 0; index < list.length; index++) {
-            // list[index].url = baseConfig.imgsDomain + list[index].urn; // 拼装图片服务器主域名
-            list[index].url = 'https://source.thankjava.com' + list[index].url; // 拼装图片服务器主域名
+            list[index].url = baseConfig.imgsDomain + list[index].urn; // 拼装图片服务器主域名
+            // list[index].url = 'https://source.thankjava.com' + list[index].url; // 拼装图片服务器主域名
         }
     }
     baseController.response(ctx, response);

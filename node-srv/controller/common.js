@@ -213,6 +213,7 @@ module.exports = new Router(
     }
 
     ctx.set('Content-Type', 'image/' + image.url.split('.')[1]);
+    ctx.set('Cache-Control', 'public, max-age=28800');
 
     // ctx.body = fs.readFileSync(uploadConfig.path + image.url);
 
