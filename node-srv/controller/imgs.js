@@ -71,6 +71,7 @@ module.exports = new Router(
         let list = response.list;
         for (let index = 0; index < list.length; index++) {
             list[index].url = baseConfig.imgUri + list[index].urn; // 拼装图片服务器主域名
+            list[index].suffix = list[index].url.split('.')[1];
         }
     }
     baseController.response(ctx, response);
