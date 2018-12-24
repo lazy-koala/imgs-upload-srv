@@ -215,15 +215,15 @@ module.exports = new Router(
     ctx.set('Content-Type', 'image/' + image.url.split('.')[1]);
     ctx.set('Cache-Control', 'public, max-age=28800');
 
-    // ctx.body = fs.readFileSync(uploadConfig.path + image.url);
+    ctx.body = fs.readFileSync(uploadConfig.path + image.url);
 
 
-    let result = await request.doRequestBuffer({
-        url: "http://source.thankjava.com" + image.url,
-        method: "get"
-    });
-
-    ctx.body = result.buffer;
+    // let result = await request.doRequestBuffer({
+    //     url: "http://source.thankjava.com" + image.url,
+    //     method: "get"
+    // });
+    //
+    // ctx.body = result.buffer;
 
 }).routes();
 
