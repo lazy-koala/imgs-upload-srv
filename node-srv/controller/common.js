@@ -212,7 +212,13 @@ module.exports = new Router(
     }
 
     ctx.set('Content-Type', 'image/' + image.url.split('.')[1]);
-    ctx.body = fs.readFileSync(uploadConfig.path + image.url);
+
+    fs.readFile(uploadConfig.path, (err, buffer) => {
+        if (err) {
+            return baseController.response500(ctx,'读取图片异常');
+        }
+        ctx.body = buffer;
+    });
 
 }).routes();
 
