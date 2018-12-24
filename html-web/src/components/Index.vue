@@ -26,7 +26,7 @@
                         </div>
                         <div class="bottom">
                             <el-button type="text" class="button" @click="copyUrl(item.url)">复制链接</el-button>
-                            <el-button type="text" class="button" @click="downLoadImg(item.url, item._id)">下载图片</el-button>
+                            <el-button type="text" class="button" @click="downLoadImg(item.url, item._id, item.suffix)">下载图片</el-button>
                         </div>
                     </div>
                 </div>
@@ -207,7 +207,7 @@ export default {
             document.body.removeChild(input);
         },
 
-        downLoadImg: function (url, id) {
+        downLoadImg: function (url, id, suffix) {
             if (!url || !id) {
                 Message.error({
                     message: '下载错误~',
@@ -219,10 +219,12 @@ export default {
             var index = this.findIndex(url, '/', 2);
             url = url.slice(index, url.length);
             var newDomain = window.location.protocol + "//" + window.location.host;
-            var downLoadUrl = newDomain + '/download' + url;
+            // console.log(url);
+            // var newDomain = "https://imgs.thankjava.com";
+            var downLoadUrl = newDomain + '/' + url;
             var alink = document.createElement("a");
             var typeIndex = downLoadUrl.lastIndexOf(".");
-            var ext = downLoadUrl.substr(typeIndex + 1);
+            var ext = suffix;
             document.body.appendChild(alink);
             alink.style.display='none';
             alink.href = downLoadUrl;
