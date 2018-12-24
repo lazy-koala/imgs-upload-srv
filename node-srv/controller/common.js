@@ -213,12 +213,15 @@ module.exports = new Router(
     }
 
     ctx.set('Content-Type', 'image/' + image.url.split('.')[1]);
-    // ctx.body = fs.readFileSync(uploadConfig.path + image.url);
-    let result = await request.doRequestBuffer({
-        url: "http://source.thankjava.com" + image.url,
-        method: "get"
-    });
-    ctx.body = result.buffer;
+    ctx.body = fs.readFileSync(uploadConfig.path + image.url);
+
+
+    // let result = await request.doRequestBuffer({
+    //     url: "http://source.thankjava.com" + image.url,
+    //     method: "get"
+    // });
+    //
+    // ctx.body = result.buffer;
 
 }).routes();
 
