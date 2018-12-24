@@ -18,6 +18,7 @@ const mailType = require('../const/mailType');
 const imagesModel = require('../models/images');
 const fs = require('fs');
 const uploadConfig = require('../config/upload');
+const request = require('../lib/httpRequest');
 
 
 module.exports = new Router(
@@ -213,15 +214,14 @@ module.exports = new Router(
 
     ctx.set('Content-Type', 'image/' + image.url.split('.')[1]);
     // ctx.body = fs.readFileSync(uploadConfig.path + image.url);
-    ctx.body = await read(uploadConfig.path + image.url);
+    let result = await request.doRequest({
+        url: "https://source.thankjava.com" + image.url,
+        method: "get"
+    });
+    ctx.body = Buffer.from(result.data);
 
 }).routes();
 
-const read = async path => new Promise(resolve => {
-    fs.readFile(path, (err, buffer) => {
-        resolve(buffer);
-    });
-});
 
 const doLogin = async (ctx, info, keepLogged, token, nowTime) => {
 

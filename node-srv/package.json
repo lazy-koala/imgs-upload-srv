@@ -25,6 +25,7 @@
     "mongoose": "^5.1.5",
     "nodemailer": "^4.6.7",
     "redis": "^2.8.0",
+    "request": "^2.88.0",
     "uuid": "^3.2.1"
   },
   "author": "acexy@thankjava.com",
