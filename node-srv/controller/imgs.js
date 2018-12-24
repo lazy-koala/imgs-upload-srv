@@ -80,7 +80,7 @@ module.exports = new Router(
     if (!response) return baseController.response500(ctx);
     if (response.list) {
         let list = response.list;
-        for (var index = 0; index < list.length; index++) {
+        for (let index = 0; index < list.length; index++) {
             list[index].url = baseConfig.imgsDomain + list[index].urn; // 拼装图片服务器主域名
         }
     }
