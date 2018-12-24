@@ -58,7 +58,7 @@ module.exports.selectByPage = (page, model) => new Promise(resolve => {
         fields = page.fields;
     }
 
-    model.count(query, (err, count) => {
+    model.countDocuments(query, (err, count) => {
         if (err) {
             console.error(err);
             resolve(null);

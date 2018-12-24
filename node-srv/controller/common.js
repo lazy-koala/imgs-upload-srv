@@ -18,6 +18,7 @@ const mailType = require('../const/mailType');
 const imagesModel = require('../models/images');
 const fs = require('fs');
 const uploadConfig = require('../config/upload');
+const request = require('../lib/httpRequest');
 
 
 module.exports = new Router(
@@ -212,7 +213,17 @@ module.exports = new Router(
     }
 
     ctx.set('Content-Type', 'image/' + image.url.split('.')[1]);
+    ctx.set('Cache-Control', 'public, max-age=28800');
+
     ctx.body = fs.readFileSync(uploadConfig.path + image.url);
+
+
+    // let result = await request.doRequestBuffer({
+    //     url: "http://source.thankjava.com" + image.url,
+    //     method: "get"
+    // });
+    //
+    // ctx.body = result.buffer;
 
 }).routes();
 
@@ -262,7 +273,7 @@ const doLogin = async (ctx, info, keepLogged, token, nowTime) => {
     }
 
     // 写入redis验证数据
-    await asyncRedisClient.setAsync(redisKey.AUTH_TOKEN(token), userInfoJsonStr, 'EX', authEx);
+    await asyncRedisClient.setAsync(redisKey.AUTH_TOKEN(token), userInfoJsonStr, 'EX', parseInt(authEx));
 
     // 创建cookies会话凭证信息
     baseController.setCookie(ctx, cookiesName.COOKIE_NAME_TOKEN, token, cookieOpt);

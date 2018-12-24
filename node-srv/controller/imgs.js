@@ -31,7 +31,7 @@ module.exports = new Router(
 
     for (let index in uploadResult) {
 
-        incr = await asyncRedisClient.incrAsync(redisKey.IMG_INCR_NO);
+        incr = await asyncRedisClient.incrAsync(redisKey.IMG_INCR_NO());
 
         if (uploadResult[index].flag) {
 
@@ -41,20 +41,9 @@ module.exports = new Router(
                 urn: '/' + algorithm10to64.number10to64(incr)
             });
 
-            uploadResult[index].path = baseConfig.imgsDomain + uploadResult[index].urn;
+            uploadResult[index].path = baseConfig.imgUri + uploadResult[index].urn;
         }
     }
-
-    // uploadResult.every(result => {
-    //     if (result.flag) {
-    //         saveImages.push({
-    //             userId: userId,
-    //             url: result.path,
-    //         });
-    //         result.path = baseConfig.imgsDomain + result.path;
-    //     }
-    //     return true;
-    // });
 
     if (saveImages.length > 0) {
         imagesModel.saveMany(saveImages);
@@ -80,8 +69,9 @@ module.exports = new Router(
     if (!response) return baseController.response500(ctx);
     if (response.list) {
         let list = response.list;
-        for (var index = 0; index < list.length; index++) {
-            list[index].url = baseConfig.imgsDomain + list[index].urn; // 拼装图片服务器主域名
+        for (let index = 0; index < list.length; index++) {
+            list[index].url = baseConfig.imgUri + list[index].urn; // 拼装图片服务器主域名
+            list[index].suffix = list[index].url.split('.')[1];
         }
     }
     baseController.response(ctx, response);
