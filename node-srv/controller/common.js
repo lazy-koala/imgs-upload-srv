@@ -262,7 +262,7 @@ const doLogin = async (ctx, info, keepLogged, token, nowTime) => {
     }
 
     // 写入redis验证数据
-    await asyncRedisClient.setAsync(redisKey.AUTH_TOKEN(token), userInfoJsonStr, 'EX', authEx);
+    await asyncRedisClient.setAsync(redisKey.AUTH_TOKEN(token), userInfoJsonStr, 'EX', Math.parseInt(authEx));
 
     // 创建cookies会话凭证信息
     baseController.setCookie(ctx, cookiesName.COOKIE_NAME_TOKEN, token, cookieOpt);
