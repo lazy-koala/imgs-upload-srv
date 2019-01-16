@@ -21,6 +21,7 @@
 
 - #### CHANGELOG
 ```
+1.0.1-bugfix 图片上传问题 #8
 1.0.1-dependencies-upgrade
     1.升级了包含安全漏洞的模块
 1.0.1
