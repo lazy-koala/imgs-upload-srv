@@ -265,6 +265,11 @@
       confirmUploadImg: function (formData) {
         var that = this;
         $axios.post('/api/imgs/upload', formData).then((res) => {
+          that.$nextTick(() => {
+            if (that.loading) {
+                that.loading.close();
+            }
+          })
           if (res.data && res.data.data) {
             let data = res.data.data;
 
