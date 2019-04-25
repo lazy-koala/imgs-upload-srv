@@ -4,6 +4,8 @@
  * @Description:
  */
 module.exports = {
+
+
     INVALID_ACCOUNT: "1000",            // 不存在的用户账号
     PASSWORD_ERROR: "1001",             // 密码错误
     // THE_SAME_PASSWORD: "1002",          // 修改的密码和原密码相同
@@ -15,4 +17,6 @@ module.exports = {
     INVALID_MAIL_CODE: "1008",          // 验证码错误
     ERROR_REGISTE_DATA: "1009",         // 邮箱验证数据异常
     ERROR_ACCOUNT_OR_EMAIL: "1010",     // 无效的邮箱或者帐号
+
+    UNKNOWN_SORT_ID:"1011"                 // 不存在的分类ID
 };

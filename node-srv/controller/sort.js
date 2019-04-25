@@ -24,6 +24,21 @@ module.exports = new Router(
 
 }).post('update', async ctx => {
 
+    let params = ctx.request.body;
+    if (!params) return baseController.response400(ctx);
+    if (!params.sortName || !params.sortId) return baseController.response400(ctx, '缺失参数: sortName | sortId');
+
+    let sort = await sortModel.selectById(params.sortId);
+    if (!sort) {
+        return baseController.responseWithCode(ctx, baseController.CODE.UNKNOWN_SORT_ID, '无效的sortId');
+    }
+
+    await sortModel.updateById({
+        sortName: params.sortName,
+    }, params.sortId);
+
+    baseController.response(ctx);
+
 }).delete('del', async ctx => {
 
 }).routes();
