@@ -30,9 +30,11 @@ mongodb.open(function () {
     app.on("error", (err, ctx) => {//捕获异常记录错误日志
         ctx.response.status = 500;
         ctx.body = {
-            message: '处理异常',
-        }
+            message: '处理异常'
+        };
+        return;
     });
+
     app.listen(basicConfig.port, () => {
         console.log('=> koa: '.cyan + 'listened port = '.grey + String(basicConfig.port).blue);
     });
