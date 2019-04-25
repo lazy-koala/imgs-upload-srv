@@ -4,7 +4,7 @@
  * @Description: 处理分类
  */
 const Router = require('koa-router');
-const sortModel = require('models/sort');
+const sortModel = require('../models/sort');
 const baseController = require('./baseController');
 
 module.exports = new Router(
