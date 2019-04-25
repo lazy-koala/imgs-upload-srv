@@ -27,7 +27,9 @@ mongodb.open(function () {
     app.use(routerScanner.routes());
     app.use(routerScanner.allowedMethods());
 
-    app.on("error", (err, ctx) => {//捕获异常记录错误日志
+    app.on("error", (err, ctx) => {
+        console.log(ctx.body);
+
         ctx.response.status = 500;
         ctx.body = {
             message: '处理异常'
