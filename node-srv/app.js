@@ -18,7 +18,7 @@ mongodb.open(function () {
     app.proxy = true;
 
     app.use(bodyParser({
-        enableTypes: ['json','form']
+        enableTypes: ['json', 'form']
     }));
 
     app.use(require('./middleware/basic'));
@@ -27,8 +27,11 @@ mongodb.open(function () {
     app.use(routerScanner.routes());
     app.use(routerScanner.allowedMethods());
 
-    app.on("error",(err,ctx)=>{//捕获异常记录错误日志
-        console.log(new Date(),"============:",err);
+    app.on("error", (err, ctx) => {//捕获异常记录错误日志
+        ctx.response.status = 500;
+        ctx.body = {
+            message: '处理异常',
+        }
     });
     app.listen(basicConfig.port, () => {
         console.log('=> koa: '.cyan + 'listened port = '.grey + String(basicConfig.port).blue);
