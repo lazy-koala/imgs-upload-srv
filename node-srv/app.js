@@ -27,7 +27,7 @@ mongodb.open(function () {
     app.use(routerScanner.routes());
     app.use(routerScanner.allowedMethods());
 
-    app.on("error", (err, ctx) => {
+    app.on("error", async (err, ctx) => {
         console.log(ctx.body);
 
         ctx.response.status = 500;
