@@ -27,6 +27,9 @@ mongodb.open(function () {
     app.use(routerScanner.routes());
     app.use(routerScanner.allowedMethods());
 
+    app.on("error",(err,ctx)=>{//捕获异常记录错误日志
+        console.log(new Date(),"============:",err);
+    });
     app.listen(basicConfig.port, () => {
         console.log('=> koa: '.cyan + 'listened port = '.grey + String(basicConfig.port).blue);
     });
