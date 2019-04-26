@@ -18,7 +18,7 @@
     align-items: center;
     flex-direction: column;
     width: 100%;
-    height: 80px;
+    height: 60px;
     /*background: #efefef;*/
     background: #EEEEEE;
     border-top: 1px solid #ccc;
@@ -27,7 +27,7 @@
         color: #888;
         /*color: #fff;*/
         font-size: 12px;
-        line-height: 30px;
+        line-height: 25px;
     }
 }
 </style>

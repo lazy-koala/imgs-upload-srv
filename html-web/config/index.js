@@ -21,10 +21,10 @@ module.exports = {
         //     }
         // }
         '/api': {  //代理地址
-            target: 'https://imgs.thankjava.com',  //需要代理的地址
+            target: 'https://testimgs.thankjava.com',  //需要代理的地址
             changeOrigin: true,  //是否跨域
             secure: false,
-            baseURL: 'https://imgs.thankjava.com'
+            baseURL: 'https://testimgs.thankjava.com'
         }
     },
 
