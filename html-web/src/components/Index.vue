@@ -135,7 +135,7 @@ export default {
             var picWidth = 200;
             var picHeight =210;
             var size = +parseInt(clientWidth/picWidth) * (+parseInt(clientHeight/picHeight)) - 1;
-            that.pageSize = size;
+            that.pageSize = size > 0 ? size : 10;
             var params = {
               pageSize: size,
               pageNumber: num

@@ -3,7 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import {Button, Form, FormItem, Input, Checkbox, Alert, Menu, MenuItem, Row, Col, Card, Pagination, Dialog, Steps,
+import {Button, Form, FormItem, Input, Checkbox, Alert, Menu, MenuItem, Submenu, Row, Col, Card, Pagination, Dialog, Steps,
   Step, Tabs, TabPane, Table, TableColumn} from 'element-ui'
 import './assets/styles/index.css';
 import './assets/styles/animate.min.css';
@@ -18,6 +18,7 @@ Vue.use(Checkbox)
 Vue.use(Alert)
 Vue.use(Menu)
 Vue.use(MenuItem)
+Vue.use(Submenu)
 Vue.use(Row)
 Vue.use(Col)
 Vue.use(Card)

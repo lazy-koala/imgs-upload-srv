@@ -1,8 +1,35 @@
 <template>
 <div class="menu">
-    <h1>在线图床服务</h1>
+    <div class="title-wrapper">
+        <span class="icon el-icon-menu" @click="taggleMenuList"></span>
+        <div class="title">在线图床服务</div>
+    </div>
+    <div class="menu-list" v-show="isCollapse">
+        <el-menu
+            default-active="1"
+            background-color="#545c64"
+            text-color="#fff"
+            active-text-color="#ffd04b"
+        >
+            <el-submenu index="1">
+                <template slot="title">
+                    <i class="el-icon-location"></i>
+                    <span>个人中心</span>
+                </template>
+                <el-menu-item-group>
+                    <el-menu-item index="1-1">头像昵称</el-menu-item>
+                    <el-menu-item index="1-2">密码邮箱</el-menu-item>
+                    <el-menu-item index="1-3">Token管理</el-menu-item>
+                </el-menu-item-group>
+            </el-submenu>
+            <el-menu-item index="2">
+                <i class="el-icon-menu"></i>
+                <span slot="title">分类管理</span>
+            </el-menu-item>
+        </el-menu>
+    </div>
     <div class="tip">
-        <img class="head-img" :src="headImg">
+        <img v-show="headImg" class="head-img" :src="headImg">
         <span>{{nickname}},欢迎你~</span>
         <span v-if="isIndex==0" class="exit" @click="gotoPerson">个人中心</span>
         <span v-if="isIndex==1" class="exit" @click="gotoIndex">返回首页</span>
@@ -23,6 +50,11 @@ import { Message } from 'element-ui';
                 type: String
             }
         },
+        data() {
+            return {
+                isCollapse: false
+            }
+        },
         computed: {
             nickname () {
                 return this.$store.state.nickname
@@ -32,6 +64,10 @@ import { Message } from 'element-ui';
             }
         },
         methods: {
+            // 切换显示侧边栏
+            taggleMenuList: function () {
+                this.isCollapse = !this.isCollapse;
+            },
             logout: function () {
                 var that = this;
                 $axios.get('/api/logout').then((res) => {
@@ -63,14 +99,30 @@ import { Message } from 'element-ui';
 }
 .menu {
     position: relative;
-    height: 80px;
     background: #409EFF;
     color: #fff;
     font-size: 24px;
-    h1 {
-        float: left;
-        line-height: 80px;
-        padding-left: 20px;
+    height: 55px;
+}
+.menu-list {
+    position: fixed;
+    background: rgb(84, 92, 100);
+    z-index: 999;
+    top: 55px;
+    bottom: 65px;
+    width: 200px;
+}
+.el-menu {
+    border: none;
+}
+.title-wrapper {
+    position: relative;
+    .el-icon-menu {
+        position: absolute;
+    }
+    .title {
+        margin-left: 50px;
+        line-height: 50px;
     }
 }
 .tip {
@@ -78,6 +130,7 @@ import { Message } from 'element-ui';
     justify-content: center;
     align-items: center;
     position: absolute;
+    line-height: 30px;
     bottom: 10px;
     right: 10px;
     font-size: 14px;
