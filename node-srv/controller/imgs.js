@@ -56,7 +56,7 @@ module.exports = new Router(
     if (!page) return baseController.response400(ctx, '请求参数缺失');
     let pageSize = page.pageSize;
     let pageNumber = page.pageNumber;
-    if (!pageSize || !pageNumber) return baseController.response400(ctx, '缺失参数: pageSize | pageNumber');
+    if (!pageNumber) return baseController.response400(ctx, '缺失参数: pageNumber');
     if (pageSize < 1 || pageNumber < 1) return baseController.response400(ctx, '请求参数不合法');
 
     page.pageSize = Number(pageSize);
@@ -64,6 +64,18 @@ module.exports = new Router(
     page.query = {
         userId: ctx.state.authInfo.id
     };
+
+    if (page.sortId) {
+        page.query.sortId = page.sortId
+    }
+
+    if (page.tag && page.tag.length > 0) {
+        let likeConditionArray = [];
+        for (let i = 0; i < page.tag.length; i++) {
+            likeConditionArray.push({'tags': {'$regex': page.tag[i]}});
+        }
+        page.query["$or"] = likeConditionArray;
+    }
 
     let response = await imagesModel.selectByPage(page);
     if (!response) return baseController.response500(ctx);

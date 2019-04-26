@@ -12,7 +12,9 @@ class images extends baseModel {
             userId: {type: String, required: true},
             url: {type: String, required: true},
             remark: {type: String, required: false},
-            urn: {type: String, unique: true}
+            urn: {type: String, unique: true},
+            sortId: {type: String, required: true},
+            tags: {type: Array, required: false}
         };
     };
 

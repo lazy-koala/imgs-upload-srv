@@ -46,4 +46,4 @@ module.exports = {
 
 // console.log(string64to10('D0KS'));
 
-console.log(number10to64(1000163+1556245393552))
+// console.log(number10to64(1000163+1556245393552))
