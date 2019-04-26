@@ -19,5 +19,8 @@ module.exports = {
     ERROR_ACCOUNT_OR_EMAIL: "1010",     // 无效的邮箱或者帐号
 
     UNKNOWN_SORT_ID: "1011",            // 不存在的分类ID
-    BAD_OBJECT_ID: "1012"               // 无效的object_id
+    BAD_OBJECT_ID: "1012",               // 无效的object_id
+    UNKNOWN_IMG_ID: "1013",               // 无效的图片id
+    MAX_IMG_TAG: "1014",                // 标签超出上限
+    EXISTS_IMG_TAG: "1015",             // 已存在的标签
 };
