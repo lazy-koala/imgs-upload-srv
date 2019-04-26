@@ -66,6 +66,10 @@ class images extends baseModel {
         return this.model.findOne({urn: urn}).exec();
     }
 
+    updateById(condition, id) {
+        return this.model.updateOne({_id: id}, condition).exec();
+    }
+
 }
 
 module.exports = new images();
