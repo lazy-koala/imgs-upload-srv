@@ -27,16 +27,6 @@ mongodb.open(function () {
     app.use(routerScanner.routes());
     app.use(routerScanner.allowedMethods());
 
-    app.on("error", async (err, ctx) => {
-        console.log(ctx.body);
-
-        ctx.response.status = 500;
-        ctx.body = {
-            message: '处理异常'
-        };
-        return;
-    });
-
     app.listen(basicConfig.port, () => {
         console.log('=> koa: '.cyan + 'listened port = '.grey + String(basicConfig.port).blue);
     });

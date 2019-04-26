@@ -38,7 +38,7 @@ module.exports = new Router(
             saveImages.push({
                 userId: userId,
                 url: uploadResult[index].path,
-                urn: '/' + algorithm10to64.number10to64(incr)
+                urn: '/' + algorithm10to64.number10to64(incr + new Date().getTime())
             });
 
             uploadResult[index].path = baseConfig.imgUri + uploadResult[index].urn;
@@ -56,7 +56,7 @@ module.exports = new Router(
     if (!page) return baseController.response400(ctx, '请求参数缺失');
     let pageSize = page.pageSize;
     let pageNumber = page.pageNumber;
-    if (!pageSize || !pageNumber) return baseController.response400(ctx, '请求参数缺失');
+    if (!pageSize || !pageNumber) return baseController.response400(ctx, '缺失参数: pageSize | pageNumber');
     if (pageSize < 1 || pageNumber < 1) return baseController.response400(ctx, '请求参数不合法');
 
     page.pageSize = Number(pageSize);

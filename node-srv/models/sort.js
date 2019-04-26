@@ -29,6 +29,10 @@ class sort extends baseModel {
     updateById(condition, sortId) {
         return this.model.updateOne({_id: baseModel.typeObject(sortId)}, condition).exec();
     }
+
+    removeOById(sortId) {
+        return this.model.remove({_id: baseModel.typeObject(sortId)}).exec();
+    }
 }
 
 module.exports = new sort();

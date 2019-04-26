@@ -18,5 +18,6 @@ module.exports = {
     ERROR_REGISTE_DATA: "1009",         // 邮箱验证数据异常
     ERROR_ACCOUNT_OR_EMAIL: "1010",     // 无效的邮箱或者帐号
 
-    UNKNOWN_SORT_ID:"1011"                 // 不存在的分类ID
+    UNKNOWN_SORT_ID: "1011",            // 不存在的分类ID
+    BAD_OBJECT_ID: "1012"               // 无效的object_id
 };
