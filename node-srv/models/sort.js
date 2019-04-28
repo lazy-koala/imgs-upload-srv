@@ -23,18 +23,19 @@ class sort extends baseModel {
     }
 
     selectById(id) {
-        // return this.model.findOne({_id: baseModel.typeObject(id)}).exec();
         return this.model.findOne({_id: id}).exec();
     }
 
     updateById(condition, sortId) {
-        // return this.model.updateOne({_id: baseModel.typeObject(sortId)}, condition).exec();
         return this.model.updateOne({_id: sortId}, condition).exec();
     }
 
-    removeOById(sortId) {
-        // return this.model.remove({_id: baseModel.typeObject(sortId)}).exec();
+    removeById(sortId) {
         return this.model.remove({_id: sortId}).exec();
+    }
+
+    selectUserId(userId) {
+        return this.model.findOne({userId: userId}).exec();
     }
 }
 

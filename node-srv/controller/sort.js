@@ -50,6 +50,6 @@ module.exports = new Router(
     if (params.sortId.length != 12 && params.sortId.length != 24) {
         return baseController.responseWithCode(ctx, baseController.CODE.BAD_OBJECT_ID, '不合法的sortId')
     }
-    await sortModel.removeOById(params.sortId);
+    await sortModel.removeById(params.sortId);
     baseController.response(ctx);
 }).routes();

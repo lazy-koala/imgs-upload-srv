@@ -75,7 +75,7 @@ module.exports.upload = (ctx) => new Promise(resolve => {
 
     let fields = {};
 
-    busboy.on('field', function (fieldname, val, fieldnameTruncated, valTruncated, encoding, mimetype) {
+    busboy.on('field', function (fieldname, val, fieldNameTruncated, valTruncated, encoding, mimetype) {
         if (fields[fieldname]) {
             if (Array.isArray(fields[fieldname])) {
                 let array = fields[fieldname];

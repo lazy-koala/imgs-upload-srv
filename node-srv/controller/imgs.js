@@ -10,36 +10,55 @@ const baseConfig = require('../config/basic');
 const busboyUpload = require('../lib/busboyUpload');
 const baseController = require('./baseController');
 const imagesModel = require('../models/images');
+const sortModel = require('../models/sort');
 const asyncRedisClient = require('../lib/asyncRedis').client;
 const redisKey = require('../const/redisKey');
 
 const algorithm10to64 = require('../lib/algorithm10to64');
 const util = require('../lib/util');
 
+let defaultSortId;
 
 module.exports = new Router(
 
 ).post('upload', async (ctx) => {
 
     let uploadResult = await busboyUpload.upload(ctx);
+    console.log(JSON.stringify(uploadResult));
     if (!uploadResult.flag) return baseController.response500(ctx, '图片上传异常');
     uploadResult = uploadResult.uploadResult;
+    let fields = uploadResult.fields;
+    let sortId;
+    if (!fields.sortId) {
+        if (!defaultSortId) {
+            defaultSortId = await sortModel.selectUserId('system');
+        }
+        sortId = defaultSortId;
+    } else {
+        sortId = fields.sortId;
+    }
     let saveImages = [];
     let userId = ctx.state.authInfo.id;
 
     let incr;
 
+
+    // TODO : 此处图片上传设计为多张, 但是标签和分类只设计传一张, 所以上传暂时约定一张一张上传
     for (let index in uploadResult) {
 
         incr = await asyncRedisClient.incrAsync(redisKey.IMG_INCR_NO());
 
         if (uploadResult[index].flag) {
-
-            saveImages.push({
+            let img = {
                 userId: userId,
                 url: uploadResult[index].path,
-                urn: '/' + algorithm10to64.number10to64(incr + new Date().getTime())
-            });
+                urn: '/' + algorithm10to64.number10to64(incr + new Date().getTime()),
+                sortId: sortId
+            };
+            if (fields.tags && fields.tags.length > 0) {
+                img.tags = fields.tags;
+            }
+            saveImages.push(img);
 
             uploadResult[index].path = baseConfig.imgUri + uploadResult[index].urn;
         }
@@ -48,6 +67,7 @@ module.exports = new Router(
     if (saveImages.length > 0) {
         imagesModel.saveMany(saveImages);
     }
+
     baseController.response(ctx, uploadResult);
 
 }).get('list', async ctx => {
