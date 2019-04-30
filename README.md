@@ -16,7 +16,7 @@
 
 - #### [在线使用](https://imgs.thankjava.com)
 ```
-    免费的，简洁的图床服务。即开即用，开源免费。基于GNU通用公共许可证v3.0，提供在线图片解决方案。
+免费的，简洁的图床服务。即开即用，开源免费。基于GNU通用公共许可证v3.0，提供在线图片解决方案。
 ```
 
 - #### CHANGELOG
@@ -55,21 +55,22 @@
     - 1.0.0
     
         - 1.基础标准版本上线
-
+---
 > #### 技术栈
-```
-    1. Server:
-            Node
-            Koa2
+- Server:
+
+        Node
+        Koa2
             
-    2. WEB:
-            HTML5
-            Vue
+- WEB:
+
+        HTML5
+        Vue
             
-    3. DataBase:
-            MongoDB
-            Redis
-```
+- DataBase:
+
+        MongoDB
+        Redis
 ---    
 > #### 关于我们
 
