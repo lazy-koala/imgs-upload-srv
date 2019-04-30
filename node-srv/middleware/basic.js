@@ -24,7 +24,7 @@ const beforeController = ctx => {
         requestContent = ctx.request.body ? JSON.stringify(ctx.request.body) : 'null';
     }
 
-    if (!unlog(url.parse(ctx.url, true).pathname)) {
+    if (!unPrintLog(url.parse(ctx.url, true).pathname)) {
         let logInfo = '=> koa: '.cyan + '<<< requestContent = '.grey + requestContent.blue + ' | url = '.grey + ctx.url.blue;
         console.log(logInfo);
     }
@@ -44,7 +44,7 @@ const afterController = (ctx, startTime) => {
         ctx.body = {message: '405 Method Not Allowed'};
     }
 
-    if (!unlog(url.parse(ctx.url, true).pathname))  {
+    if (!unPrintLog(url.parse(ctx.url, true).pathname)) {
         let logInfo = '=> koa: '.cyan + '>>> responseContent = '.grey + '%s' + ' | url = '.grey + '%s'.blue;
         logInfo += ' | status = '.grey + '%s'.blue + ' | costTime = '.grey + '%s'.blue + ' ms'.grey;
 
@@ -53,7 +53,7 @@ const afterController = (ctx, startTime) => {
 
 };
 
-const unlog = pathname => {
+const unPrintLog = pathname => {
     for (let index in unlogPathname) {
         if (pathname.startsWith(unlogPathname[index])) {
             return true;
