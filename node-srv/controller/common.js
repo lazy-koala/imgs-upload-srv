@@ -156,12 +156,15 @@ module.exports = new Router(
     let params = ctx.request.body;
     if (!params) return baseController.response400(ctx);
     if (!params.username || !params.mail) return baseController.response400(ctx);
-    if (!baseController.REG.IS_MAIL.test(params.mail)) return baseController.response400(ctx, '邮箱地址不合法');
+    if (params.mail && !baseController.REG.IS_MAIL.test(params.mail)) return baseController.response400(ctx, '邮箱地址不合法');
 
-    let user = await userModel.selectByConditionOnlyOne({
-        username: params.username,
-        email: params.mail
-    });
+    let query = {};
+    if (params.username) {
+        query.username = query
+    } else {
+        query.email = params.mail
+    }
+    let user = await userModel.selectByConditionOnlyOne(query);
 
     if (!user) return baseController.responseWithCode(ctx, baseController.CODE.ERROR_ACCOUNT_OR_EMAIL, '无效的邮箱或者帐号');
 
