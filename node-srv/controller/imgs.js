@@ -29,7 +29,7 @@ module.exports = new Router(
     uploadResult = uploadResult.uploadResult;
     let fields = uploadResult.fields;
     let sortId;
-    if (!fields.sortId) {
+    if (!fields || !fields.sortId) {
         if (!defaultSortId) {
             defaultSortId = await sortModel.selectUserId('system');
         }
