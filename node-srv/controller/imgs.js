@@ -55,7 +55,7 @@ module.exports = new Router(
                 urn: '/' + algorithm10to64.number10to64(incr + new Date().getTime()),
                 sortId: sortId
             };
-            if (fields.tags && fields.tags.length > 0) {
+            if (fields && fields.tags && fields.tags.length > 0) {
                 img.tags = fields.tags;
             }
             saveImages.push(img);
