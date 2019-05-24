@@ -206,6 +206,7 @@ module.exports = new Router(
     if (authTokens && authTokens.length > 0) {
         for (var i = 0; i < authTokens.length; i++) {
             await asyncRedisClient.delAsync(redisKey.AUTH_TOKEN(authTokens[i].token));
+            await authTokenModel.removeOwnByTokens(authTokens[i].token, info._id);
         }
     }
 
