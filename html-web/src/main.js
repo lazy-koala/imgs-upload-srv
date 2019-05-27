@@ -3,8 +3,29 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import {Button, Form, FormItem, Input, Checkbox, Alert, Menu, MenuItem, Submenu, Row, Col, Card, Pagination, Dialog, Steps,
-  Step, Tabs, TabPane, Table, TableColumn} from 'element-ui'
+import {
+    Button,
+    Form,
+    FormItem,
+    Input,
+    Checkbox,
+    Alert,
+    Menu,
+    MenuItem,
+    Submenu,
+    Row,
+    Col,
+    Card,
+    Pagination,
+    Dialog,
+    Steps,
+    Step,
+    Tabs,
+    TabPane,
+    Table,
+    TableColumn,
+    MenuItemGroup
+} from 'element-ui'
 import './assets/styles/index.css';
 import './assets/styles/animate.min.css';
 import store from './store'
@@ -30,13 +51,14 @@ Vue.use(Tabs)
 Vue.use(TabPane)
 Vue.use(Table)
 Vue.use(TableColumn)
+Vue.use(MenuItemGroup)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
 new Vue({
-  el: '#app',
-  router,
-  store,
-  components: { App },
-  template: '<App/>'
+    el: '#app',
+    router,
+    store,
+    components: { App },
+    template: '<App/>'
 })

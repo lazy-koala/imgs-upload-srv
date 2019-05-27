@@ -4,16 +4,16 @@
             <common-header isIndex="1"></common-header>
         </template>
         <div class="content-wrapper">
-            <el-tabs tab-position="left" class="menu-wrapper"  @tab-click="tokenTab">
-                <el-tab-pane height="80px">
+            <el-tabs tab-position="left" v-model="activeName" class="menu-wrapper"  @tab-click="tokenTab">
+                <el-tab-pane height="80px" name="1-1">
                     <span slot="label"><i class="el-icon-userp gap"></i>头像昵称</span>
                     <headImg-nickName class="tab-right"></headImg-nickName>
                 </el-tab-pane>
-                <el-tab-pane>
+                <el-tab-pane name="1-2">
                     <span slot="label"><i class="el-icon-mail gap"></i>密码邮箱</span>
                     <mail-code class="tab-right"></mail-code>
                 </el-tab-pane>
-                <el-tab-pane>
+                <el-tab-pane name="1-3">
                     <span slot="label"><i class="el-icon-key gap"></i>token管理</span>
                     <token :tokenList="tokenList" @refreshToken="getToken" class="tab-right"></token>
                 </el-tab-pane>
@@ -45,7 +45,8 @@
         },
         data () {
             return {
-                tokenList: []
+                tokenList: [],
+                activeName: ''
             }
         },
         methods: {
@@ -74,6 +75,12 @@
                 }
             }
         },
+        // computed: {
+        //     activeName() {
+        //         // 根据路由参数判断显示 头像昵称1-1、密码邮箱1-2、token管理1-3
+        //         return this.$route.params.index || '1-1';
+        //     }
+        // },
         beforeMount () {
             let uinfo = Cookies.get('uinfo') || '';
             let that = this;
@@ -89,7 +96,16 @@
             }).catch(function (error) {
                 that.catchError(error);
             })
-        }
+
+            // 第一次路由过来加载组件
+            this.activeName = this.$route.query.index || '1-1';
+        },
+        watch: {
+            // 监听路由参数发生变化
+            $route() {
+                this.activeName = this.$route.query.index || '1-1';
+            }
+        }     
     }
 </script>
 <style type="text/css">
