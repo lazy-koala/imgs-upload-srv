@@ -200,6 +200,16 @@ module.exports = new Router(
 
     let info = await userModel.selectByUsernameOrEmail(data[1]);
     await userModel.updatePasswordByUsername(data[1], util.md5(data[1] + params.password));
+
+    // 清除历史用户登录态(token)
+    let authTokens = await authTokenModel.selectByUserIdSortByCreateTimeAsc(info._id);
+    if (authTokens && authTokens.length > 0) {
+        for (var i = 0; i < authTokens.length; i++) {
+            await asyncRedisClient.delAsync(redisKey.AUTH_TOKEN(authTokens[i].token));
+            await authTokenModel.removeOwnByTokens(authTokens[i].token, info._id);
+        }
+    }
+
     await doLogin(ctx, info, false, util.uuid(), Date.now());
 
     baseController.response(ctx);
