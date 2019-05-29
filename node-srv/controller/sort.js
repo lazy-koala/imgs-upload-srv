@@ -16,6 +16,13 @@ module.exports = new Router(
     if (!params) return baseController.response400(ctx);
     if (!params.sortName) return baseController.response400(ctx, '缺失参数: sortName');
 
+    let sorts = await sortModel.selectByCondition({
+        userId: ctx.state.authInfo.id,
+        sortName: params.sortName
+    });
+    if (sorts && sorts.length > 0) {
+        return baseController.response(ctx, baseController.CODE.EXISTING_SORT_NAME, '已存在的分类名称');
+    }
     await sortModel.save({
         userId: ctx.state.authInfo.id,
         sortName: params.sortName
@@ -65,7 +72,7 @@ module.exports = new Router(
             userId: ctx.state.authInfo.id,
             sortId: params.sortId
         });
-        message = '删除成功,相关图片已转移至默认分类';
+        message = '删除成功,相关图片已归档至默认分类';
     }
 
     await sortModel.removeOwnById(params.sortId, ctx.state.authInfo.id);
