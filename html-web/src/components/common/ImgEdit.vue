@@ -15,6 +15,9 @@
       <button type="text" class="toolbar__button" data-action="clear" title="Cancel (Esc)" v-if="data.cropping"><span class="el-icon-cancel"></span></button>
       <!-- <button type="text" class="toolbar__button" data-action="ok" title="OK (Enter)" v-if="data.cropping"><span class="el-icon-ok"></span></button> -->
     </div>
+    <div>      
+      <el-input type="text" v-model="tag"  placeholder="请输入标签" />
+    </div>
     <div class="btn">
         <el-button type="primary" @click="uploadImg">确认</el-button>
         <el-button type="primary" @click="initUpload">取消</el-button>
@@ -53,7 +56,8 @@
         cropBoxData: null,
         croppedData: null,
         cropper: null,
-        loading: null
+        loading: null,
+        tag: '',
       };
     },
 
@@ -324,11 +328,11 @@
           }
 
           return new Blob([ia], {type: mimeString});
-      }
+      },
     },
     beforeDestroy () {
       this.stop();
-    }
+    },
   };
 </script>
 

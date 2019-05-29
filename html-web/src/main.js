@@ -24,13 +24,19 @@ import {
     TabPane,
     Table,
     TableColumn,
-    MenuItemGroup
+    MenuItemGroup,
+    Select,
+    Option,
+    OptionGroup
 } from 'element-ui'
 import './assets/styles/index.css';
 import './assets/styles/animate.min.css';
 import store from './store'
 // 全局配置对象，size用于改变组件的默认尺寸，zIndex设置弹框的初始z-index
 Vue.prototype.$ELEMENT = { size: 'small', zIndex: 3000 };
+Vue.use(Select)
+Vue.use(Option)
+Vue.use(OptionGroup)
 Vue.use(Button)
 Vue.use(Form)
 Vue.use(FormItem)

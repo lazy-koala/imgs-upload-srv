@@ -5,15 +5,15 @@
         </template>
         <div class="content-wrapper">
             <el-tabs tab-position="left" v-model="activeName" class="menu-wrapper"  @tab-click="tokenTab">
-                <el-tab-pane height="80px" name="1-1">
+                <el-tab-pane height="80px" name="person_headimg">
                     <span slot="label"><i class="el-icon-userp gap"></i>头像昵称</span>
                     <headImg-nickName class="tab-right"></headImg-nickName>
                 </el-tab-pane>
-                <el-tab-pane name="1-2">
+                <el-tab-pane name="person_pwd">
                     <span slot="label"><i class="el-icon-mail gap"></i>密码邮箱</span>
                     <mail-code class="tab-right"></mail-code>
                 </el-tab-pane>
-                <el-tab-pane name="1-3">
+                <el-tab-pane name="person_token">
                     <span slot="label"><i class="el-icon-key gap"></i>token管理</span>
                     <token :tokenList="tokenList" @refreshToken="getToken" class="tab-right"></token>
                 </el-tab-pane>

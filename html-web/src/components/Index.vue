@@ -2,8 +2,8 @@
     <div class="wrapper">
         <template>
             <common-header isIndex="0"></common-header>
-        </template>
-        <div class="list-wrapper">
+        </template>        
+        <div class="list-wrapper">            
             <div class="scroll-wrapper">
                 <div class="list" ref="list">
                     <div class="list-item">
@@ -100,7 +100,7 @@ export default {
                 type: '',
                 url: '',
                 isGif: false,
-                base64Url: ''
+                base64Url: '',                
             },
             page: {
                 pageNumber: 1,
@@ -288,7 +288,7 @@ export default {
 
         handleClose: function (done) {
             this.$refs.editor.stop();
-        }
+        },
     },
     mounted () {
         var that = this;
@@ -306,7 +306,6 @@ export default {
         }).catch(function (error) {
             that.catchError(error);
         })
-
     }
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
 <div class="footer">
     <a href="https://github.com/lazy-koala/"><img src="https://img.shields.io/badge/org-@LazyKoala-yellow.svg" alt="org" data-canonical-src="https://img.shields.io/badge/org-@LazyKoala-yellow.svg" style="max-width:100%;"></a>
-    <p>&copy;Copyright (C) 2018 All rights reserved</p>
+    <p>&copy;Copyright (C) 2019 All rights reserved</p>
 </div>
 </template>
 <script type="text/javascript">
