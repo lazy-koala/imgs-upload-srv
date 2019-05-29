@@ -35,7 +35,7 @@ class authToken extends baseModel {
         } else {
             return false;
         }
-        return this.model.remove(condition).exec();
+        return this.model.deleteMany(condition).exec();
     }
 
     removeOwnByTokens(tokens, userId) {
@@ -49,7 +49,7 @@ class authToken extends baseModel {
         } else {
             return false;
         }
-        return this.model.remove(condition).exec();
+        return this.model.deleteMany(condition).exec();
     }
 
     selectByUserIdSortByCreateTimeDesc(userId) {
