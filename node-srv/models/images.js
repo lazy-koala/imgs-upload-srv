@@ -59,15 +59,24 @@ class images extends baseModel {
         } else {
             return false;
         }
-        return this.model.remove(condition).exec();
+        return this.model.deleteMany(condition).exec();
     }
 
     selectByUrn(urn) {
         return this.model.findOne({urn: urn}).exec();
     }
 
-    updateById(condition, id) {
-        return this.model.updateOne({_id: id}, condition).exec();
+    updateById(update, id) {
+        return this.model.updateOne({_id: id}, update).exec();
+    }
+
+    selectByCondition(condition) {
+        return this.model.find(condition).exec();
+    }
+
+    updateByCondition(update, conditon) {
+        return this.model.updateOne(conditon, update).exec();
+
     }
 
 }
