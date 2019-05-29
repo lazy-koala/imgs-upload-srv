@@ -31,7 +31,7 @@ class sort extends baseModel {
     }
 
     removeOwnById(sortId, userId) {
-        return this.model.remove({_id: sortId, userId: userId}).exec();
+        return this.model.deleteOne({_id: sortId, userId: userId}).exec();
     }
 
     selectOneByUserId(userId) {

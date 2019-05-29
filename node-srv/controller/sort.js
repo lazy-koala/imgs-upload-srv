@@ -5,6 +5,7 @@
  */
 const Router = require('koa-router');
 const sortModel = require('../models/sort');
+const imagesModel = require('../models/images');
 const baseController = require('./baseController');
 
 module.exports = new Router(
@@ -50,8 +51,26 @@ module.exports = new Router(
     if (params.sortId.length != 12 && params.sortId.length != 24) {
         return baseController.responseWithCode(ctx, baseController.CODE.BAD_OBJECT_ID, '不合法的sortId')
     }
+    let imgs = await imagesModel.selectByCondition({
+        userId: ctx.state.authInfo.id,
+        sortId: params.sortId
+    });
+
+    let message = '删除成功';
+
+    if (imgs && imgs.length > 0) {
+        await imagesModel.updateByCondition({
+            sortId: await sortModel.selectOneByUserId('system')._id
+        }, {
+            userId: ctx.state.authInfo.id,
+            sortId: params.sortId
+        });
+        message = '删除成功,相关图片已转移至默认分类';
+    }
+
     await sortModel.removeOwnById(params.sortId, ctx.state.authInfo.id);
-    baseController.response(ctx);
+
+    baseController.response(ctx, message);
 }).get('list', async ctx => {
 
     let params = ctx.query;
