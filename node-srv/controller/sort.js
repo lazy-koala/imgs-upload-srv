@@ -68,12 +68,15 @@ module.exports = new Router(
     }
     let sorts = await sortModel.selectByCondition(condition);
     if (sorts && sorts.length > 0) {
+        let array = [];
         for (let i = 0; i < sorts.length; i++) {
-            let sortId = sorts[i]._id;
-            delete sorts[i]._id;
-            sorts[i].sortId = sortId;
+            array.push({
+                sortId: sorts[i]._id,
+                sortName: sorts[i].sortName,
+                createTime: sorts[i].createTime
+            })
         }
-        return baseController.response(ctx, {list: sorts});
+        return baseController.response(ctx, {list: array});
     }
     baseController.response(ctx);
 
