@@ -34,8 +34,13 @@ class sort extends baseModel {
         return this.model.remove({_id: sortId}).exec();
     }
 
-    selectUserId(userId) {
+    selectOneByUserId(userId) {
         return this.model.findOne({userId: userId}).exec();
+    }
+
+    selectByCondition(condition) {
+        return this.model.find(condition).exec();
+
     }
 }
 

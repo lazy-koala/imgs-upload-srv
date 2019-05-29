@@ -52,4 +52,29 @@ module.exports = new Router(
     }
     await sortModel.removeById(params.sortId);
     baseController.response(ctx);
+}).get('list', async ctx => {
+
+    let params = ctx.query;
+    if (!params) return baseController.response400(ctx);
+    let userId = ctx.state.authInfo.id;
+    let condition = {
+        userId: userId
+    };
+    if (params.sortName) {
+        condition.sortName = {$regex: '/' + params.sortName + '/'}
+    }
+    if (params.sortId) {
+        condition.sortId = params.sortId;
+    }
+    let sorts = await sortModel.selectByCondition(condition);
+    if (sorts && sorts.length > 0) {
+        for (let i = 0; i < sorts.length; i++) {
+            let sortId = sorts[i]._id;
+            delete sorts[i]._id;
+            sorts[i].sortId = sortId;
+        }
+        return baseController.response(ctx, {list: sorts});
+    }
+    baseController.response(ctx);
+
 }).routes();

@@ -31,7 +31,7 @@ module.exports = new Router(
     let sortId;
     if (!fields || !fields.sortId) {
         if (!defaultSortId) {
-            defaultSortId = await sortModel.selectUserId('system')._id;
+            defaultSortId = await sortModel.selectOneByUserId('system')._id;
         }
         sortId = defaultSortId;
     } else {
