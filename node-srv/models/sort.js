@@ -26,12 +26,12 @@ class sort extends baseModel {
         return this.model.findOne({_id: id}).exec();
     }
 
-    updateById(condition, sortId) {
-        return this.model.updateOne({_id: sortId}, condition).exec();
+    updateOwnById(condition, sortId, userId) {
+        return this.model.updateOne({_id: sortId, userId: userId}, condition).exec();
     }
 
-    removeById(sortId) {
-        return this.model.remove({_id: sortId}).exec();
+    removeOwnById(sortId, userId) {
+        return this.model.remove({_id: sortId, userId: userId}).exec();
     }
 
     selectOneByUserId(userId) {

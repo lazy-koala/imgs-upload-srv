@@ -36,9 +36,9 @@ module.exports = new Router(
         return baseController.responseWithCode(ctx, baseController.CODE.UNKNOWN_SORT_ID, '无效的sortId');
     }
 
-    await sortModel.updateById({
+    await sortModel.updateOwnById({
         sortName: params.sortName,
-    }, params.sortId);
+    }, params.sortId, ctx.state.authInfo.id);
 
 
     baseController.response(ctx);
@@ -50,7 +50,7 @@ module.exports = new Router(
     if (params.sortId.length != 12 && params.sortId.length != 24) {
         return baseController.responseWithCode(ctx, baseController.CODE.BAD_OBJECT_ID, '不合法的sortId')
     }
-    await sortModel.removeById(params.sortId);
+    await sortModel.removeOwnById(params.sortId, ctx.state.authInfo.id);
     baseController.response(ctx);
 }).get('list', async ctx => {
 
