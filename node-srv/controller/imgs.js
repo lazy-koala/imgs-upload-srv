@@ -89,12 +89,14 @@ module.exports = new Router(
         page.query.sortId = page.sortId
     }
 
-    if (page.tag && page.tag.length > 0) {
+    if (page.tag && Array.isArray(page.tag) && page.tag.length > 0) {
         let likeConditionArray = [];
         for (let i = 0; i < page.tag.length; i++) {
             likeConditionArray.push({'tags': {'$regex': page.tag[i]}});
         }
         page.query["$or"] = likeConditionArray;
+    } else if (page.tag && typeof page.tag == 'string') {
+        page.query["$or"] = [{'tags': {'$regex': page.tag}}];
     }
 
     let response = await imagesModel.selectByPage(page);
