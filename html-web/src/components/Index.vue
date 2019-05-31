@@ -3,7 +3,10 @@
         <template>
             <common-header isIndex="0"></common-header>
         </template>        
-        <div class="list-wrapper">            
+        <div class="list-wrapper"> 
+            <div class="sort">
+                <search></search>                
+            </div>           
             <div class="scroll-wrapper">
                 <div class="list" ref="list">
                     <div class="list-item">
@@ -87,6 +90,7 @@ import $axios from 'axios';
 import { Message, Loading } from 'element-ui';
 import Common from '../assets/scripts/common.js';
 import Cookies from "js-cookie";
+import Search from './common/Search'
 export default {
     name: 'Index',
     data () {
@@ -124,7 +128,8 @@ export default {
         'img-upload': ImgUpload,
         'img-edit': ImgEdit,
         'common-header': CommonHeader,
-        'common-footer': CommonFooter
+        'common-footer': CommonFooter,
+        'search': Search
     },
     methods: {
         getImgList: function (num) {
@@ -137,7 +142,7 @@ export default {
             var size = +parseInt(clientWidth/picWidth) * (+parseInt(clientHeight/picHeight)) - 1;
             that.pageSize = size > 0 ? size : 10;
             var params = {
-              pageSize: size,
+              pageSize: size > 0 ? size : 1,
               pageNumber: num
             };
             // console.log(reqData);
@@ -339,6 +344,12 @@ export default {
         margin: 10px auto;
         overflow-y: scroll;
         padding: 0 20px;
+    }
+    .sort {
+        margin-left: 45px;
+        .el-select {
+            width: 90%;
+        }
     }
 
     .list::-webkit-scrollbar {

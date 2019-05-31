@@ -2,17 +2,7 @@
 <div class="menu">
     <div class="title-wrapper">
         <span :class="['element-icons', 'menu',isCollapse ? 'el-icon-menuoff' : 'el-icon-menuon']" @click="taggleMenuList"></span>
-        <div class="title">在线图床服务</div>
-        <div class="sort">
-            <el-select v-model="selectedSort" filterable placeholder="请选择分类">
-                <el-option
-                v-for="item in sortList"
-                :key="item.sortId"
-                :label="item.sortName"
-                :value="item.sortId">
-                </el-option>
-            </el-select>
-        </div>
+        <div class="title">在线图床服务</div>        
     </div>
     <div class="menu-list" v-show="isCollapse">
         <el-menu
@@ -72,8 +62,6 @@ import { Message } from 'element-ui';
         data() {
             return {
                 isCollapse: false,
-                sortList: [],
-                selectedSort: ''
             }
         },
         computed: {
@@ -133,23 +121,8 @@ import { Message } from 'element-ui';
             },
             gotoIndex: function () {
                 this.$router.push('/index');
-            },
-
-            // 获取分类列表
-            getSortList: function (params) {
-                $axios.get('/api/sort/list', {params}).then((res) => {
-                    if (res.data) {
-                        this.sortList = res.data && res.data.data && res.data.data.list || [];
-                    }
-                })
-            },
-        },
-        mounted() {
-            this.getSortList({
-                sortId: '',
-                sortName: ''
-            })
-        },
+            }
+        }        
     }
 </script>
 <style type="text/css" scoped>

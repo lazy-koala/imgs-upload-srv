@@ -17,13 +17,13 @@
                 </span>
             </el-dialog>
 
-            <!-- 删除分类弹框 -->
+            <!-- 新增、编辑分类弹框 -->
             <el-dialog
                 :visible.sync="dialogVisible"
                 :before-close="handleCancel"
                 width="50%">
                 <div slot="title">{{title}}</div>
-                <el-input v-model="sortName" placeholder="请输入分类名称"></el-input>
+                <el-input maxlength=6 minlength=1 v-model="sortName" placeholder="请输入分类名称"></el-input>
                 <span slot="footer" class="dialog-footer">
                     <el-button @click="handleCancel">取 消</el-button>
                     <el-button type="primary" @click="handleSort">确 定</el-button>
