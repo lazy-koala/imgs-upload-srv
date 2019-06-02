@@ -5,7 +5,7 @@
         </template>        
         <div class="list-wrapper"> 
             <div class="sort">
-                <search></search>                
+                <search @handleSearch="searchHandler"></search>                
             </div>           
             <div class="scroll-wrapper">
                 <div class="list" ref="list">
@@ -17,20 +17,7 @@
                         </div>
                     </div>
                     <div class="list-item" v-if="imgList.length > 0" v-for="item in imgList">
-                        <div class="imgage-wrapper" :id="item._id + '-loading'" :ref="item._id + '-loading'"  @mouseover="toggleShow(item._id, 1)" @mouseleave="toggleShow(item._id, 0)">
-                            <img class="image" :src="item.url" @load="hideLoading(item._id)">
-                            <div class="mask-wrapper animated fadeIn" :ref="item._id">
-                                <div class="mask">
-                                    <el-button type="text" class="button icon el-icon-delete" @click="delBox(item._id)"></el-button>
-                                    <el-button type="text" class="button icon el-icon-zoom-in" @click="zoomIn(item.url)"></el-button>
-                                </div>
-                                <div class="time">{{dateFormat(item.createTime)}}</div>
-                            </div>
-                        </div>
-                        <div class="bottom">
-                            <el-button type="text" class="button" @click="copyUrl(item.url)">复制链接</el-button>
-                            <el-button type="text" class="button" @click="downLoadImg(item.url, item._id, item.suffix)">下载图片</el-button>
-                        </div>
+                        <img-item :data="item"></img-item>
                     </div>
                 </div>
             </div>
@@ -57,28 +44,6 @@
         >
             <img-edit @refresh="getImgList" ref="editor" :data="data"></img-edit>
         </el-dialog>
-        <el-dialog
-        title="提示"
-        :visible.sync="showDel"
-        width="40%"
-        center>
-            <span>是否确认删除该图片?</span>
-            <span slot="footer" class="dialog-footer">
-                <el-button @click="showDel = false">取 消</el-button>
-                <el-button type="primary" @click="deleteImg()">确 定</el-button>
-            </span>
-        </el-dialog>
-        <el-dialog
-        :visible.sync="showZoomIn"
-        width="45%"
-        height="50%"
-        center>
-            <!-- <img :src="zoomInImg"> -->
-            <div class="zoomin-wrapper">
-                <img :src="zoomInImg">
-            </div>
-        </el-dialog>
-
     </div>
 </template>
 <script type="text/javascript">
@@ -86,11 +51,12 @@ import CommonHeader from "./common/CommonHeader";
 import CommonFooter from "./common/CommonFooter";
 import ImgUpload from "./common/ImgUpload";
 import ImgEdit from "./common/ImgEdit";
+import ImgItem from './common/ImgItem';
 import $axios from 'axios';
-import { Message, Loading } from 'element-ui';
-import Common from '../assets/scripts/common.js';
 import Cookies from "js-cookie";
-import Search from './common/Search'
+import Search from './common/Search';
+import { Message, Loading } from 'element-ui';
+
 export default {
     name: 'Index',
     data () {
@@ -114,14 +80,9 @@ export default {
                 totalCount: 0
             },
             imgList: [],
-            nickName: '',
-            showDel: false,
-            delId: '',
-            showZoomIn: false,
-            zoomInImg: '',
+            nickName: '',            
             defaultPageSize: 14,
-            pageSize: 14,
-            loadingArr: {}
+            pageSize: 14
         }
     },
     components: {
@@ -129,7 +90,8 @@ export default {
         'img-edit': ImgEdit,
         'common-header': CommonHeader,
         'common-footer': CommonFooter,
-        'search': Search
+        'search': Search,
+        'img-item': ImgItem
     },
     methods: {
         getImgList: function (num) {
@@ -151,18 +113,6 @@ export default {
                 var data = res.data.data;
                 that.imgList = data.list || [];
                 var imgList = that.imgList;
-
-                setTimeout(function () {
-                    for (var i = 0; i < imgList.length; i++) {
-                        var item = imgList[i];
-                        that.loadingArr[item._id] = Loading.service({
-                            target: that.$refs[item._id + '-loading'][0],
-                            lock: true,
-                            fullscreen: false
-                        });
-                    }
-                }, 0)
-
                 // loading.close();
                 that.update({
                     pageCount: data.pageCount,
@@ -174,14 +124,7 @@ export default {
             }).catch(function (error) {
                 that.catchError(error);
             })
-        },
-        hideLoading (id) {
-            this.$nextTick(() => {
-                if (this.loadingArr[id]) {
-                    this.loadingArr[id].close();
-                }
-            })
-        },
+        },        
         update (data) {
             Object.assign(this.page, data);
         },
@@ -192,108 +135,24 @@ export default {
         },
 
         handleCurrentChange: function (val) {
-            this.getImgList(val);
+            this.getImgList(val, {});
         },
-
-        copyUrl: function (url) {
-            const input = document.createElement('input');
-            document.body.appendChild(input);
-            input.setAttribute('value', url);
-            input.setAttribute('display', "none");
-            input.select();
-            if (document.execCommand('copy')) {
-                document.execCommand('copy');
-                Message.success({
-                    message: '已复制',
-                    type: 'info',
-                    center: true
-                });
-            }
-            document.body.removeChild(input);
-        },
-
-        downLoadImg: function (url, id, suffix) {
-            if (!url || !id) {
-                Message.error({
-                    message: '下载错误~',
-                    type: 'error',
-                    center: true
-                });
-                return false;
-            };
-            var index = this.findIndex(url, '/', 2);
-            url = url.slice(index, url.length);
-            var newDomain = window.location.protocol + "//" + window.location.host;
-            // console.log(url);
-            // var newDomain = "https://imgs.thankjava.com";
-            var downLoadUrl = newDomain + '/' + url;
-            var alink = document.createElement("a");
-            var typeIndex = downLoadUrl.lastIndexOf(".");
-            var ext = suffix;
-            document.body.appendChild(alink);
-            alink.style.display='none';
-            alink.href = downLoadUrl;
-            alink.download = id + '.' + ext;
-            alink.click();
-        },
-
-        findIndex: function (str, cha, num) {
-            var x = str.indexOf(cha);
-            for (var i = 0; i < num; i++) {
-                x = str.indexOf(cha, x + 1);
-            }
-            return x;
-        },
-
-        delBox: function (id) {
-            this.delId = id;
-            this.showDel = true;
-        },
-
-        deleteImg: function () {
-            var that = this;
-            $axios.post('/api/imgs/del', {ids: [that.delId]}).then((res) => {
-                if (res.data) {
-                    Message.success({
-                        message: res.data.message || '删除成功',
-                        type: 'info',
-                        center: true
-                    });
-                    that.showDel = false;
-                    that.getImgList(1);
-                }
-            }).catch(function (error) {
-                that.catchError(error);
-            })
-        },
-
-        zoomIn: function (url) {
-            this.zoomInImg = url;
-            this.showZoomIn = true;
-        },
-
-        dateFormat: function (time) {
-            return Common.formatTime(time);
-        },
-
         catchError: function (error) {
             if (error.response && error.response.status && error.response.status == '401') {
                 Cookies.set('uinfo', '');
                 this.$router.push('/');
             }
         },
-
-        toggleShow: function (id, index) {
-            if (+index === 0) {
-                this.$refs[id][0].style.display = "none";
-            } else {
-                this.$refs[id][0].style.display = "block";
-            }
-        },
-
         handleClose: function (done) {
             this.$refs.editor.stop();
         },
+
+        // search组件点击搜索触发的事件
+        searchHandler: function (search) {
+            // todo 获取图片列表传参修改
+            this.getImgList(1, search);
+            // console.log(search)
+        }
     },
     mounted () {
         var that = this;
@@ -372,54 +231,6 @@ export default {
         align-items: center;
         width: 200px;
         height: 210px;
-    }
-    .imgage-wrapper {
-        position: relative;
-    }
-    .image {
-        width: 150px;
-        height: 150px;
-    }
-
-    .mask-wrapper {
-        display: none;
-        position: absolute;
-        top: 0;
-        left: 0;
-        bottom: 2px;
-        right: 0;
-        background: rgba(0, 0, 0, 0.5);
-    }
-
-    .mask {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: #fff;
-    }
-
-    .time {
-        width: 100%;
-        font-size: 12px;
-        height: 20px;
-        text-align: center;
-        background: #409EFF;
-        color: #fff;
-        margin-top: -20px;
-        line-height: 20px;
-    }
-
-    .icon {
-        /*pointer-events: auto;*/
-        padding: 10px;
-        color: #fff;
-        font-size: 32px;
-    }
-
-    .icon:hover{
-        cursor: pointer;
     }
     .eidt-wrapper {
         position: fixed;

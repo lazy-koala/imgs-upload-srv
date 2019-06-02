@@ -11,12 +11,13 @@
                 </el-option>
             </el-select>
         </el-col>
-        <el-col :span="5" class="tag-wrapper">
+        <div  class="tag-wrapper">
             <el-tag 
                 class="tag-item"
                 :key="tag"
                 v-for="tag in tagList"
                 closable
+                size=small 
                 :disable-transitions="false"
                 @close="handleClose(tag)">
                 {{tag}}
@@ -26,13 +27,15 @@
                 v-model="tagValue"
                 placeholder="点击输入标签关键字"
                 ref="saveTagInput"
+                maxlength=6
+                minlength=3
                 @keyup.enter.native="handleInputConfirm"
                 @blur="handleInputConfirm">
             </el-input>
-        </el-col>
-        <el-col :span="2">
-            <el-button type="primary" icon="el-icon-search">搜索</el-button>
-        </el-col>
+        </div>
+        <div>
+            <el-button type="primary" icon="el-icon-search" @click="search()">搜索</el-button>
+        </div>
     </el-row>
 </template>
 <script>
@@ -44,7 +47,7 @@ export default {
         return {
             sortList: [],
             selectedSort: '',
-            tagList: ['标签1', '标签2'], //搜索输入的标签列表
+            tagList: [], //搜索输入的标签列表
             tagInputVisible: false,
             tagValue: '' //输入标签的值
         }
@@ -76,16 +79,28 @@ export default {
             }
             this.tagInputVisible = false;
             this.tagValue = '';
+        },
+
+        search() {
+            let searchVal = {
+                sortId: this.selectedSort,
+                tag: this.tagList
+            };
+            // console.log(searchVal);
+            
+            this.$emit('handleSearch', searchVal);
         }
     },
     mounted() {
         this.getSortList({
             sortId: '',
             sortName: ''
-        })
+        });
+        this.$refs.saveTagInput.$refs.input.focus();
+
     },
     created() {
-        this.$refs.saveTagInput.$refs.input.focus();
+        // this.$refs.saveTagInput.$refs.input.focus();
     },
 
 }
