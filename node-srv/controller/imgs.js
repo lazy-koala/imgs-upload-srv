@@ -10,7 +10,7 @@ const baseConfig = require('../config/basic');
 const busboyUpload = require('../lib/busboyUpload');
 const baseController = require('./baseController');
 const imagesModel = require('../models/images');
-const sortModel = require('../models/sort');
+const sortsModel = require('../models/sorts');
 const asyncRedisClient = require('../lib/asyncRedis').client;
 const redisKey = require('../const/redisKey');
 
@@ -31,7 +31,7 @@ module.exports = new Router(
     let sortId;
     if (!fields || !fields.sortId) {
         if (!defaultSortId) {
-            defaultSortId = await sortModel.selectOneByUserId('system')._id.toString();
+            defaultSortId = (await sortsModel.selectOneByUserId('system'))._id.toString();
         }
         sortId = defaultSortId;
     } else {
@@ -52,7 +52,7 @@ module.exports = new Router(
             let img = {
                 userId: userId,
                 url: uploadResult[index].path,
-                urn: '/' + algorithm10to64.number10to64(incr + Date.now().getTime()),
+                urn: '/' + algorithm10to64.number10to64(incr + Date.now()),
                 sortId: sortId
             };
             if (fields && fields.tags && fields.tags.length > 0) {

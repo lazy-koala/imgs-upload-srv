@@ -70,7 +70,7 @@ module.exports = new Router(
         return baseController.responseWithCode(ctx, baseController.CODE.MAX_IMG_TAG, "标签超出上限");
     }
 
-    let sortTag = params.tags.sort();
+    let sortTag = params.tags.sorts();
     for (let i = 0; i < sortTag.length - 1; i++) {
         if (sortTag[i] == sortTag[i + 1]) {
             return baseController.responseWithCode(ctx, baseController.CODE.EXISTS_IMG_TAG, '已存在的标签: ' + params.tags[i]);
