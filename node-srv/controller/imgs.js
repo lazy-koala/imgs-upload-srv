@@ -52,7 +52,7 @@ module.exports = new Router(
             let img = {
                 userId: userId,
                 url: uploadResult[index].path,
-                urn: '/' + algorithm10to64.number10to64(incr + Date.now().getTime()),
+                urn: '/' + algorithm10to64.number10to64(incr + Date.now()),
                 sortId: sortId
             };
             if (fields && fields.tags && fields.tags.length > 0) {
