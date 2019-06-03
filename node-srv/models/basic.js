@@ -49,8 +49,8 @@ module.exports.selectByPage = (page, model) => new Promise(resolve => {
         query = page.query;
     }
 
-    if (page.sort) {
-        sort = page.sort;
+    if (page.sorts) {
+        sort = page.sorts;
     }
 
     let fields = null;
