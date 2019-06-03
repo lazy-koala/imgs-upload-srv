@@ -18,7 +18,6 @@ const mailType = require('../const/mailType');
 const imagesModel = require('../models/images');
 const fs = require('fs');
 const uploadConfig = require('../config/upload');
-const request = require('../lib/httpRequest');
 
 
 module.exports = new Router(
@@ -39,19 +38,18 @@ module.exports = new Router(
         return baseController.response400(ctx, '帐号或密码为空');
     }
 
-    let info = await userModel.selectByUsernameOrEmail(username);
-    if (!info) {
+    let user = await userModel.selectByUsernameOrEmail(username);
+    if (!user) {
         return baseController.responseWithCode(ctx, baseController.CODE.INVALID_ACCOUNT, '账号不存在');
     }
 
-    if (util.md5(info.username + password) != info.password) {
+    if (util.md5(user.username + password) != user.password) {
         return baseController.responseWithCode(ctx, baseController.CODE.PASSWORD_ERROR, '密码错误');
     }
 
     let nowTime = Date.now();
-    let token = util.md5(util.uuid() + nowTime + username);
 
-    await doLogin(ctx, info, keepLogged, token, nowTime);
+    await doLogin(ctx, user, keepLogged, util.md5(util.uuid() + nowTime + username), nowTime);
 
     baseController.response(ctx);
 
@@ -228,28 +226,24 @@ module.exports = new Router(
     ctx.set('Content-Type', 'image/' + image.url.split('.')[1]);
     ctx.set('Cache-Control', 'public, max-age=28800');
 
+    if (fs.existsSync(fs.readFileSync(uploadConfig.path + image.url))) {
+
+    }
+
     ctx.body = fs.readFileSync(uploadConfig.path + image.url);
-
-
-    // let result = await request.doRequestBuffer({
-    //     url: "http://source.thankjava.com" + image.url,
-    //     method: "get"
-    // });
-    //
-    // ctx.body = result.buffer;
 
 }).routes();
 
 
-const doLogin = async (ctx, info, keepLogged, token, nowTime) => {
+const doLogin = async (ctx, user, keepLogged, token, nowTime) => {
 
     let userInfo = {
-        id: info._id,
-        username: info.username
+        id: user._id,
+        username: user.username
     };
     let userInfoJsonStr = JSON.stringify(userInfo);
 
-    let authEx = baseController.CONSTS.SHORT_AUTH_COOKIE_EXPIRES_DAY * 24 * 60 * 60;
+    let authExTime = baseController.CONSTS.SHORT_AUTH_COOKIE_EXPIRES_DAY * 24 * 60 * 60;
 
     // 登录成功
     let cookieOpt = {
@@ -259,7 +253,7 @@ const doLogin = async (ctx, info, keepLogged, token, nowTime) => {
 
     if (keepLogged) { // 长期登录
 
-        authEx = baseController.CONSTS.AUTH_COOKIE_EXPIRES_DAY * 24 * 60 * 60;
+        authExTime = baseController.CONSTS.AUTH_COOKIE_EXPIRES_DAY * 24 * 60 * 60;
 
         let tokens = await authTokenModel.selectByUserIdSortByCreateTimeAsc(userInfo.id);
 
@@ -278,15 +272,15 @@ const doLogin = async (ctx, info, keepLogged, token, nowTime) => {
         await authTokenModel.save({
             userId: userInfo.id,
             token: token,
-            expiration: nowTime + authEx * 1000,
+            expiration: nowTime + authExTime * 1000,
             userInfo: userInfo
         });
 
-        cookieOpt.maxAge = authEx * 1000;
+        cookieOpt.maxAge = authExTime * 1000;
     }
 
     // 写入redis验证数据
-    await asyncRedisClient.setAsync(redisKey.AUTH_TOKEN(token), userInfoJsonStr, 'EX', parseInt(authEx));
+    await asyncRedisClient.setAsync(redisKey.AUTH_TOKEN(token), userInfoJsonStr, 'EX', parseInt(authExTime));
 
     // 创建cookies会话凭证信息
     baseController.setCookie(ctx, cookiesName.COOKIE_NAME_TOKEN, token, cookieOpt);

@@ -31,7 +31,7 @@ module.exports = new Router(
     let sortId;
     if (!fields || !fields.sortId) {
         if (!defaultSortId) {
-            defaultSortId = await sortModel.selectOneByUserId('system')._id;
+            defaultSortId = await sortModel.selectOneByUserId('system')._id.toString();
         }
         sortId = defaultSortId;
     } else {
@@ -52,7 +52,7 @@ module.exports = new Router(
             let img = {
                 userId: userId,
                 url: uploadResult[index].path,
-                urn: '/' + algorithm10to64.number10to64(incr + new Date().getTime()),
+                urn: '/' + algorithm10to64.number10to64(incr + Date.now().getTime()),
                 sortId: sortId
             };
             if (fields && fields.tags && fields.tags.length > 0) {
@@ -60,12 +60,12 @@ module.exports = new Router(
             }
             saveImages.push(img);
 
-            uploadResult[index].path = baseConfig.imgUri + uploadResult[index].urn;
+            uploadResult[index].path = baseConfig.imgUri + img.urn;
         }
     }
 
     if (saveImages.length > 0) {
-        imagesModel.saveMany(saveImages);
+        await imagesModel.saveMany(saveImages);
     }
 
     baseController.response(ctx, uploadResult);
