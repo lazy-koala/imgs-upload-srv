@@ -25,7 +25,7 @@
             <el-input  
                 v-if="tagList.length < 3"              
                 v-model="tagValue"
-                placeholder="点击输入标签关键字"
+                placeholder="输入标签关键字并回车"
                 ref="saveTagInput"
                 maxlength=6
                 minlength=3
@@ -84,7 +84,7 @@ export default {
         search() {
             let searchVal = {
                 sortId: this.selectedSort,
-                tag: this.tagList
+                tag: this.tagList || []
             };
             // console.log(searchVal);
             
