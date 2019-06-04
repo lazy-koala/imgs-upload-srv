@@ -134,18 +134,19 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 10px auto;
-    width: 150px;
-    height: 150px;
+    margin: 0px auto;
+    width: 160px;
+    height: 160px;
     color: #409EFF;
     font-size: 100px;
     flex-direction: column;
     border: 1.5px dashed;
+    margin-top: -20px;
     input {
         position: absolute;
         opacity: 0;
-        width: 150px;
-        height: 150px;
+        width: 160px;
+        height: 160px;
     }
 
     input:hover {

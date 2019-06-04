@@ -3,17 +3,20 @@
         <div class="imgage-wrapper" v-loading="loading"   @mouseover="toggleShow(data._id, 1)" @mouseleave="toggleShow(data._id, 0)">
             <img class="image" :src="data.url"  @load="hideLoading()" >
             <div class="mask-wrapper animated fadeIn" :ref="data._id">
-                <div class="mask">
-                    <el-button type="text" class="button icon el-icon-delete" @click="delBox(data._id)"></el-button>
-                    <el-button type="text" class="button icon el-icon-zoom-in" @click="zoomIn(data.url)"></el-button>
+                <div class="btn-wrapper">
+                    <el-button type="text" title="编辑图片" class="button icon el-icon-edit" @click="zoomIn(data)"></el-button>
+                    <el-button type="text" title="下载图片" class="button icon el-icon-download" @click="downLoadImg(data.url, data._id, data.suffix)"></el-button>
+                    <el-button type="text" title="复制地址" class="button icon el-icon-fuzhi" @click="copyUrl(data.url)"></el-button>
+                    <el-button type="text" title="删除图片" class="button icon el-icon-delete" @click="delBox(data._id)"></el-button>                    
                 </div>
-                <div class="time">{{dateFormat(data.createTime)}}</div>
+                <div class="time">{{dateFormat(data.createTime)}}</div>                    
             </div>
         </div>
-        <div class="bottom">
-            <el-button type="text" class="button" @click="copyUrl(data.url)">复制链接</el-button>
-            <el-button type="text" class="button" @click="downLoadImg(data.url, data._id, data.suffix)">下载图片</el-button>
-        </div>       
+        <div class="bottom" v-if="data.tags && data.tags.length > 0">                    
+            <div class="tag" v-for="tag in data.tags" :key="tag">{{tag}}</div>
+        </div>
+            <!-- <el-button type="text" class="button" @click="copyUrl(data.url)">复制链接</el-button>
+            <el-button type="text" class="button" @click="downLoadImg(data.url, data._id, data.suffix)">下载图片</el-button> -->
 
         <el-dialog
         title="提示"
@@ -26,16 +29,43 @@
                 <el-button type="primary" @click="deleteImg()">确 定</el-button>
             </span>
         </el-dialog>
+
+        <!-- 编辑图片开始 -->
         <el-dialog
         :visible.sync="showZoomIn"
         width="45%"
         height="50%"
         center>
-            <!-- <img :src="zoomInImg"> -->
             <div class="zoomin-wrapper">
                 <img :src="zoomInImg">
+                <div class="tag-list" v-if="tagList">
+                    <el-tag
+                        :key="tag"
+                        v-for="tag in tagList"
+                        closable
+                        :disable-transitions="false"
+                        @close="handleClose(tag)">
+                        {{tag}}
+                    </el-tag>
+
+                    <el-input
+                        v-if="showTagInput"
+                        v-model="inputValue"
+                        ref="saveTagInput"
+                        size="small"
+                        class="input-new-tag"
+                        maxlength=6
+                        minlength=3
+                        @keyup.enter.native="handleInputConfirm"
+                        @blur="handleInputConfirm"                        
+                        >
+                    </el-input>
+                    <el-button v-show="tagList.length < 3" v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
+                </div>
             </div>
         </el-dialog>
+        <!-- 编辑图片结束 -->
+
     </div>
 </template>
 <script>
@@ -59,7 +89,11 @@ export default {
             delId: '',
             showZoomIn: false,
             zoomInImg: '',
-            loading: true     
+            loading: true,
+            // tag相关数据
+            tagList: [],
+            showTagInput: false,
+            inputValue: ''
          }
     },
     methods: {
@@ -98,12 +132,34 @@ export default {
                 that.catchError(error);
             })
         },
-
-        zoomIn: function (url) {
-            this.zoomInImg = url;
+        // 图片编辑弹框
+        zoomIn: function (data) {
+            this.zoomInImg = data.url;
             this.showZoomIn = true;
+            this.tagList = data.tags || [];
         },
 
+        handleClose(tag) {
+            this.tagList && this.tagList.splice(this.tagList.indexOf(tag), 1);
+        },
+
+        showInput() {
+            this.showTagInput = true;
+            this.$nextTick(_ => {
+                this.$refs.saveTagInput.$refs.input.focus();
+            });
+        },
+
+        handleInputConfirm() {
+            let inputValue = this.inputValue;
+            if (inputValue) {
+            this.tagList.push(inputValue);
+            }
+            this.showTagInput = false;
+            this.inputValue = '';
+        },
+
+        // 复制图片地址
         copyUrl: function (url) {
             const input = document.createElement('input');
             document.body.appendChild(input);
@@ -159,15 +215,7 @@ export default {
                 this.$router.push('/');
             }
         }
-    },
-    beforeMount () {
-        // console.log('mount');
-        // let imgList = this.imgList || [];
-        // for (var i = 0; i < imgList.length; i++) {
-        //     let item = imgList[i];
-        //     this.loadingStatus[item._id] = true;            
-        // }
-    },
+    }
 }
 </script>
 <style scoped>
@@ -178,15 +226,16 @@ export default {
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        width: 200px;
-        height: 210px;
+        width: 220px;
+        height: 220px;
     }
         .imgage-wrapper {
         position: relative;
+        text-align: center;
     }
     .image {
-        width: 150px;
-        height: 150px;
+        width: 160px;
+        height: 160px;
     }
 
     .mask-wrapper {
@@ -194,9 +243,9 @@ export default {
         position: absolute;
         top: 0;
         left: 0;
-        bottom: 2px;
+        bottom: 0;
         right: 0;
-        background: rgba(0, 0, 0, 0.5);
+        background: rgba(13,10,49,.9);
     }
 
     .mask {
@@ -208,25 +257,80 @@ export default {
         color: #fff;
     }
 
+    .btn-wrapper {
+        position: relative;
+        overflow: hidden;
+        margin: 10px auto;
+    }
+
+    .button {
+        display: inline-block;
+    } 
     .time {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
         width: 100%;
         font-size: 12px;
         height: 20px;
         text-align: center;
-        background: #409EFF;
+        background: rgba(13, 10, 49, 1);
         color: #fff;
-        margin-top: -20px;
         line-height: 20px;
     }
 
     .icon {
         /*pointer-events: auto;*/
-        padding: 10px;
+        padding: 15px;
         color: #fff;
         font-size: 32px;
     }
 
     .icon:hover{
         cursor: pointer;
+        color: red;
+        background: rgba(13, 10, 49, 1);
+    }
+
+    .el-button + .el-button {
+        margin: 0;
+    }
+
+    .tag {
+        text-align: center;
+        font-size: 12px;
+        line-height: 16px;
+        color: #666;
+    }
+
+    
+    .zoomin {
+        width: 45%;
+        height: 45%;
+    }
+
+    .zoomin-wrapper {
+        width: 100%;
+        height: 450px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+    }
+
+    .tag-list {
+        margin-top: 20px;
+        .el-tag {
+            margin-right: 10px;
+        }
+
+        .input-new-tag {
+            width: 90px;
+        }
     }
 </style>

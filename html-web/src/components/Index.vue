@@ -11,12 +11,12 @@
                 <div class="list" ref="list">
                     <div class="list-item">
                         <img-upload :data="data"></img-upload>
-                        <div class="bottom">
+                        <div class="bottom ">
                             <el-button type="text" class="button"></el-button>
                             <el-button type="text" class="button"></el-button>
                         </div>
                     </div>
-                    <div class="list-item" v-if="imgList.length > 0" v-for="item in imgList">
+                    <div class="list-item" :key="item._id" v-for="item in imgList">
                         <img-item :data="item"></img-item>
                     </div>
                 </div>
@@ -56,6 +56,8 @@ import $axios from 'axios';
 import Cookies from "js-cookie";
 import Search from './common/Search';
 import { Message, Loading } from 'element-ui';
+import Common from '../assets/scripts/common.js';
+import qs from 'qs';
 
 export default {
     name: 'Index',
@@ -79,6 +81,8 @@ export default {
                 currentPage: 1,
                 totalCount: 0
             },
+            sortId: '',
+            tag: '',
             imgList: [],
             nickName: '',            
             defaultPageSize: 14,
@@ -105,10 +109,17 @@ export default {
             that.pageSize = size > 0 ? size : 10;
             var params = {
               pageSize: size > 0 ? size : 1,
-              pageNumber: num
+              pageNumber: num,
+              sortId: that.sortId,
+              tag: that.tag
             };
+            
             // console.log(reqData);
-            $axios.get('/api/imgs/list', {params}).then((res) => {
+            $axios.get('/api/imgs/list', {
+                params: params,
+                paramsSerializer: params => {
+                return qs.stringify(params, { indices: false })
+            }}).then((res) => {
               if (res.data.data) {
                 var data = res.data.data;
                 that.imgList = data.list || [];
@@ -143,15 +154,26 @@ export default {
                 this.$router.push('/');
             }
         },
+
+
+        toggleShow: function (id, index) {
+            if (+index === 0) {
+                this.$refs[id][0].style.display = "none";
+            } else {
+                this.$refs[id][0].style.display = "block";
+            }
+        },
+
         handleClose: function (done) {
             this.$refs.editor.stop();
         },
-
         // search组件点击搜索触发的事件
         searchHandler: function (search) {
             // todo 获取图片列表传参修改
-            this.getImgList(1, search);
-            // console.log(search)
+            // 修改请求参数
+            this.sortId = search.sortId;
+            this.tag = search.tag;
+            this.getImgList(1);
         }
     },
     mounted () {
@@ -243,22 +265,5 @@ export default {
 
     .download {
         display: none;
-    }
-
-    .zoomin {
-        width: 45%;
-        height: 45%;
-    }
-
-    .zoomin-wrapper {
-        width: 100%;
-        height: 450px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        img {
-            max-width: 100%;
-            max-height: 100%;
-        }
     }
 </style>
