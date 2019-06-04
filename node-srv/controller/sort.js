@@ -8,6 +8,8 @@ const sortsModel = require('../models/sorts');
 const imagesModel = require('../models/images');
 const baseController = require('./baseController');
 
+
+let defaultSort;
 module.exports = new Router(
 
 ).post('add', async ctx => {
@@ -66,8 +68,11 @@ module.exports = new Router(
     let message = '删除成功';
 
     if (imgs && imgs.length > 0) {
+        if (!defaultSort) {
+            defaultSort = await sortsModel.selectOneByUserId('system');
+        }
         await imagesModel.updateByCondition({
-            sortId: await sortsModel.selectOneByUserId('system')._id
+            sortId: defaultSort._id
         }, {
             userId: ctx.state.authInfo.id,
             sortId: params.sortId
@@ -92,9 +97,17 @@ module.exports = new Router(
     if (params.sortId) {
         condition.sortId = params.sortId;
     }
+    if (!defaultSort) {
+        defaultSort = await sortsModel.selectOneByUserId('system');
+    }
+    let array = [{
+        sortId: defaultSort._id,
+        sortName: defaultSort.sortName,
+        createTime: defaultSort.createTime
+    }];
     let sorts = await sortsModel.selectByCondition(condition);
     if (sorts && sorts.length > 0) {
-        let array = [];
+
         for (let i = 0; i < sorts.length; i++) {
             array.push({
                 sortId: sorts[i]._id,
@@ -102,8 +115,7 @@ module.exports = new Router(
                 createTime: sorts[i].createTime
             })
         }
-        return baseController.response(ctx, {list: array});
     }
-    baseController.response(ctx);
+    return baseController.response(ctx, {list: array});
 
 }).routes();
