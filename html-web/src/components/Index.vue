@@ -3,7 +3,7 @@
         <template>
             <common-header isIndex="0"></common-header>
         </template>        
-        <div class="list-wrapper"> 
+        <div class="list-wrapper" v-loading="globalLoading"> 
             <div class="sort">
                 <search @handleSearch="searchHandler"></search>                
             </div>           
@@ -36,13 +36,13 @@
             <common-footer></common-footer>
         </template>
         <el-dialog
-        title="图片编辑"
+        title="图片裁剪"
         :visible.sync="data.loaded"
         width="45%"
         center
         :before-close="handleClose"
         >
-            <img-edit @refresh="getImgList" ref="editor" :data="data"></img-edit>
+            <img-edit @refresh="getImgList" ref="editor" :data="data" :sortId="sortId"></img-edit>
         </el-dialog>
     </div>
 </template>
@@ -86,7 +86,9 @@ export default {
             imgList: [],
             nickName: '',            
             defaultPageSize: 14,
-            pageSize: 14
+            pageSize: 14,
+            globalLoading: true,
+            sortList: this.$store.state.sortList
         }
     },
     components: {
@@ -113,25 +115,26 @@ export default {
               sortId: that.sortId,
               tag: that.tag
             };
+            that.globalLoading = true;
             
-            // console.log(reqData);
             $axios.get('/api/imgs/list', {
                 params: params,
                 paramsSerializer: params => {
                 return qs.stringify(params, { indices: false })
-            }}).then((res) => {
-              if (res.data.data) {
-                var data = res.data.data;
-                that.imgList = data.list || [];
-                var imgList = that.imgList;
-                // loading.close();
-                that.update({
-                    pageCount: data.pageCount,
-                    currentPage: num,
-                    totalCount: data.totalCount,
-                    pageSize: size
-                });
-              }
+            }}).then((res) => {    
+                that.globalLoading = false;            
+                if (res.data.data) {
+                    var data = res.data.data;
+                    that.imgList = data.list || [];
+                    var imgList = that.imgList;
+                    // loading.close();
+                    that.update({
+                        pageCount: data.pageCount,
+                        currentPage: num,
+                        totalCount: data.totalCount,
+                        pageSize: size
+                    });
+                }
             }).catch(function (error) {
                 that.catchError(error);
             })
@@ -192,6 +195,21 @@ export default {
         }).catch(function (error) {
             that.catchError(error);
         })
+
+        // 获取分类列表
+        this.$store.dispatch('getSortList', {
+            sortId: '',
+            sortName: '',
+            type: 'get'
+        }).then((res) => {
+            this.sortList = [{ sortId: "", sortName: "全部分类" } , ...res] || [];
+        })
+        // this.$refs.saveTagInput.$refs.input.focus();
+    },
+    created() {
+        this.$on('refreshImgList', (num) => {
+            this.getImgList(num);
+        })
     }
 }
 </script>
@@ -227,7 +245,7 @@ export default {
         padding: 0 20px;
     }
     .sort {
-        margin-left: 45px;
+        margin-left: 20px;
         .el-select {
             width: 90%;
         }
@@ -247,12 +265,13 @@ export default {
     .list-item {
         position: relative;
         float: left;
-        display: flex;
+        /* display: flex;
         flex-direction: column;
         justify-content: center;
-        align-items: center;
-        width: 200px;
+        align-items: center; */
+        /* width: 200px; */
         height: 210px;
+        margin-right: 20px;
     }
     .eidt-wrapper {
         position: fixed;

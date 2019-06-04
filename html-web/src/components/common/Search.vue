@@ -45,22 +45,14 @@ export default {
     name: 'search',
     data() {
         return {
-            sortList: [],
+            sortList: [{sortId: "", sortName: "全部分类" }, ...this.$store.state.sortList],
             selectedSort: '',
             tagList: [], //搜索输入的标签列表
             tagInputVisible: false,
             tagValue: '' //输入标签的值
         }
     },
-    methods: {
-        // 获取分类列表
-        getSortList: function (params) {
-            $axios.get('/api/sort/list', {params}).then((res) => {
-                if (res.data) {
-                    this.sortList =[{sortId: "", sortName: "全部分类"}, ...(res.data && res.data.data && res.data.data.list || [])];
-                }
-            })
-        },
+    methods: {        
         handleClose(tag) {
             this.tagList.splice(this.tagList.indexOf(tag), 1);
         },
@@ -92,12 +84,14 @@ export default {
         }
     },
     mounted() {
-        this.getSortList({
-            sortId: '',
-            sortName: ''
-        });
-        this.$refs.saveTagInput.$refs.input.focus();
-
+        // this.$store.dispatch('getSortList', {
+        //     sortId: '',
+        //     sortName: '',
+        //     type: 'get'
+        // }).then((res) => {
+        //     this.sortList = [{sortId: "", sortName: "全部分类" }, ...res] || [];
+        // })
+        // this.$refs.saveTagInput.$refs.input.focus();
     },
     created() {
         // this.$refs.saveTagInput.$refs.input.focus();

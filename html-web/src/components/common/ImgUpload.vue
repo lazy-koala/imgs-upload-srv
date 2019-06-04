@@ -141,7 +141,6 @@
     font-size: 100px;
     flex-direction: column;
     border: 1.5px dashed;
-    margin-top: -20px;
     input {
         position: absolute;
         opacity: 0;

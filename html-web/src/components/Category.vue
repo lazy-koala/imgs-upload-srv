@@ -30,6 +30,7 @@
                 </span>
             </el-dialog>
             <el-table
+                v-loading="tableLoading"
                 :data="tableData"
                 border
                 style="width: 100%">                
@@ -46,8 +47,8 @@
                 label="操作"
                 width="180">
                 <template slot-scope="scope">
-                    <el-button @click="popDelBox(scope.row)" type="text" size="small">删除</el-button>
-                    <el-button type="text" size="small" @click="popAddBox('edit', scope.row)">编辑</el-button>
+                    <el-button v-show="scope.row.sortName != '默认分类'" @click="popDelBox(scope.row)" type="text" size="small">删除</el-button>
+                    <el-button v-show="scope.row.sortName != '默认分类'" type="text" size="small" @click="popAddBox('edit', scope.row)">编辑</el-button>
                 </template>
                 </el-table-column>
             </el-table>
@@ -77,7 +78,8 @@ export default {
             handleType: '', //操作分类的类型 'add'新增分类 'edit'编辑分类
             title: '',
             delBox: false,
-            delData: {}
+            delData: {},
+            tableLoading: true
         }
     },
     methods: { 
@@ -95,7 +97,8 @@ export default {
                         center: true
                     });
                     // 添加成功，刷新列表
-                    that.getSortList({sortName: '', sortId: ''});
+                    that.getSortList('update');
+                    
                     // 关闭弹框
                     that.dialogVisible = false;
                     // 清楚输入框内容
@@ -112,7 +115,8 @@ export default {
                         center: true
                     });
                     // 修改成功，刷新列表
-                    that.getSortList({sortName: '', sortId: ''});
+                    that.getSortList('update');
+
                     // 关闭弹框
                     that.dialogVisible = false;
                     // 清楚输入框内容
@@ -151,15 +155,25 @@ export default {
 
         // 获取分类列表
         getSortList: function (params) {
-            $axios.get('/api/sort/list', {params}).then((res) => {
-                if (res.data) {
-                    this.tableData = res.data && res.data.data && res.data.data.list || [];
-                }
+            // $axios.get('/api/sort/list', {params}).then((res) => {
+            //     if (res.data) {
+            //         this.tableData = res.data && res.data.data && res.data.data.list || [];
+            //     }
+            // })
+            this.tableLoading = true;
+            this.$store.dispatch('getSortList', {
+                sortId: '',
+                sortName: '',
+                type: params
+            }).then((res) => {
+                this.tableLoading = false;
+                this.tableData = res || [];
             })
         },
 
         // 点击删除弹框
         popDelBox: function (data) {
+            console.log(data);
             if(!this.delBox) {
                 this.delData = {...data};
                 this.delBox = true;                
@@ -191,16 +205,16 @@ export default {
                 // 关闭弹框
                 that.delBox = false;
                 // 添加成功，刷新列表
-                that.getSortList({sortName: '', sortId: ''});
-
+                that.getSortList('update');
             })
         }
     },
     mounted() {
-        this.getSortList({
-            sortName: '',
-            sortId: ''
-        });
+        // this.getSortList({
+        //     sortName: '',
+        //     sortId: ''
+        // });
+        this.getSortList('get');
     }
 }
 </script>

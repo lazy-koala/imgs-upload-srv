@@ -15,8 +15,29 @@
       <button type="text" class="toolbar__button" data-action="clear" title="Cancel (Esc)" v-if="data.cropping"><span class="el-icon-cancel"></span></button>
       <!-- <button type="text" class="toolbar__button" data-action="ok" title="OK (Enter)" v-if="data.cropping"><span class="el-icon-ok"></span></button> -->
     </div>
-    <div>      
-      <el-input type="text" v-model="tag"  placeholder="请输入标签" />
+    <div class="tag-list" v-if="tagList">
+        <el-tag
+            :key="`${tag}`"
+            v-for="tag in tagList"
+            closable
+            :disable-transitions="false"
+            @close="handleClose(tag)">
+            {{tag}}
+        </el-tag>
+
+        <el-input
+            v-if="showTagInput"
+            v-model="inputValue"
+            ref="saveTagInput"
+            size="small"
+            class="input-new-tag"
+            maxlength=6
+            minlength=3
+            @keyup.enter.native="handleInputConfirm"
+            @blur="handleInputConfirm"                        
+            >
+        </el-input>
+        <el-button v-show="tagList.length < 3" v-else class="button-new-tag" size="small" @click="showInput">添加标签</el-button>
     </div>
     <div class="btn">
         <el-button type="primary" @click="uploadImg">确认</el-button>
@@ -47,6 +68,10 @@
         default: function () {
             return false
         }
+      },
+      sortId: {
+          type: String,
+          default: ''
       }
     },
 
@@ -57,7 +82,9 @@
         croppedData: null,
         cropper: null,
         loading: null,
-        tag: '',
+        tagList: [],
+        inputValue: '',
+        showTagInput: false
       };
     },
 
@@ -268,6 +295,12 @@
 
       confirmUploadImg: function (formData) {
         var that = this;
+        let tags = that.tagList;
+        let sortId = that.sortId;
+        for (var i = 0; i < tags.length; i++) {
+            formData.append('tags',tags[i]);
+        }
+        formData.append('sortId', sortId);
         $axios.post('/api/imgs/upload', formData).then((res) => {
           that.$nextTick(() => {
             if (that.loading) {
@@ -284,6 +317,7 @@
                   message: item.fileName + '上传成功！'
                 })
                 that.$emit('refresh', 1);
+                that.tagList = [];
                 // that.$parent.$parent.getImgList (1, 20);
               } else {
                 Message.error({
@@ -328,6 +362,28 @@
           }
 
           return new Blob([ia], {type: mimeString});
+      },
+
+      // 标签相关方法
+      handleClose(tag) {
+          this.tagList && this.tagList.splice(this.tagList.indexOf(tag), 1);
+      },
+
+      showInput() {
+            this.showTagInput = true;
+            this.$nextTick(_ => {
+                this.$refs.saveTagInput.$refs.input.focus();
+            });
+      },
+
+      handleInputConfirm() {
+            let inputValue = this.inputValue;
+            if (inputValue && this.tagList.findIndex((value) => value == inputValue) < 0) {
+                this.tagList.push(inputValue);
+                this.showTagInput = false;
+                this.inputValue = '';
+            }
+            
       },
     },
     beforeDestroy () {
@@ -390,5 +446,14 @@
   .btn {
     text-align: center;
     margin-top: 10px;
+  }
+  .tag-list {
+      text-align: center;
+  }
+  .input-new-tag {
+      width: 200px;
+  }
+  .el-tag {
+      margin-right: 5px;
   }
 </style>

@@ -26,7 +26,7 @@
             <span>是否确认删除该图片?</span>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="showDel = false">取 消</el-button>
-                <el-button type="primary" @click="deleteImg()">确 定</el-button>
+                <el-button v-loading="delLoading" type="primary" @click="deleteImg()" >确 定</el-button>
             </span>
         </el-dialog>
 
@@ -35,9 +35,20 @@
         :visible.sync="showZoomIn"
         width="45%"
         height="50%"
+         title="图片编辑"
         center>
             <div class="zoomin-wrapper">
                 <img :src="zoomInImg">
+                <div class="sort">
+                    <el-select v-model="selectedSort" filterable placeholder="请选择分类">
+                        <el-option
+                        v-for="item in sortList"
+                        :key="item.sortId"
+                        :label="item.sortName"
+                        :value="item.sortId">
+                        </el-option>
+                    </el-select>
+                </div>
                 <div class="tag-list" v-if="tagList">
                     <el-tag
                         :key="tag"
@@ -60,7 +71,11 @@
                         @blur="handleInputConfirm"                        
                         >
                     </el-input>
-                    <el-button v-show="tagList.length < 3" v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
+                    <el-button v-show="tagList.length < 3" v-else class="button-new-tag" size="small" @click="showInput">添加标签</el-button>
+                </div>
+                <div class="btn">
+                    <el-button type="primary" @click="confirmEdit()">确认编辑</el-button>
+                    <el-button type="primary" @click="cancelEdit()">取消</el-button>
                 </div>
             </div>
         </el-dialog>
@@ -93,7 +108,12 @@ export default {
             // tag相关数据
             tagList: [],
             showTagInput: false,
-            inputValue: ''
+            inputValue: '',
+            // 分类相关数据
+            selectedSort: this.$props.data.sortId,
+            sortList: this.$store.state.sortList,
+
+            delLoading: false
          }
     },
     methods: {
@@ -117,16 +137,18 @@ export default {
         },
         // 确认删除图片
         deleteImg: function () {
+            this.delLoading = true;
             var that = this;
             $axios.post('/api/imgs/del', {ids: [that.delId]}).then((res) => {
                 if (res.data) {
                     Message.success({
-                        message: res.data.message || '删除成功',
+                        message: '删除成功',
                         type: 'info',
                         center: true
                     });
+                    that.delLoading = false;
                     that.showDel = false;
-                    that.getImgList(1);
+                    this.$parent.$emit('refreshImgList', '1')
                 }
             }).catch(function (error) {
                 that.catchError(error);
@@ -136,7 +158,50 @@ export default {
         zoomIn: function (data) {
             this.zoomInImg = data.url;
             this.showZoomIn = true;
-            this.tagList = data.tags || [];
+            this.tagList = [...data.tags] || [];
+        },
+
+        // 取消图片编辑
+        cancelEdit: function () {
+            this.showZoomIn = false;
+        },
+
+        // 确认编辑处理
+        confirmEdit: function () {
+            let params = {
+                sortId: this.selectedSort,
+                tags: this.tagList || [],
+                imgId: this.data._id
+            } 
+            // 判断是否有修改
+            let isChange = this.isChange(params);
+            if(isChange) {
+                $axios.post('/api/imgs/update', params).then((res) => {
+                    if(!res.code) {
+                        // 关闭弹框
+                        this.showZoomIn = false;
+                        Message.success({
+                            message: '修改成功',
+                            type: 'info',
+                            center: true
+                        });
+                        // 刷新列表
+                        this.$parent.$emit('refreshImgList', '1')
+                    }
+                })   
+            } else {
+                this.showZoomIn = false;
+                Message.success({
+                    message: '修改成功',
+                    type: 'info',
+                    center: true
+                });                
+            }
+        },
+
+        // 判断参数是否有修改
+        isChange: function (params) {
+            return params.sortId != this.data.sortId || JSON.stringify(params.tags) != JSON.stringify(this.data.tags);
         },
 
         handleClose(tag) {
@@ -315,20 +380,27 @@ export default {
         height: 450px;
         display: flex;
         justify-content: center;
-        align-items: center;
         flex-direction: column;
+        align-items: center;
         img {
             max-width: 100%;
             max-height: 100%;
         }
-    }
 
+        .btn {
+            margin-top: 20px;            
+        }
+    }
+    .sort {
+       margin-top: 20px; 
+       margin-left: 0;
+       width: 300px;
+    }
     .tag-list {
         margin-top: 20px;
         .el-tag {
             margin-right: 10px;
         }
-
         .input-new-tag {
             width: 90px;
         }
