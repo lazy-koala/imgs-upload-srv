@@ -126,4 +126,43 @@ module.exports = new Router(
     await imagesModel.removeOwnManyById(ids, ctx.state.authInfo.id); // 清除数据库记录
     baseController.response(ctx);
 
+}).post('update', async ctx => {
+
+    let params = ctx.request.body;
+
+    if (!params) return baseController.response400(ctx);
+    if (!params.imgId) return baseController.response400(ctx, '缺失参数: imgId');
+    if (params.imgId.length != 12 && params.imgId.length != 24) {
+        return baseController.responseWithCode(ctx, baseController.CODE.BAD_OBJECT_ID, '不合法的imgId')
+    }
+
+    if (!params.sortId && (!params.tags || params.tags.length == 0)) return baseController.response400(ctx, '缺失参数: tags|sortId不能同时为空');
+
+
+    let image = await imagesModel.selectOwnByIds(params.imgId, ctx.state.authInfo.id);
+    if (!image || image.length == 0) return baseController.responseWithCode(ctx, baseController.CODE.UNKNOWN_IMG_ID, '无效的imgId');
+
+    if (params.tags.length >= 3) {
+        return baseController.responseWithCode(ctx, baseController.CODE.MAX_IMG_TAG, "标签超出上限");
+    }
+
+    let sortTag = params.tags.sorts();
+    for (let i = 0; i < sortTag.length - 1; i++) {
+        if (sortTag[i] == sortTag[i + 1]) {
+            return baseController.responseWithCode(ctx, baseController.CODE.EXISTS_IMG_TAG, '已存在的标签: ' + params.tags[i]);
+        }
+    }
+
+    let update = {
+        tags: params.tags
+    };
+
+    if (params.sortId) {
+        update.sortId = params.sortId
+    }
+
+    await imagesModel.updateById(update, params.imgId);
+
+    baseController.response(ctx);
+
 }).routes();
