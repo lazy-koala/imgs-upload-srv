@@ -26,8 +26,8 @@ module.exports = new Router(
     let uploadResult = await busboyUpload.upload(ctx);
     console.log(JSON.stringify(uploadResult));
     if (!uploadResult.flag) return baseController.response500(ctx, '图片上传异常');
-    uploadResult = uploadResult.uploadResult;
     let fields = uploadResult.fields;
+    uploadResult = uploadResult.uploadResult;
     let sortId;
     if (!fields || !fields.sortId) {
         if (!defaultSortId) {
