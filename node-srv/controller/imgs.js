@@ -142,7 +142,7 @@ module.exports = new Router(
     let image = await imagesModel.selectOwnByIds(params.imgId, ctx.state.authInfo.id);
     if (!image || image.length == 0) return baseController.responseWithCode(ctx, baseController.CODE.UNKNOWN_IMG_ID, '无效的imgId');
 
-    if (params.tags.length >= 3) {
+    if (params.tags.length > 3) {
         return baseController.responseWithCode(ctx, baseController.CODE.MAX_IMG_TAG, "标签超出上限");
     }
 
