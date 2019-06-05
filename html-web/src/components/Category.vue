@@ -33,16 +33,20 @@
                 v-loading="tableLoading"
                 :data="tableData"
                 border
-                style="width: 100%">                
-                <el-table-column
-                prop="sortName"
-                label="分类名称"
-                width="180">
-                </el-table-column>
+                style="width: 100%">   
                 <el-table-column
                 prop="createTime"
                 label="创建时间">
+                    <template slot-scope="scope">
+                        {{timeFormat(scope.row.createTime)}}
+                    </template>
                 </el-table-column>
+
+                <el-table-column
+                prop="sortName"
+                label="分类名称">
+                </el-table-column>
+                
                 <el-table-column
                 label="操作"
                 width="180">
@@ -64,6 +68,8 @@ import CommonFooter from "./common/CommonFooter";
 import Cookies from "js-cookie";
 import $axios from 'axios';
 import { Message } from 'element-ui';
+import Common from "../assets/scripts/common.js";
+
 export default {
     name: 'category',
     components: {
@@ -207,6 +213,11 @@ export default {
                 // 添加成功，刷新列表
                 that.getSortList('update');
             })
+        },
+
+        // 时间戳格式化
+        timeFormat: function (date) {
+            return Common.formatTime(date);
         }
     },
     mounted() {
@@ -222,6 +233,9 @@ export default {
     .content-wrapper {
         margin: 20px auto;
         width: 70%;
+    }
+    .add-btn {
+        margin-bottom: 20px;
     }
     .title {
         text-align: center;

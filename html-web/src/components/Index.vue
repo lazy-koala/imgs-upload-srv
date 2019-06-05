@@ -5,7 +5,7 @@
         </template>        
         <div class="list-wrapper" v-loading="globalLoading"> 
             <div class="sort">
-                <search @handleSearch="searchHandler"></search>                
+                <search @handleSearch="searchHandler" :tag="tag"></search>                
             </div>           
             <div class="scroll-wrapper">
                 <div class="list" ref="list">
@@ -17,7 +17,7 @@
                         </div>
                     </div>
                     <div class="list-item" :key="item._id" v-for="item in imgList">
-                        <img-item :data="item"></img-item>
+                        <img-item @handleSearch="searchHandler" :data="item"></img-item>
                     </div>
                 </div>
             </div>
@@ -82,13 +82,12 @@ export default {
                 totalCount: 0
             },
             sortId: '',
-            tag: '',
+            tag: [],
             imgList: [],
             nickName: '',            
             defaultPageSize: 14,
             pageSize: 14,
-            globalLoading: true,
-            sortList: this.$store.state.sortList
+            globalLoading: true
         }
     },
     components: {
@@ -174,7 +173,8 @@ export default {
         searchHandler: function (search) {
             // todo 获取图片列表传参修改
             // 修改请求参数
-            this.sortId = search.sortId;
+            console.log(search);
+            this.sortId = search.sortId || this.sortId;
             this.tag = search.tag;
             this.getImgList(1);
         }
@@ -195,21 +195,12 @@ export default {
         }).catch(function (error) {
             that.catchError(error);
         })
-
-        // 获取分类列表
-        this.$store.dispatch('getSortList', {
-            sortId: '',
-            sortName: '',
-            type: 'get'
-        }).then((res) => {
-            this.sortList = [{ sortId: "", sortName: "全部分类" } , ...res] || [];
-        })
         // this.$refs.saveTagInput.$refs.input.focus();
     },
     created() {
         this.$on('refreshImgList', (num) => {
             this.getImgList(num);
-        })
+        });
     }
 }
 </script>
@@ -264,14 +255,14 @@ export default {
 
     .list-item {
         position: relative;
-        float: left;
-        /* display: flex;
+        float: left;        
+        margin-right: 20px;
+        margin-top: 15px;
+        display: flex;
         flex-direction: column;
         justify-content: center;
-        align-items: center; */
-        /* width: 200px; */
-        height: 210px;
-        margin-right: 20px;
+        align-items: center;
+        overflow: hidden;
     }
     .eidt-wrapper {
         position: fixed;

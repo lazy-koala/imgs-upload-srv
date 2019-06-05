@@ -2,7 +2,7 @@
     
     <el-row type="flex" justify="left">
         <el-col :span="4">
-        <el-select v-model="selectedSort" filterable placeholder="请选择分类">
+        <el-select v-model="selectedSort" filterable placeholder="请选择分类" @change="handleChangeSelect">
                 <el-option
                 v-for="item in sortList"
                 :key="item.sortId"
@@ -45,7 +45,7 @@ export default {
     name: 'search',
     data() {
         return {
-            sortList: [{sortId: "", sortName: "全部分类" }, ...this.$store.state.sortList],
+            sortList: [{sortId: "", sortName: "全部分类" }, ...this.$store.state.sortList] || [],
             selectedSort: '',
             tagList: [], //搜索输入的标签列表
             tagInputVisible: false,
@@ -73,6 +73,11 @@ export default {
             this.tagValue = '';
         },
 
+        // 切换select按钮触发一次搜索
+        handleChangeSelect() {
+            this.search();
+        },
+
         search() {
             let searchVal = {
                 sortId: this.selectedSort,
@@ -84,13 +89,14 @@ export default {
         }
     },
     mounted() {
-        // this.$store.dispatch('getSortList', {
-        //     sortId: '',
-        //     sortName: '',
-        //     type: 'get'
-        // }).then((res) => {
-        //     this.sortList = [{sortId: "", sortName: "全部分类" }, ...res] || [];
-        // })
+        // console.log('mounted dddddd');
+        this.$store.dispatch('getSortList', {
+            sortId: '',
+            sortName: '',
+            type: 'get'
+        }).then((res) => {
+            this.sortList = [{sortId: "", sortName: "全部分类" }, ...res] || [];
+        })
         // this.$refs.saveTagInput.$refs.input.focus();
     },
     created() {
@@ -109,6 +115,7 @@ export default {
         display: flex;
         align-items: center;
         border-bottom: 1px solid #dcdfe6;
+        margin-right: 15px;
         .el-input__inner {
             border: none;
         }

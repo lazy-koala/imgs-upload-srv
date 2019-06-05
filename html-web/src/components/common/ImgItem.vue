@@ -4,7 +4,7 @@
             <img class="image" :src="data.url"  @load="hideLoading()" >
             <div class="mask-wrapper animated fadeIn" :ref="data._id">
                 <div class="btn-wrapper">
-                    <el-button type="text" title="编辑图片" class="button icon el-icon-edit" @click="zoomIn(data)"></el-button>
+                    <el-button type="text" title="编辑图片" class="button icon el-icon-eidt" @click="zoomIn(data)"></el-button>
                     <el-button type="text" title="下载图片" class="button icon el-icon-download" @click="downLoadImg(data.url, data._id, data.suffix)"></el-button>
                     <el-button type="text" title="复制地址" class="button icon el-icon-fuzhi" @click="copyUrl(data.url)"></el-button>
                     <el-button type="text" title="删除图片" class="button icon el-icon-delete" @click="delBox(data._id)"></el-button>                    
@@ -12,8 +12,8 @@
                 <div class="time">{{dateFormat(data.createTime)}}</div>                    
             </div>
         </div>
-        <div class="bottom" v-if="data.tags && data.tags.length > 0">                    
-            <div class="tag" v-for="tag in data.tags" :key="tag">{{tag}}</div>
+        <div class="bottom">                    
+            <span class="tag" @click="clickTag(tag)" v-for="tag in data.tags" :key="tag" >{{tag}}</span>
         </div>
             <!-- <el-button type="text" class="button" @click="copyUrl(data.url)">复制链接</el-button>
             <el-button type="text" class="button" @click="downLoadImg(data.url, data._id, data.suffix)">下载图片</el-button> -->
@@ -112,7 +112,6 @@ export default {
             // 分类相关数据
             selectedSort: this.$props.data.sortId,
             sortList: this.$store.state.sortList,
-
             delLoading: false
          }
     },
@@ -204,6 +203,15 @@ export default {
             return params.sortId != this.data.sortId || JSON.stringify(params.tags) != JSON.stringify(this.data.tags);
         },
 
+        // 点击标签默认搜索该分类下改标签的图片
+        clickTag: function (tag) {
+            let searchVal = {
+                sortId: '',
+                tag: [tag]
+            };
+            this.$emit("handleSearch", searchVal);
+        },
+
         handleClose(tag) {
             this.tagList && this.tagList.splice(this.tagList.indexOf(tag), 1);
         },
@@ -284,17 +292,9 @@ export default {
 }
 </script>
 <style scoped>
-    .list-item {
-        position: relative;
-        float: left;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        width: 220px;
-        height: 220px;
-    }
-        .imgage-wrapper {
+    .imgage-wrapper {
+        width: 160px;
+        height: 160px;
         position: relative;
         text-align: center;
     }
@@ -347,7 +347,7 @@ export default {
 
     .icon {
         /*pointer-events: auto;*/
-        padding: 15px;
+        padding: 8%;
         color: #fff;
         font-size: 32px;
     }
@@ -362,14 +362,28 @@ export default {
         margin: 0;
     }
 
-    .tag {
+    .bottom {
+        overflow: hidden;
+        height: 50px;
+        width: 160px;
         text-align: center;
-        font-size: 12px;
-        line-height: 16px;
-        color: #666;
-    }
+        .tag {
+            margin: 2px 5px 2px 0;            
+            background: #f1f8ff;
+            border-radius: 3px;
+            display: inline-block;
+            margin: 5px 5px 0;
+            padding: 4px 6px;
+            white-space: nowrap;
+            color: #0366d6;
+            font-size: 12px;
+        }
 
-    
+        .tag:hover {
+            background:#e9ecf0;
+            cursor: pointer;
+        }
+    }
     .zoomin {
         width: 45%;
         height: 45%;
@@ -400,6 +414,7 @@ export default {
         margin-top: 20px;
         .el-tag {
             margin-right: 10px;
+            margin-bottom: 10px;
         }
         .input-new-tag {
             width: 90px;

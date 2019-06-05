@@ -15,7 +15,7 @@
 
             <el-form-item prop="password">
                 <el-input type="password" auto-complete="off" clearable placeholder="请输入密码" v-model="loginForm.password">
-                    <i slot="prefix" class="el-input__icon el-icon-pwd"></i>
+                    <i slot="prefix" class="element-icons el-icon-pwd"></i>
                 </el-input>
             </el-form-item>
             <div class="extra-info">

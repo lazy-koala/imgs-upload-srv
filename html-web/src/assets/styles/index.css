@@ -1,3 +1,3 @@
 @import './reset.css';
-/*@import './iconfont.css';*/
+@import './iconfonts/iconfont.css';
 @import './cropper.css';

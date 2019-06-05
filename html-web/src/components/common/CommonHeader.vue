@@ -2,14 +2,12 @@
 <div class="menu">
     <div class="title-wrapper">
         <span :class="['element-icons', 'menu',isCollapse ? 'el-icon-menuoff' : 'el-icon-menuon']" @click="taggleMenuList"></span>
-        <div class="title">在线图床服务</div>        
+        <div class="title" @click="gotoIndex">在线图床服务</div>        
     </div>
     <div class="menu-list" v-show="isCollapse">
         <el-menu
             default-active="index"
-            background-color="#545c64"
-            text-color="#fff"
-            active-text-color="#ffd04b"
+            
             @select="gotoMenu"
         >
             <el-menu-item index="index">
@@ -37,6 +35,7 @@
             </el-menu-item>
         </el-menu>
     </div>
+    <div class="menu-wrapper" @click="taggleMenuList" v-show="isCollapse"></div>
     <div class="tip">
         <img v-show="headImg" class="head-img" :src="headImg">
         <span>{{nickname}},欢迎你~</span>
@@ -137,18 +136,36 @@ import { Message } from 'element-ui';
     background: #409EFF;
     color: #fff;
     font-size: 24px;
-    height: 55px;
+}
+.menu-wrapper {
+    position: fixed;
+    z-index: 888;
+    top: 50px;
+    bottom: 60px;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.6);
 }
 .menu-list {
     position: fixed;
-    background: rgb(84, 92, 100);
+    /* background: rgb(84, 92, 100); */
     z-index: 999;
-    top: 55px;
+    top: 50px;
     bottom: 60px;
     width: 200px;
+    -moz-box-shadow: 1px 2px 2px rgba(221,221,221, 0.5); 
+    -webkit-box-shadow: 1px 2px 2px rgba(221,221,221, 0.5);
+    box-shadow: 1px 2px 2px rgba(221,221,221, 0.5);
+    background: #fff; 
 }
 .el-menu {
     border: none;
+    span {
+        font-size: 18px;        
+    }
+    li {
+        font-size: 16px;
+    }
 }
 .title-wrapper {
     position: relative;
@@ -156,16 +173,19 @@ import { Message } from 'element-ui';
     -webkit-box-align: center;
     .el-icon-menuon, .el-icon-menuoff {
         position: absolute;
+        top: 0;
     }
     .title {
         margin-left: 50px;
         line-height: 50px;
+        cursor:pointer;
     }
     span {
         font-size: 28px;
         display: inline-block;
-        line-height: 55px;
+        line-height: 50px;
         margin-left: 10px;
+        cursor:pointer;
     }
 }
 
