@@ -153,7 +153,7 @@ module.exports = new Router(
 
     let params = ctx.request.body;
     if (!params) return baseController.response400(ctx);
-    if (!params.username || !params.mail) return baseController.response400(ctx);
+    if (!params.username && !params.mail) return baseController.response400(ctx,'用户名和邮箱不可同时为空');
     if (params.mail && !baseController.REG.IS_MAIL.test(params.mail)) return baseController.response400(ctx, '邮箱地址不合法');
 
     let query = {};
@@ -202,7 +202,7 @@ module.exports = new Router(
     // 清除历史用户登录态(token)
     let authTokens = await authTokenModel.selectByUserIdSortByCreateTimeAsc(info._id);
     if (authTokens && authTokens.length > 0) {
-        for (var i = 0; i < authTokens.length; i++) {
+        for (let i = 0; i < authTokens.length; i++) {
             await asyncRedisClient.delAsync(redisKey.AUTH_TOKEN(authTokens[i].token));
             await authTokenModel.removeOwnByTokens(authTokens[i].token, info._id);
         }
