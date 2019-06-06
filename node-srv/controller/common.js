@@ -56,10 +56,10 @@ module.exports = new Router(
 }).get('logout', async (ctx) => {
 
     let token = baseController.getCookie(ctx, cookiesName.COOKIE_NAME_TOKEN);
-    let uinfo = baseController.getCookie(ctx, cookiesName.COOKIE_NAME_UINFO);
+    let uInfo = baseController.getCookie(ctx, cookiesName.COOKIE_NAME_UINFO);
     if (token) {
         await asyncRedisClient.delAsync(redisKey.AUTH_TOKEN(token));
-        await authTokenModel.removeOwnByTokens(token, JSON.parse(decodeURI(uinfo)).id);
+        await authTokenModel.removeOwnByTokens(token, JSON.parse(decodeURI(uInfo)).id);
     }
 
     baseController.removeCookie(ctx, [
@@ -67,7 +67,7 @@ module.exports = new Router(
         cookiesName.COOKIE_NAME_UINFO
     ]);
 
-    baseController.response(ctx);
+    baseController.response(ctx,'已安全退出');
 
 }).post('registe', async ctx => {
 
