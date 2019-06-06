@@ -4,38 +4,42 @@
         <span :class="['element-icons', 'menu',isCollapse ? 'el-icon-menuoff' : 'el-icon-menuon']" @click="taggleMenuList"></span>
         <div class="title" @click="gotoIndex">在线图床服务</div>        
     </div>
-    <div class="menu-list" v-show="isCollapse">
-        <el-menu
-            default-active="index"
-            
-            @select="gotoMenu"
-        >
-            <el-menu-item index="index">
-                <i class="element-icons el-icon-menu"></i>
-                <span slot="title">首页</span>
-            </el-menu-item>
-            <el-submenu index="person">
-                <template slot="title">
-                    <i class="element-icons el-icon-person"></i>
-                    <span>个人中心</span>
-                </template>
-                <el-menu-item-group>
-                    <el-menu-item class="element-icons el-icon-renyuan" index="person_headimg">头像昵称</el-menu-item>
-                    <el-menu-item index="person_pwd">密码邮箱</el-menu-item>
-                    <el-menu-item index="person_token">Token管理</el-menu-item>
-                </el-menu-item-group>
-            </el-submenu>
-            <el-menu-item index="category">
-                <i class="element-icons el-icon-menu"></i>
-                <span slot="title">分类管理</span>
-            </el-menu-item>            
-            <el-menu-item index="exit">
-                <i class="element-icons el-icon-exit"></i>
-                <span slot="title">退出</span>
-            </el-menu-item>
-        </el-menu>
-    </div>
+    <transition name="fade">
+        <div class="menu-list" v-show="isCollapse">
+            <el-menu
+                default-active="index"
+                
+                @select="gotoMenu"
+            >
+                <el-menu-item index="index">
+                    <i class="element-icons el-icon-menu"></i>
+                    <span slot="title">首页</span>
+                </el-menu-item>
+                <el-submenu index="person">
+                    <template slot="title">
+                        <i class="element-icons el-icon-person"></i>
+                        <span>个人中心</span>
+                    </template>
+                    <el-menu-item-group>
+                        <el-menu-item class="element-icons el-icon-renyuan" index="person_headimg">头像昵称</el-menu-item>
+                        <el-menu-item index="person_pwd">密码邮箱</el-menu-item>
+                        <el-menu-item index="person_token">Token管理</el-menu-item>
+                    </el-menu-item-group>
+                </el-submenu>
+                <el-menu-item index="category">
+                    <i class="element-icons el-icon-menu"></i>
+                    <span slot="title">分类管理</span>
+                </el-menu-item>            
+                <el-menu-item index="exit">
+                    <i class="element-icons el-icon-exit"></i>
+                    <span slot="title">退出</span>
+                </el-menu-item>
+            </el-menu>
+        </div>
+    </transition>
+
     <div class="menu-wrapper" @click="taggleMenuList" v-show="isCollapse"></div>
+    
     <div class="tip">
         <img v-show="headImg" class="head-img" :src="headImg">
         <span>{{nickname}},欢迎你~</span>
@@ -144,7 +148,6 @@ import { Message } from 'element-ui';
     bottom: 60px;
     left: 0;
     right: 0;
-    background: rgba(0, 0, 0, 0.6);
 }
 .menu-list {
     position: fixed;
@@ -210,5 +213,18 @@ import { Message } from 'element-ui';
 }
 .exit:hover{
     cursor: pointer
+}
+
+.fade-enter-active {
+    transition: all .3s cubic-bezier(1.0, 0.9, 0.9, 1.0);
+    opacity: 0.9;
+}
+.fade-leave-active {
+    transition: all .3s cubic-bezier(1.0, 0.9, 0.9, 1.0);
+}
+.fade-enter, .fade-leave-to
+/* .slide-fade-leave-active for below version 2.1.8 */ {
+  transform: translateX(-200px);
+  opacity: 0.9;
 }
 </style>

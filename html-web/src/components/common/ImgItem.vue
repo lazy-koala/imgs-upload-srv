@@ -310,7 +310,8 @@ export default {
         left: 0;
         bottom: 0;
         right: 0;
-        background: rgba(13,10,49,.9);
+        background: rgba(0,0,0,.5);
+        /* background: rgba(13,10,49,.9); */
     }
 
     .mask {
@@ -340,7 +341,8 @@ export default {
         font-size: 12px;
         height: 20px;
         text-align: center;
-        background: rgba(13, 10, 49, 1);
+        /* background: rgba(13, 10, 49, 1); */
+        background: #409eff;
         color: #fff;
         line-height: 20px;
     }
@@ -354,8 +356,10 @@ export default {
 
     .icon:hover{
         cursor: pointer;
-        color: red;
-        background: rgba(13, 10, 49, 1);
+        /* color: red; */
+        color: #409eff;
+        background: rgba(0,0,0,.3);
+        /* background: rgba(13, 10, 49, 1); */
     }
 
     .el-button + .el-button {
