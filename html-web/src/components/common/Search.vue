@@ -84,7 +84,9 @@ export default {
         },
 
         // 切换select按钮触发一次搜索
-        handleChangeSelect() {
+        handleChangeSelect(val) {
+            this.selectedSort = val;
+            
             this.search();
         },
 

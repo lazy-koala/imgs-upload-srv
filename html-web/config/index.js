@@ -20,12 +20,21 @@ module.exports = {
             //         '^/api': '/mock/27/api'   //本身的接口地址没有 '/api' 这种通用前缀，所以要rewrite，如果本身有则去掉
             //     }
             // }
+            // testimg测试环境
             '/api': { //代理地址
                 target: 'https://testimgs.thankjava.com', //需要代理的地址
                 changeOrigin: true, //是否跨域
                 secure: false,
                 baseURL: 'https://testimgs.thankjava.com'
             }
+
+            // 线上环境
+            // '/api': { //代理地址
+            //     target: 'https://imgs.thankjava.com', //需要代理的地址
+            //     changeOrigin: true, //是否跨域
+            //     secure: false,
+            //     baseURL: 'https://imgs.thankjava.com'
+            // }
         },
 
         // Various Dev Server settings

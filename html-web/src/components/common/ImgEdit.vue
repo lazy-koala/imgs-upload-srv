@@ -15,6 +15,7 @@
       <button type="text" class="toolbar__button" data-action="clear" title="Cancel (Esc)" v-if="data.cropping"><span class="el-icon-cancel"></span></button>
       <!-- <button type="text" class="toolbar__button" data-action="ok" title="OK (Enter)" v-if="data.cropping"><span class="el-icon-ok"></span></button> -->
     </div>
+    <div class="">`该图片将默认上传到${sortName}分类下`</div>
     <div class="tag-list" v-if="tagList">
         <el-tag
             :key="`${tag}`"

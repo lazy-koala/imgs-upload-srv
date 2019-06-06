@@ -82,6 +82,7 @@ export default {
                 totalCount: 0
             },
             sortId: '',
+            sortName: '默认分类',
             tag: [],
             imgList: [],
             nickName: '',            
@@ -104,9 +105,9 @@ export default {
             var ref = that.$refs['list'];
             var clientWidth = +document.body.clientWidth;
             var clientHeight = +ref.offsetHeight;
-            var picWidth = 200;
+            var picWidth = 160;
             var picHeight =210;
-            var size = +parseInt(clientWidth/picWidth) * (+parseInt(clientHeight/picHeight)) - 1;
+            var size = +parseInt(clientWidth/picWidth) * (+parseInt(clientHeight/picHeight)) - 4;
             that.pageSize = size > 0 ? size : 10;
             var params = {
               pageSize: size > 0 ? size : 1,
@@ -174,7 +175,7 @@ export default {
             // todo 获取图片列表传参修改
             // 修改请求参数
             console.log(search);
-            this.sortId = search.sortId || this.sortId;
+            this.sortId = search.sortId || '';
             this.tag = [...search.tag];
             this.getImgList(1);
         }
