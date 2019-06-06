@@ -46,8 +46,10 @@
     :visible.sync="showReset"
     width="550px"
     center
+    @close="handleClose"
+    :close-on-click-modal=false
     >
-        <user-reset></user-reset>
+        <user-reset ref="userReset"></user-reset>
     </el-dialog>
   </div>
 </template>
@@ -118,6 +120,9 @@ export default {
 
         showResetPwdHandler: function () {
             this.showReset = true;
+        },
+        handleClose: function () {
+            this.$refs['userReset'].restForm();
         }
     },
 

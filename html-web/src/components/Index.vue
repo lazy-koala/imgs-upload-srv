@@ -175,7 +175,7 @@ export default {
             // 修改请求参数
             console.log(search);
             this.sortId = search.sortId || this.sortId;
-            this.tag = search.tag;
+            this.tag = [...search.tag];
             this.getImgList(1);
         }
     },

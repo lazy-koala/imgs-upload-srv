@@ -43,6 +43,11 @@ import $axios from 'axios';
 
 export default {
     name: 'search',
+    props: {
+        tag: {
+            type: Array
+        }
+    },
     data() {
         return {
             sortList: [{sortId: "", sortName: "全部分类" }, ...this.$store.state.sortList] || [],
@@ -50,6 +55,11 @@ export default {
             tagList: [], //搜索输入的标签列表
             tagInputVisible: false,
             tagValue: '' //输入标签的值
+        }
+    },
+    watch: {
+        tag(val) {
+            this.tagList = val;
         }
     },
     methods: {        
