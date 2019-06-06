@@ -158,7 +158,7 @@ module.exports = new Router(
 
     let query = {};
     if (params.username) {
-        query.username = query
+        query.username = params.username;
     } else {
         query.email = params.mail
     }
