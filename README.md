@@ -62,18 +62,18 @@
 > #### 技术栈
 - Server:
 
-        Node
-        Koa2
+    - Node
+    - Koa2
             
 - WEB:
 
-        HTML5
-        Vue
+    - HTML5
+    - Vue
             
 - DataBase:
 
-        MongoDB
-        Redis
+    - MongoDB
+    - Redis
 ---    
 > #### 关于我们
 
