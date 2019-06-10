@@ -15,7 +15,7 @@
       <button type="text" class="toolbar__button" data-action="clear" title="Cancel (Esc)" v-if="data.cropping"><span class="el-icon-cancel"></span></button>
       <!-- <button type="text" class="toolbar__button" data-action="ok" title="OK (Enter)" v-if="data.cropping"><span class="el-icon-ok"></span></button> -->
     </div>
-    <div class="">`该图片将默认上传到${sortName}分类下`</div>
+    <div class="tip-message">{{ tipMessage }}</div>
     <div class="tag-list" v-if="tagList">
         <el-tag
             :key="`${tag}`"
@@ -85,7 +85,8 @@
         loading: null,
         tagList: [],
         inputValue: '',
-        showTagInput: false
+        showTagInput: false,
+        tipMessage: ''
       };
     },
 
@@ -387,6 +388,24 @@
             
       },
     },
+    watch: {
+      sortId () {
+        this.$store.dispatch('getSortList', {
+            sortId: '',
+            sortName: '',
+            type: 'get'
+        }).then((res) => {
+            let msg = '';
+            this.sortList = [...res] || [];
+            this.sortList.forEach(item => {
+              if(item.sortId == this.sortId) {
+                msg =  item.sortName + '';
+              }
+            });
+            this.tipMessage = `该图片将上传至"${msg || '默认分类'}"分类`;
+        })
+      }
+    },
     beforeDestroy () {
       this.stop();
     },
@@ -447,6 +466,11 @@
   .btn {
     text-align: center;
     margin-top: 10px;
+  }
+  .tip-message {
+    text-align: center;
+    color: red;
+    margin-bottom: 5px;
   }
   .tag-list {
       text-align: center;

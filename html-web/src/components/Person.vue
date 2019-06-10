@@ -4,7 +4,7 @@
             <common-header isIndex="1"></common-header>
         </template>
         <div class="content-wrapper">
-            <el-tabs tab-position="left" v-model="activeName" class="menu-wrapper"  @tab-click="tokenTab">
+            <el-tabs v-loading="dataLoading" tab-position="left" v-model="activeName" class="menu-wrapper"  @tab-click="tokenTab">
                 <el-tab-pane height="80px" name="person_headimg">
                     <span slot="label"><i class="el-icon-userp gap"></i>头像昵称</span>
                     <headImg-nickName class="tab-right"></headImg-nickName>
@@ -46,7 +46,8 @@
         data () {
             return {
                 tokenList: [],
-                activeName: ''
+                activeName: '',
+                dataLoading: false
             }
         },
         methods: {
@@ -56,8 +57,10 @@
                 }
             },
             getToken: function() {
+                this.dataLoading = true;
                 $axios.get('/api/token/list').then((res) => {
                     if (res && res.data && !res.data.code) {
+                        this.dataLoading = false;
                        this.tokenList = res.data.data.list || [];
                     } else {
                         Message.error({
@@ -77,8 +80,8 @@
         },
         // computed: {
         //     activeName() {
-        //         // 根据路由参数判断显示 头像昵称1-1、密码邮箱1-2、token管理1-3
-        //         return this.$route.params.index || '1-1';
+        //         // 根据路由参数判断显示 头像昵称person_headimg、密码邮箱1-2、token管理1-3
+        //         return this.$route.params.index || 'person_headimg';
         //     }
         // },
         beforeMount () {
@@ -98,12 +101,18 @@
             })
 
             // 第一次路由过来加载组件
-            this.activeName = this.$route.query.index || '1-1';
+            this.activeName = this.$route.query.index || 'person_headimg';
+            if(this.activeName == 'person_token') {
+                this.getToken();
+            }
         },
         watch: {
             // 监听路由参数发生变化
             $route() {
-                this.activeName = this.$route.query.index || '1-1';
+                this.activeName = this.$route.query.index || 'person_headimg';
+                if(this.activeName == 'person_token') {
+                    this.getToken();
+                }
             }
         }     
     }

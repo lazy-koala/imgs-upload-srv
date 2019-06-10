@@ -108,11 +108,7 @@ export default {
             var picWidth = 180;
             var picHeight =210;
             // var size = +parseInt(clientWidth/picWidth) * (+parseInt(clientHeight/picHeight)) - 4;
-            var size = +parseInt((clientWidth - 20) /picWidth) * (+parseInt(clientHeight/picHeight)) - 1;
-            console.log('clientWidth', clientWidth);
-            console.log('clientHeight', clientHeight);
-            console.log('width', +parseInt(clientWidth/picWidth));
-            console.log('height', +parseInt(clientHeight/picHeight));
+            var size = +parseInt((clientWidth - 20) /picWidth) * (+parseInt(clientHeight/picHeight)) - 1;            
             that.pageSize = size > 0 ? size : 10;
             var params = {
               pageSize: size > 0 ? size : 1,

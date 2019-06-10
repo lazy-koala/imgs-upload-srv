@@ -401,6 +401,8 @@ export default {
         flex-direction: column;
         align-items: center;
         img {
+            width: 100%;
+            height: 60%;
             max-width: 100%;
             max-height: 100%;
         }
