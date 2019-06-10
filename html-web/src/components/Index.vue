@@ -105,9 +105,14 @@ export default {
             var ref = that.$refs['list'];
             var clientWidth = +document.body.clientWidth;
             var clientHeight = +ref.offsetHeight;
-            var picWidth = 160;
+            var picWidth = 180;
             var picHeight =210;
-            var size = +parseInt(clientWidth/picWidth) * (+parseInt(clientHeight/picHeight)) - 4;
+            // var size = +parseInt(clientWidth/picWidth) * (+parseInt(clientHeight/picHeight)) - 4;
+            var size = +parseInt((clientWidth - 20) /picWidth) * (+parseInt(clientHeight/picHeight)) - 1;
+            console.log('clientWidth', clientWidth);
+            console.log('clientHeight', clientHeight);
+            console.log('width', +parseInt(clientWidth/picWidth));
+            console.log('height', +parseInt(clientHeight/picHeight));
             that.pageSize = size > 0 ? size : 10;
             var params = {
               pageSize: size > 0 ? size : 1,
@@ -149,7 +154,8 @@ export default {
         },
 
         handleCurrentChange: function (val) {
-            this.getImgList(val, {});
+            console.log(val);
+            this.getImgList(val);
         },
         catchError: function (error) {
             if (error.response && error.response.status && error.response.status == '401') {
@@ -233,7 +239,8 @@ export default {
         width: 100%;
         bottom: 40px;
         margin: 10px auto;
-        overflow-y: scroll;
+        overflow: hidden;
+        /* overflow-y: scroll; */
         padding: 0 20px;
     }
     .sort {

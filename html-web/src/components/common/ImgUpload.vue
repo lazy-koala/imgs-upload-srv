@@ -135,8 +135,8 @@
     align-items: center;
     justify-content: center;
     margin: 0px auto;
-    width: 160px;
-    height: 160px;
+    width: 158px;
+    height: 158px;
     color: #409EFF;
     font-size: 100px;
     flex-direction: column;
