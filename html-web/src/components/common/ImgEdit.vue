@@ -86,7 +86,7 @@
         tagList: [],
         inputValue: '',
         showTagInput: false,
-        tipMessage: ''
+        tipMessage: '该图片将上传至"默认分类"分类'
       };
     },
 
