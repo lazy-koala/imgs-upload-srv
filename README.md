@@ -85,8 +85,12 @@
 
 ---
 > 备注
+
 - 在线使用 [https://imgs.thankjava.com](https://imgs.thankjava.com)
+
 - 自建部署指南
+
     - [前端部署指南](https://github.com/lazy-koala/imgs-upload-srv/blob/master/doc/deploy-web.md)
+
     - [后端部署指南](https://github.com/lazy-koala/imgs-upload-srv/blob/master/doc/deploy-srv.md)
 
