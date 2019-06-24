@@ -15,6 +15,7 @@
       <button type="text" class="toolbar__button" data-action="clear" title="Cancel (Esc)" v-if="data.cropping"><span class="el-icon-cancel"></span></button>
       <!-- <button type="text" class="toolbar__button" data-action="ok" title="OK (Enter)" v-if="data.cropping"><span class="el-icon-ok"></span></button> -->
     </div>
+    <!-- <div class="tip-message">{{ `该图片将上传至"${tipMessage || '默认分类'}"分类` }}</div> -->
     <div class="tip-message">{{ tipMessage }}</div>
     <div class="tag-list" v-if="tagList">
         <el-tag
@@ -86,7 +87,7 @@
         tagList: [],
         inputValue: '',
         showTagInput: false,
-        tipMessage: '该图片将上传至"默认分类"分类'
+        tipMessage: ''
       };
     },
 
@@ -388,23 +389,27 @@
             
       },
     },
-    watch: {
-      sortId () {
-        this.$store.dispatch('getSortList', {
+    // watch: {
+    //   sortId () {
+        
+    //   }
+    // },
+    mounted() {
+      this.$store.dispatch('getSortList', {
             sortId: '',
             sortName: '',
             type: 'get'
         }).then((res) => {
             let msg = '';
             this.sortList = [...res] || [];
+            console.log('watchwatchwatch', this.sortList);
             this.sortList.forEach(item => {
-              if(item.sortId == this.sortId) {
+              if(item.sortId == this.props.sortId) {
                 msg =  item.sortName + '';
               }
             });
-            this.tipMessage = `该图片将上传至"${msg || '默认分类'}"分类`;
+            this.tipMessage =  `该图片将上传至"${msg || '默认分类'}"分类`;
         })
-      }
     },
     beforeDestroy () {
       this.stop();

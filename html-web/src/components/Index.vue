@@ -176,7 +176,7 @@ export default {
         searchHandler: function (search) {
             // todo 获取图片列表传参修改
             // 修改请求参数
-            console.log(search);
+            console.log('selectchange', search);
             this.sortId = search.sortId || '';
             this.tag = [...search.tag];
             this.getImgList(1);
