@@ -150,7 +150,7 @@ export default {
         },
 
         handleCurrentChange: function (val) {
-            console.log(val);
+            // console.log(val);
             this.getImgList(val);
         },
         catchError: function (error) {
@@ -176,7 +176,7 @@ export default {
         searchHandler: function (search) {
             // todo 获取图片列表传参修改
             // 修改请求参数
-            console.log('selectchange', search);
+            // console.log('selectchange', search);
             this.sortId = search.sortId || '';
             this.tag = [...search.tag];
             this.getImgList(1);

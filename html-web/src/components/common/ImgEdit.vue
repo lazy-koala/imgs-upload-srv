@@ -388,6 +388,23 @@
             }
             
       },
+      updateSortName() {
+        this.$store.dispatch('getSortList', {
+            sortId: '',
+            sortName: '',
+            type: 'get'
+        }).then((res) => {
+            let msg = '';
+            this.sortList = [...res] || [];
+            // console.log('watchwatchwatch', this.sortId);
+            this.sortList.forEach(item => {
+              if(item.sortId == this.sortId) {
+                msg =  item.sortName + '';
+              }
+            });
+            this.tipMessage =  `该图片将上传至"${msg || '默认分类'}"分类`;
+        })
+      }
     },
     // watch: {
     //   sortId () {
@@ -395,21 +412,10 @@
     //   }
     // },
     mounted() {
-      this.$store.dispatch('getSortList', {
-            sortId: '',
-            sortName: '',
-            type: 'get'
-        }).then((res) => {
-            let msg = '';
-            this.sortList = [...res] || [];
-            console.log('watchwatchwatch', this.sortList);
-            this.sortList.forEach(item => {
-              if(item.sortId == this.props.sortId) {
-                msg =  item.sortName + '';
-              }
-            });
-            this.tipMessage =  `该图片将上传至"${msg || '默认分类'}"分类`;
-        })
+      this.updateSortName()
+    },
+    beforeUpdate() {
+      this.updateSortName()
     },
     beforeDestroy () {
       this.stop();
