@@ -24,7 +24,6 @@ module.exports = new Router(
 ).post('upload', async (ctx) => {
 
     let uploadResult = await busboyUpload.upload(ctx);
-    console.log(JSON.stringify(uploadResult));
     if (!uploadResult.flag) return baseController.response500(ctx, '图片上传异常');
     let fields = uploadResult.fields;
     uploadResult = uploadResult.uploadResult;
@@ -165,4 +164,18 @@ module.exports = new Router(
 
     baseController.response(ctx);
 
+}).get('refreshUri', async ctx => {
+
+    let param = ctx.query;
+    if (!param || !param.imgId) return baseController.response400(ctx, '缺失参数: imgId');
+    let image = await imagesModel.selectOwnByIds(params.imgId, ctx.state.authInfo.id);
+    if (!image) return baseController.responseWithCode(ctx, baseController.CODE.UNKNOWN_IMG_ID, '无效的imgId');
+    let urn = '/' + algorithm10to64.number10to64((await asyncRedisClient.incrAsync(redisKey.IMG_INCR_NO())) + Date.now());
+    await imagesModel.updateById({
+        urn: urn
+    }, image._id);
+
+    baseController.response(ctx, "请求完成", {
+        uri: baseConfig.imgUri + urn
+    })
 }).routes();
