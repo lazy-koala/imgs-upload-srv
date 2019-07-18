@@ -212,26 +212,6 @@ module.exports = new Router(
 
     baseController.response(ctx);
 
-}).get('view/:urn', async ctx => { // 读取图片信息
-
-    let params = ctx.params;
-    if (!params.urn) return baseController.response400(ctx, '无效的请求链接');
-    let urn = '/' + params.urn;
-
-    let image = await imagesModel.selectByUrn(urn);
-    if (!image) {
-        return baseController.response400(ctx, '无效的请求链接');
-    }
-
-    ctx.set('Content-Type', 'image/' + image.url.split('.')[1]);
-    ctx.set('Cache-Control', 'public, max-age=28800');
-
-    if (fs.existsSync(fs.readFileSync(uploadConfig.path + image.url))) {
-
-    }
-
-    ctx.body = fs.readFileSync(uploadConfig.path + image.url);
-
 }).routes();
 
 
