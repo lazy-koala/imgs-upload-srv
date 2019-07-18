@@ -74,23 +74,14 @@
 
     - MongoDB
     - Redis
+- 自建部署指南
+
+    - [前端部署指南](https://github.com/lazy-koala/imgs-upload-srv/blob/master/doc/deploy-web.md)
+
+    - [后端部署指南](https://github.com/lazy-koala/imgs-upload-srv/blob/master/doc/deploy-srv.md)
 ---    
 > #### 关于我们
 
 [![org](https://img.shields.io/badge/org-@LazyKoala-yellow.svg)](https://github.com/lazy-koala/)
 
 [![author](https://img.shields.io/badge/author-@qazyuan-blue.svg)](https://github.com/qazyuan/) [![author](https://img.shields.io/badge/author-@thankjava-blue.svg)](https://github.com/thankjava/)
-
-**倾力渲染** & **强力驱动**
-
----
-> 备注
-
-- 在线使用 [https://imgs.thankjava.com](https://imgs.thankjava.com)
-
-- 自建部署指南
-
-    - [前端部署指南](https://github.com/lazy-koala/imgs-upload-srv/blob/master/doc/deploy-web.md)
-
-    - [后端部署指南](https://github.com/lazy-koala/imgs-upload-srv/blob/master/doc/deploy-srv.md)
-
