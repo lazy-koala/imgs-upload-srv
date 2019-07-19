@@ -15,6 +15,7 @@ const redisKey = require('../const/redisKey');
 module.exports = new Router(
 
 ).get('list', async ctx => {
+    
     let userId = ctx.state.authInfo.id;
     let tokens = await authTokenModel.selectByUserIdSortByCreateTimeDesc(userId);
     if (tokens) {

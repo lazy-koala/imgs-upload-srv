@@ -13,7 +13,7 @@ const uploadConfig = require('../config/upload');
 
 module.exports = new Router(
 
-).get('view/:urn', async ctx => { // 读取图片信息
+).get(':urn', async ctx => { // 读取图片信息
 
     let params = ctx.params;
     if (!params.urn) return baseController.response400(ctx, '无效的请求链接');
@@ -27,10 +27,8 @@ module.exports = new Router(
     ctx.set('Content-Type', 'image/' + image.url.split('.')[1]);
     ctx.set('Cache-Control', 'public, max-age=28800');
 
-    if (fs.existsSync(fs.readFileSync(uploadConfig.path + image.url))) {
-
-    }
-
     ctx.body = fs.readFileSync(uploadConfig.path + image.url);
 
+}).get('share/:urn', async ctx => {
+    baseController.response(ctx);
 }).routes();
