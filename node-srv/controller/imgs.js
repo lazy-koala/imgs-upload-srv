@@ -164,7 +164,7 @@ module.exports = new Router(
 
     baseController.response(ctx);
 
-}).get('refreshUri', async ctx => {
+}).get('refresh_uri', async ctx => {
 
     let param = ctx.query;
     if (!param || !param.imgId) return baseController.response400(ctx, '缺失参数: imgId');
