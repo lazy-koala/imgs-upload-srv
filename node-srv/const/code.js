@@ -23,5 +23,7 @@ module.exports = {
     UNKNOWN_IMG_ID: "1013",             // 无效的图片id
     MAX_IMG_TAG: "1014",                // 标签超出上限
     EXISTS_IMG_TAG: "1015",             // 已存在的标签
-    EXISTING_SORT_NAME: "1016"          // 已存在的分类
+    EXISTING_SORT_NAME: "1016",         // 已存在的分类
+    SHARED_SORT_ID:"1017",              // 该分类以及分享
+    NOT_EXISTED_ANY_IMG:'1018',         // 该分类下无任何图片
 };

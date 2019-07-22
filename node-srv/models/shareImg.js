@@ -13,6 +13,7 @@ class shareImg extends baseModel {
             imgId: {type: String, required: true},
             shareId: {type: String, required: true},
             urn: {type: String, required: true, unique: true},
+            status: {type: Boolean, required: true, default: true}
         };
     };
 
@@ -24,6 +25,9 @@ class shareImg extends baseModel {
         return new this.model(shareImg).save();
     }
 
+    saveMany(shareImgs) {
+        return new this.model.insertMany(shareImgs);
+    }
 }
 
 module.exports = new shareImg();

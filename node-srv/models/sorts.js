@@ -11,6 +11,7 @@ class sort extends baseModel {
         return {
             sortName: {type: String, required: true},
             userId: {type: String, required: true},
+            shared: {type: Boolean, default: false}
         };
     };
 
@@ -40,7 +41,6 @@ class sort extends baseModel {
 
     selectByCondition(condition) {
         return this.model.find(condition).exec();
-
     }
 }
 
