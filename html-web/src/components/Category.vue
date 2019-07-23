@@ -29,6 +29,20 @@
                     <el-button type="primary" @click="handleSort">确 定</el-button>
                 </span>
             </el-dialog>
+
+            <!-- 分享弹框 -->
+            <el-dialog
+                :visible.sync="shareBox"
+                :before-close="handleShareCancel"
+                width="60%">
+                <div slot="title">{{title}}</div>
+                <el-input v-model="shareLink" disabled>
+                    <el-button slot="append" type="primary" @click="copyLink">复制链接</el-button> 
+                </el-input>  
+                <p class="tips">温馨提示：该链接仅分享该分类当前包含的所有图片，后续上传至该分类的图片不会被自动分享</p>          
+            </el-dialog>
+
+            <!-- 分类列表 -->
             <el-table
                 v-loading="tableLoading"
                 :data="tableData"
@@ -53,6 +67,7 @@
                 <template slot-scope="scope">
                     <el-button v-show="scope.row.sortName != '默认分类'" @click="popDelBox(scope.row)" type="text" size="small">删除</el-button>
                     <el-button v-show="scope.row.sortName != '默认分类'" type="text" size="small" @click="popAddBox('edit', scope.row)">编辑</el-button>
+                    <el-button type="text" size="small" @click="popShareBox(scope.row)">分享该分类</el-button>
                 </template>
                 </el-table-column>
             </el-table>
@@ -85,7 +100,10 @@ export default {
             title: '',
             delBox: false,
             delData: {},
-            tableLoading: true
+            tableLoading: true,
+            // 分享相关变量
+            shareBox: false, //分享弹框显示
+            shareLink: ""  //分享链接
         }
     },
     methods: { 
@@ -157,6 +175,28 @@ export default {
             if(type == "add") {
                 this.title = "新增分类";
             }
+        },
+
+        // 分享该分类
+        popShareBox: function (data) {
+            let sortId = data.sortId;
+            $axios.post('/api/share/create_sort', { sortId: sortId}).then((res) => {
+                this.shareBox = true;
+                console.log(res);
+                // this.shareLink = res.data.data
+                
+            })
+
+        },
+
+        // 复制分享链接功能
+        copyLink: function () {
+
+        },
+
+        // 隐藏分享弹框
+        handleShareCancel: function () {
+            this.shareBox = false;
         },
 
         // 获取分类列表
@@ -240,6 +280,12 @@ export default {
     .title {
         text-align: center;
         font-size: 16px;
+    }
+    .tips {
+        font-size: 12px;
+        padding-top: 10px;
+        line-height: 18px;
+        color: rgb(64, 158, 255);
     }
 </style>
 
