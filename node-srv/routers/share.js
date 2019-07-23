@@ -10,6 +10,6 @@ const router = new Router({
     prefix: '/share/'
 });
 
-router.use(require('../controller/sort'));
+router.use(require('../controller/share'));
 
 module.exports = router.routes();
