@@ -35,7 +35,7 @@
                 :visible.sync="shareBox"
                 :before-close="handleShareCancel"
                 width="60%">
-                <div slot="title">{{title}}</div>
+                <div slot="title">分享成功</div>
                 <el-input v-model="shareLink" disabled>
                     <el-button slot="append" type="primary" @click="copyLink">复制链接</el-button> 
                 </el-input>  
@@ -63,11 +63,13 @@
                 
                 <el-table-column
                 label="操作"
-                width="180">
+                width="250">
                 <template slot-scope="scope">
                     <el-button v-show="scope.row.sortName != '默认分类'" @click="popDelBox(scope.row)" type="text" size="small">删除</el-button>
                     <el-button v-show="scope.row.sortName != '默认分类'" type="text" size="small" @click="popAddBox('edit', scope.row)">编辑</el-button>
-                    <el-button type="text" size="small" @click="popShareBox(scope.row)">分享该分类</el-button>
+                    <el-button type="text" v-show="!scope.row.shareId && scope.row.sortName != '默认分类'" size="small" @click="popShareBox(scope.row, 'share')">分享该分类</el-button>
+                    <el-button type="text" v-show="scope.row.shareId" size="small" @click="popShareBox(scope.row, 'cancel')">取消分享</el-button>
+                    <el-button type="text" v-show="scope.row.shareId" size="small" @click="popShareBox(scope.row, 'copy')">复制分享链接</el-button>
                 </template>
                 </el-table-column>
             </el-table>
@@ -82,7 +84,7 @@ import CommonHeader from "./common/CommonHeader";
 import CommonFooter from "./common/CommonFooter";
 import Cookies from "js-cookie";
 import $axios from 'axios';
-import { Message } from 'element-ui';
+import { Message, Loading } from 'element-ui';
 import Common from "../assets/scripts/common.js";
 
 export default {
@@ -103,7 +105,7 @@ export default {
             tableLoading: true,
             // 分享相关变量
             shareBox: false, //分享弹框显示
-            shareLink: ""  //分享链接
+            shareLink: {}  //分享链接
         }
     },
     methods: { 
@@ -178,15 +180,59 @@ export default {
         },
 
         // 分享该分类
-        popShareBox: function (data) {
-            let sortId = data.sortId;
-            $axios.post('/api/share/create_sort', { sortId: sortId}).then((res) => {
-                this.shareBox = true;
-                console.log(res);
-                // this.shareLink = res.data.data
+        popShareBox: function (data, type) {
+            this.tableLoading = true;
+            switch (type) {
+                case 'share': 
+                    let sortId = data.sortId;
+                    $axios.post('/api/share/create_sort', {sortId: sortId}).then((res) => {
+                        // this.shareBox = true;
+                        // 提示成功
+                        Message.success({
+                            message: res.message || '分享分类成功',
+                            type: 'info',
+                            center: true
+                        });
+                        this.tableLoading = false;
+                        // 刷新列表修改状态
+                        this.getSortList('get');                        
+                    });
+                    break;
                 
-            })
+                case 'cancel':
+                    let shareId = data.shareId;
+                    $axios.delete('/api/share/del', {data: {shareId: shareId}}).then((res) => {
+                        // 提示成功
+                        Message.success({
+                            message: res.message || '取消分类分享成功',
+                            type: 'info',
+                            center: true
+                        });
+                        this.tableLoading = false;
 
+                        // 刷新列表修改状态
+                        this.getSortList('get');   
+                    });
+                    break;
+
+                case 'copy': 
+                    let url = data.url;     
+                    const input = document.createElement('input');
+                    document.body.appendChild(input);
+                    input.setAttribute('value', url);
+                    input.setAttribute('display', "none");
+                    input.select();
+                    if (document.execCommand('copy')) {
+                        document.execCommand('copy');
+                        Message.success({
+                            message: '已复制',
+                            type: 'info',
+                            center: true
+                        });
+                        this.tableLoading = false;
+                    }
+                    document.body.removeChild(input);
+            }
         },
 
         // 复制分享链接功能
