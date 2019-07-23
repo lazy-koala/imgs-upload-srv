@@ -64,8 +64,11 @@ module.exports = new Router(
         return baseController.responseWithCode(ctx, baseController.CODE.UNKNOWN_SORT_ID, '无效的sortId');
     }
 
-    if (sort.shared) {
-        return baseController.responseWithCode(ctx, baseController.CODE.SHARED_SORT_ID, '该分类已经分享');
+    if (sort.shared) { // 严格意义上这里存在非线程安全的并发问题
+        return baseController.responseWithCode(ctx, baseController.CODE.SHARED_SORT_ID, '该分类已经分享',{
+            shareId: shareId,
+            url: baseConfig.shareUri + SHARE_PARAM_PREFIX + shareId
+        });
     }
 
     let images = await imagesModel.selectByCondition({

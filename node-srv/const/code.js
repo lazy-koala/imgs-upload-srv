@@ -24,7 +24,7 @@ module.exports = {
     MAX_IMG_TAG: "1014",                // 标签超出上限
     EXISTS_IMG_TAG: "1015",             // 已存在的标签
     EXISTING_SORT_NAME: "1016",         // 已存在的分类
-    SHARED_SORT_ID:"1017",              // 该分类以及分享
+    SHARED_SORT_ID:"1017",              // 该分类已经分享
     NOT_EXISTED_ANY_IMG:'1018',         // 该分类下无任何图片
     INVALID_SHARE_ID:'1019',            // 无效的请求分享ID
     EXPIRED_SHARE:'1020',               // 该分享已失效
