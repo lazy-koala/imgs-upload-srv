@@ -7,6 +7,7 @@
 const Router = require('koa-router');
 
 const baseController = require('./baseController');
+const imagesModel = require('../models/images');
 
 const fs = require('fs');
 const uploadConfig = require('../config/upload');
