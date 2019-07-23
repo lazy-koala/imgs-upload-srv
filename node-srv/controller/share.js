@@ -80,7 +80,8 @@ module.exports = new Router(
     let shareId = (await shareListModel.save({
         userId: ctx.state.authInfo.id,
         type: 'sort',
-        status: true
+        status: true,
+        sortId: params.sortId
     }))._id;
 
     // 更新分类分享状态为已分享

@@ -12,7 +12,8 @@ class shareList extends baseModel {
         return {
             userId: {type: String, required: true},
             type: {type: String, required: true},
-            status: {type: Boolean, required: true, default: true}
+            status: {type: Boolean, required: true, default: true},
+            sortId: {type: String, required: true}
         };
     };
 
