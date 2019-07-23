@@ -14,7 +14,7 @@ const util = require('../lib/util');
 const baseConfig = require('../config/basic');
 
 const SHARE_PREFIX = '/share/';
-const SHARE_PARAM_PREFIX = 'shareId=';
+const SHARE_PARAM_PREFIX = '/shareId=';
 
 module.exports = new Router(
 
@@ -61,7 +61,7 @@ module.exports = new Router(
     });
 
     if (!sort) {
-        if (!params || !params.sortId) return baseController.responseWithCode(ctx, baseController.CODE.UNKNOWN_SORT_ID, '无效的sortId');
+        return baseController.responseWithCode(ctx, baseController.CODE.UNKNOWN_SORT_ID, '无效的sortId');
     }
 
     if (sort.shared) {
