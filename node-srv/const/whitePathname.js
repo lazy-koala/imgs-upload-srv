@@ -11,4 +11,5 @@ module.exports = [
     '/forget_pwd',
     '/reset_pwd',
     '/view',
+    '/share/query',
 ];

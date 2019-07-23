@@ -28,6 +28,10 @@ class shareImg extends baseModel {
     saveMany(shareImgs) {
         return new this.model.insertMany(shareImgs);
     }
+
+    selectManyByCondition(condition) {
+        return new this.model.find(condition);
+    }
 }
 
 module.exports = new shareImg();

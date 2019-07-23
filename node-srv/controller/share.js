@@ -11,6 +11,9 @@ const sortsModel = require('../models/sorts');
 
 const baseController = require('./baseController');
 const util = require('../lib/util');
+const baseConfig = require('../config/basic');
+
+const SHARE_PREFIX = '/share/';
 
 module.exports = new Router(
 
@@ -41,7 +44,10 @@ module.exports = new Router(
         });
     }
 
-    baseController.response(ctx, '处理完成', {shareId: shareId})
+    baseController.response(ctx, '处理完成', {
+        shareId: shareId,
+        url: baseConfig.imgUri + SHARE_PREFIX + shareId
+    })
 
 }).post('create_sort', async ctx => {
 
@@ -70,14 +76,18 @@ module.exports = new Router(
         return baseController.responseWithCode(ctx, baseController.CODE.NOT_EXISTED_ANY_IMG, '该分类下无任何图片');
     }
 
-    // 更新分类分享状态为已分享
-    await sortsModel.updateOwnById({shared: true}, params.sortId, ctx.state.authInfo.id);
-
     let shareId = (await shareListModel.save({
         userId: ctx.state.authInfo.id,
         type: 'sort',
         status: true
     }))._id;
+
+    // 更新分类分享状态为已分享
+    await sortsModel.updateOwnById({
+        shared: true,
+        shareId: shareId,
+        shareUrl: baseConfig.imgUri + SHARE_PREFIX + shareId
+    }, params.sortId, ctx.state.authInfo.id);
 
     let array = [];
     for (let len = images.length, index = 0; index < len; index++) {
@@ -92,7 +102,38 @@ module.exports = new Router(
     await shareImgModel.saveMany(array);
 
     baseController.response(ctx, '分享成功（仅分享分类当前含有的图片, 后续图片不会自动分享）', {
-        shareId: shareId
+        shareId: shareId,
+        url: baseConfig.imgUri + SHARE_PREFIX + shareId
     });
 
+}).get('query', async ctx => { // 通过分享Id查询该分享的具体分享图片
+
+    let params = ctx.query;
+
+    if (!params.shareId) return baseController.response400(ctx, '无效的请求链接');
+    if (params.shareId.length != 12 && params.shareId.length != 24) {
+        return baseController.response400(ctx, '不合法的请求链接');
+    }
+
+    let shareList = await shareListModel.selectOneById(params.shareId);
+    if (!shareList) {
+        return baseController.responseWithCode(ctx, baseController.CODE.INVALID_SHARE_ID, '无效的请求分享链接');
+    }
+
+    if (!shareList.shared) {
+        return baseController.responseWithCode(ctx, baseController.CODE.EXPIRED_SHARE, '该分享已经失效');
+    }
+
+    let shareImgs = await shareImgModel.selectManyByCondition({
+        shareId: params.shareId
+    });
+
+    let array = [];
+    for (let len = shareImgs.length, i = 0; i < len; i++) {
+        array.push(baseConfig.imgUri + SHARE_PREFIX + shareImgs[i].urn);
+    }
+
+    baseController.response(ctx, {
+        sharedUrls: array
+    });
 }).routes();

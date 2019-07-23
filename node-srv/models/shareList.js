@@ -24,6 +24,9 @@ class shareList extends baseModel {
         return new this.model(shareList).save();
     }
 
+    selectOneById(shareId) {
+        return this.model.findOne({_id: shareId});
+    }
 }
 
 module.exports = new shareList();

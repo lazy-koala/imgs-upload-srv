@@ -103,8 +103,10 @@ module.exports = new Router(
     let array = [{
         sortId: defaultSort._id,
         sortName: defaultSort.sortName,
-        createTime: defaultSort.createTime
+        createTime: defaultSort.createTime,
+        shared: false
     }];
+
     let sorts = await sortsModel.selectByCondition(condition);
     if (sorts && sorts.length > 0) {
 
@@ -113,7 +115,8 @@ module.exports = new Router(
                 sortId: sorts[i]._id,
                 sortName: sorts[i].sortName,
                 createTime: sorts[i].createTime,
-                shared: sorts[i].shared == null ? false : sorts[i].shared
+                shared: sorts[i].shared == null ? false : sorts[i].shared,
+                shareId: sorts[i].shareId
             })
         }
     }

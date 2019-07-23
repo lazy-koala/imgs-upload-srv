@@ -11,7 +11,9 @@ class sort extends baseModel {
         return {
             sortName: {type: String, required: true},
             userId: {type: String, required: true},
-            shared: {type: Boolean, default: false}
+            shared: {type: Boolean, default: false},
+            shareId: {type: String, required: false},
+            shareUrl: {type: String, required: false},
         };
     };
 
