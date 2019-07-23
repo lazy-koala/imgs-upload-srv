@@ -66,6 +66,10 @@ class images extends baseModel {
         return this.model.findOne({urn: urn}).exec();
     }
 
+    selectById(id) {
+        return this.model.findOne({_id: id}).exec();
+    }
+
     updateById(update, id) {
         return this.model.updateOne({_id: id}, update).exec();
     }
@@ -76,7 +80,6 @@ class images extends baseModel {
 
     updateByCondition(update, conditon) {
         return this.model.updateOne(conditon, update).exec();
-
     }
 
 }

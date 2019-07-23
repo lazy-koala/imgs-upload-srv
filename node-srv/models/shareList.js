@@ -26,7 +26,7 @@ class shareList extends baseModel {
     }
 
     selectOneById(shareId) {
-        return this.model.findOne({_id: shareId});
+        return this.model.findOne({_id: shareId}).exec();
     }
 }
 

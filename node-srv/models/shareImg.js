@@ -30,7 +30,11 @@ class shareImg extends baseModel {
     }
 
     selectManyByCondition(condition) {
-        return this.model.find(condition);
+        return this.model.find(condition).exec();
+    }
+
+    selectOneByUrn(urn) {
+        return this.model.findOne(urn).exec();
     }
 }
 
