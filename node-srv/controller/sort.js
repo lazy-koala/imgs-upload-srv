@@ -113,7 +113,7 @@ module.exports = new Router(
                 sortId: sorts[i]._id,
                 sortName: sorts[i].sortName,
                 createTime: sorts[i].createTime,
-                shared: sorts[i].shared
+                shared: sorts[i].shared == null ? false : sorts[i].shared
             })
         }
     }
