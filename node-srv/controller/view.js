@@ -8,6 +8,7 @@ const Router = require('koa-router');
 
 const baseController = require('./baseController');
 const imagesModel = require('../models/images');
+const shareImgModel = require('../models/shareImg');
 
 const fs = require('fs');
 const uploadConfig = require('../config/upload');
@@ -30,5 +31,9 @@ module.exports = new Router(
     ctx.body = fs.readFileSync(uploadConfig.path + image.url);
 
 }).get('share/:urn', async ctx => {
+
+    let params = ctx.params;
+    if (!params.urn) return baseController.response400(ctx, '无效的请求链接');
+
 
 }).routes();

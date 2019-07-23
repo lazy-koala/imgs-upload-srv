@@ -14,6 +14,7 @@ const util = require('../lib/util');
 const baseConfig = require('../config/basic');
 
 const SHARE_PREFIX = '/share/';
+const SHARE_PARAM_PREFIX = 'shareId=';
 
 module.exports = new Router(
 
@@ -86,7 +87,7 @@ module.exports = new Router(
     await sortsModel.updateOwnById({
         shared: true,
         shareId: shareId,
-        shareUrl: baseConfig.imgUri + SHARE_PREFIX + shareId
+        shareUrl: baseConfig.shareUri + SHARE_PARAM_PREFIX + shareId
     }, params.sortId, ctx.state.authInfo.id);
 
     let array = [];
@@ -103,7 +104,7 @@ module.exports = new Router(
 
     baseController.response(ctx, '分享成功（仅分享分类当前含有的图片, 后续图片不会自动分享）', {
         shareId: shareId,
-        url: baseConfig.imgUri + SHARE_PREFIX + shareId
+        url: baseConfig.shareUri + SHARE_PARAM_PREFIX + shareId
     });
 
 }).get('query', async ctx => { // 通过分享Id查询该分享的具体分享图片
