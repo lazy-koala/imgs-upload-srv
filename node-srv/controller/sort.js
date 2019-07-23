@@ -112,7 +112,8 @@ module.exports = new Router(
             array.push({
                 sortId: sorts[i]._id,
                 sortName: sorts[i].sortName,
-                createTime: sorts[i].createTime
+                createTime: sorts[i].createTime,
+                shared:sorts[i].shared
             })
         }
     }
