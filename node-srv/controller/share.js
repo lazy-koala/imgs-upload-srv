@@ -65,7 +65,7 @@ module.exports = new Router(
     }
 
     if (sort.shared) { // 严格意义上这里存在非线程安全的并发问题
-        return baseController.responseWithCode(ctx, baseController.CODE.SHARED_SORT_ID, '该分类已经分享',{
+        return baseController.responseWithCode(ctx, baseController.CODE.SHARED_SORT_ID, '该分类已经分享', {
             shareId: shareId,
             url: baseConfig.shareUri + SHARE_PARAM_PREFIX + shareId
         });
@@ -115,14 +115,14 @@ module.exports = new Router(
 
     let params = ctx.query;
 
-    if (!params.shareId) return baseController.response400(ctx, '无效的请求链接');
+    if (!params || !params.shareId) return baseController.response400(ctx, '无效的shareId');
     if (params.shareId.length != 12 && params.shareId.length != 24) {
-        return baseController.response400(ctx, '不合法的请求链接');
+        return baseController.response400(ctx, '无效的shareId');
     }
 
     let shareList = await shareListModel.selectOneById(params.shareId);
     if (!shareList) {
-        return baseController.responseWithCode(ctx, baseController.CODE.INVALID_SHARE_ID, '无效的请求分享链接');
+        return baseController.responseWithCode(ctx, baseController.CODE.INVALID_SHARE_ID, '无效的shareId');
     }
 
     if (!shareList.shared) {
@@ -141,4 +141,32 @@ module.exports = new Router(
     baseController.response(ctx, {
         sharedUrls: array
     });
+
+}).delete('del', async ctx => {
+
+    let params = ctx.query;
+    if (!params || !params.shareId) return baseController.response400(ctx, '无效的请求链接');
+
+    if (params.shareId.length != 12 && params.shareId.length != 24) {
+        return baseController.response400(ctx, '无效的请求链接');
+    }
+
+    let shareList = await shareListModel.selectOneOfOwnById(params.shareId, ctx.state.authInfo.id);
+    if (!shareList.shared) {
+        return baseController.responseWithCode(ctx, baseController.CODE.EXPIRED_SHARE, '该分享已经失效');
+    }
+
+    await shareImgModel.updateManyByShareId(params.shareId, {
+        status: false
+    });
+
+    if (shareList.type === 'sort') {
+        await sortsModel.updateForDelShare(shareList.sortId);
+    }
+
+    await shareListModel.updateById({
+        status: false
+    }, params.shareId);
+
+    baseController.response(ctx);
 }).routes();

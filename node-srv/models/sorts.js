@@ -44,6 +44,10 @@ class sort extends baseModel {
     selectByCondition(condition) {
         return this.model.find(condition).exec();
     }
+
+    updateForDelShare(sortId) {
+        return this.model.updateOne({shared: false, "$unset": {shareUrl: "", shareId: ""}}, {s}).exec();
+    }
 }
 
 module.exports = new sort();

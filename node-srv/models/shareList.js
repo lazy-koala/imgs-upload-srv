@@ -28,6 +28,14 @@ class shareList extends baseModel {
     selectOneById(shareId) {
         return this.model.findOne({_id: shareId}).exec();
     }
+
+    selectOneOfOwnById(shareId, userId) {
+        return this.model.findOne({_id: shareId, userId: userId}).exec();
+    }
+
+    updateById(condition, shareId) {
+        return this.model.update(condition, {shareId: shareId}).exec();
+    }
 }
 
 module.exports = new shareList();

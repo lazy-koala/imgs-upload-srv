@@ -36,6 +36,10 @@ class shareImg extends baseModel {
     selectOneByUrn(urn) {
         return this.model.findOne(urn).exec();
     }
+
+    updateManyByShareId(shareId, condition) {
+        return this.model.updateMany({shareId: shareId}, condition).exec();
+    }
 }
 
 module.exports = new shareImg();
