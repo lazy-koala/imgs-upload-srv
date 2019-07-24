@@ -44,8 +44,10 @@ module.exports = new Router(
         await readShareInvalidFile(ctx);
         return
     }
+
     let image = await imagesModel.selectById(shareImg.imgId);
     await readFile(image, ctx);
+
 }).routes();
 
 const readFile = async (image, ctx) => {

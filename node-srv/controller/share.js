@@ -14,7 +14,6 @@ const util = require('../lib/util');
 const baseConfig = require('../config/basic');
 
 const SHARE_PREFIX = '/share/';
-const SHARE_PREFIX_OTHER = '/share';
 
 const SHARE_PARAM_PREFIX = '?shareId=';
 
@@ -136,7 +135,7 @@ module.exports = new Router(
 
     let array = [];
     for (let len = shareImgs.length, i = 0; i < len; i++) {
-        array.push(baseConfig.imgUri + SHARE_PREFIX_OTHER + shareImgs[i].urn);
+        array.push(baseConfig.imgUri + SHARE_PREFIX + shareImgs[i].urn);
     }
 
     baseController.response(ctx, {
