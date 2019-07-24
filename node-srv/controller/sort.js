@@ -9,7 +9,7 @@ const imagesModel = require('../models/images');
 const baseController = require('./baseController');
 const baseConfig = require('../config/basic');
 
-const SHARE_PARAM_PREFIX = '/shareId=';
+const SHARE_PARAM_PREFIX = '?shareId=';
 
 let defaultSort;
 module.exports = new Router(
