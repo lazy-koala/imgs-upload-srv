@@ -145,10 +145,10 @@ module.exports = new Router(
 }).delete('del', async ctx => {
 
     let params = ctx.query;
-    if (!params || !params.shareId) return baseController.response400(ctx, '无效的请求链接');
+    if (!params || !params.shareId) return baseController.response400(ctx, '无效的shareId');
 
     if (params.shareId.length != 12 && params.shareId.length != 24) {
-        return baseController.response400(ctx, '无效的请求链接');
+        return baseController.response400(ctx, '不合法的shareId');
     }
 
     let shareList = await shareListModel.selectOneOfOwnById(params.shareId, ctx.state.authInfo.id);

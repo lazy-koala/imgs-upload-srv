@@ -46,7 +46,7 @@ class sort extends baseModel {
     }
 
     updateForDelShare(sortId) {
-        return this.model.updateOne({shared: false, "$unset": {shareUrl: "", shareId: ""}}, {s}).exec();
+        return this.model.updateOne({_id: sortId}, {shared: false, "$unset": {shareUrl: "", shareId: ""}}).exec();
     }
 }
 
