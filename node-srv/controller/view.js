@@ -26,7 +26,7 @@ module.exports = new Router(
     let urn = '/' + params.urn;
     let image = await imagesModel.selectByUrn(urn);
     await readFile(image, ctx);
-}).get('share/:urn', async ctx => {
+}).get('share:/urn', async ctx => {
     let params = ctx.params;
     console.log(params);
     if (!params.urn) {
