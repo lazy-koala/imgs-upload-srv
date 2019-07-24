@@ -34,7 +34,7 @@ class shareImg extends baseModel {
     }
 
     selectOneByUrn(urn) {
-        return this.model.findOne(urn).exec();
+        return this.model.findOne({urn: urn}).exec();
     }
 
     updateManyByShareId(shareId, condition) {
