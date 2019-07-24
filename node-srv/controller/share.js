@@ -91,7 +91,6 @@ module.exports = new Router(
     await sortsModel.updateOwnById({
         shared: true,
         shareId: shareId,
-        shareUrl: baseConfig.shareUri + SHARE_PARAM_PREFIX + shareId
     }, params.sortId, ctx.state.authInfo.id);
 
     let array = [];

@@ -7,7 +7,9 @@ const Router = require('koa-router');
 const sortsModel = require('../models/sorts');
 const imagesModel = require('../models/images');
 const baseController = require('./baseController');
+const baseConfig = require('../config/basic');
 
+const SHARE_PARAM_PREFIX = '/shareId=';
 
 let defaultSort;
 module.exports = new Router(
@@ -116,7 +118,8 @@ module.exports = new Router(
                 sortName: sorts[i].sortName,
                 createTime: sorts[i].createTime,
                 shared: sorts[i].shared == null ? false : sorts[i].shared,
-                shareId: sorts[i].shareId
+                shareId: sorts[i].shareId,
+                shareUrl: baseConfig.shareUri + SHARE_PARAM_PREFIX + sorts[i].shareId
             })
         }
     }

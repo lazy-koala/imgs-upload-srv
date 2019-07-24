@@ -34,7 +34,7 @@ class shareList extends baseModel {
     }
 
     updateById(condition, shareId) {
-        return this.model.update({_id: shareId}, condition).exec();
+        return this.model.updateOne({_id: shareId}, condition).exec();
     }
 }
 

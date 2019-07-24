@@ -13,7 +13,6 @@ class sort extends baseModel {
             userId: {type: String, required: true},
             shared: {type: Boolean, default: false},
             shareId: {type: String, required: false},
-            shareUrl: {type: String, required: false},
         };
     };
 
@@ -46,7 +45,7 @@ class sort extends baseModel {
     }
 
     updateForDelShare(sortId) {
-        return this.model.updateOne({_id: sortId}, {shared: false, "$unset": {shareUrl: "", shareId: ""}}).exec();
+        return this.model.updateOne({_id: sortId}, {shared: false, "$unset": {shareId: ""}}).exec();
     }
 }
 
