@@ -152,7 +152,7 @@ module.exports = new Router(
     }
 
     let shareList = await shareListModel.selectOneOfOwnById(params.shareId, ctx.state.authInfo.id);
-    if (!shareList.shared) {
+    if (!shareList.status) {
         return baseController.responseWithCode(ctx, baseController.CODE.EXPIRED_SHARE, '该分享已经失效');
     }
 
