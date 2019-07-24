@@ -43,7 +43,7 @@ module.exports = new Router(
             imgId: imgs[index]._id,
             shareId: shareId,
             status: true,
-            urn: '/' + util.md5(imgs[index].urn + Date.now())
+            urn: util.md5(imgs[index].urn + Date.now())
         });
     }
 
@@ -101,7 +101,7 @@ module.exports = new Router(
             imgId: images[index]._id,
             shareId: shareId,
             status: true,
-            urn: '/' + util.md5(images[index].urn + Date.now())
+            urn: util.md5(images[index].urn + Date.now())
         });
     }
 
