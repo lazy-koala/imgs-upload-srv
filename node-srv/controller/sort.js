@@ -113,14 +113,18 @@ module.exports = new Router(
     if (sorts && sorts.length > 0) {
 
         for (let i = 0; i < sorts.length; i++) {
-            array.push({
+            let obj = {
                 sortId: sorts[i]._id,
                 sortName: sorts[i].sortName,
                 createTime: sorts[i].createTime,
                 shared: sorts[i].shared == null ? false : sorts[i].shared,
-                shareId: sorts[i].shareId,
-                shareUrl: baseConfig.shareUri + SHARE_PARAM_PREFIX + sorts[i].shareId
-            })
+                shareId: sorts[i].shareId
+            };
+            if (obj.shared) {
+                obj.shareUrl = baseConfig.shareUri + SHARE_PARAM_PREFIX + sorts[i].shareId
+
+            }
+            array.push(obj)
         }
     }
     return baseController.response(ctx, {list: array});
