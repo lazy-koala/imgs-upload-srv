@@ -124,7 +124,7 @@ module.exports = new Router(
         return baseController.responseWithCode(ctx, baseController.CODE.INVALID_SHARE_ID, '无效的shareId');
     }
 
-    if (!shareList.shared) {
+    if (!shareList.status) {
         return baseController.responseWithCode(ctx, baseController.CODE.EXPIRED_SHARE, '该分享已经失效');
     }
 
