@@ -48,6 +48,9 @@
         <!-- <span class="exit">|</span> -->
         <!-- <span class="exit" @click="logout">退出</span> -->
     </div>
+    <div class="tip" v-if="isIndex == 2 && shareUser">
+        <span>{{`来自${shareUser}的分享~`}}</span>
+    </div>
 </div>
 </template>
 <script type="text/javascript">
@@ -59,6 +62,9 @@ import { Message } from 'element-ui';
         name: 'CommonHeader',
         props: {
             isIndex: {
+                type: String
+            },
+            shareUser: {
                 type: String
             }
         },

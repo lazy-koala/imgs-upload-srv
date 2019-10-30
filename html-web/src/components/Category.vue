@@ -190,7 +190,10 @@ export default {
 
                         // this.shareBox = true;
                         if(res.data && res.data.code && res.data.code != '0000') {
-                            Message.error(res.data.message || '分享失败，请稍后重试~');
+                            Message.error({
+                                message: res.data.message || '分享失败，请稍后重试~',
+                                center: true
+                            });
                             return;
                         }
                         // 提示成功
@@ -206,7 +209,10 @@ export default {
                 
                 case 'cancel':
                     let shareId = data.shareId;
-                    $axios.delete('/api/share/del', {data: {shareId: shareId}}).then((res) => {
+                    let params = {
+                        shareId,
+                    }
+                    $axios.delete('/api/share/del', {params: params}).then((res) => {
                         // 提示成功
                         Message.success({
                             message: res.message || '取消分类分享成功',
@@ -252,7 +258,7 @@ export default {
 
         // 获取分类列表
         getSortList: function (params) {
-            $axios.get('/api/sort/list', {params}).then((res) => {
+            $axios.get('/api/sort/list', {}).then((res) => {
                 if (res.data) {
                     this.tableLoading = false;
                     this.tableData = res.data && res.data.data && res.data.data.list || [];

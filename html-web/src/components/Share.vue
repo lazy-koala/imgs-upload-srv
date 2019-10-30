@@ -1,6 +1,6 @@
 <template>
     <div>
-        <common-header isIndex="2"></common-header>
+        <common-header isIndex="2" :shareUser="shareUser"></common-header>
         <div class="wrapper">
             <div class="imgage-wrapper" v-loading="loading" v-for="item in sharedUrls" :key="item"   @mouseover="toggleShow(item, 1)" @mouseleave="toggleShow(item, 0)">
                 <img class="image" :src="item"  @load="hideLoading()" >
@@ -52,7 +52,8 @@ export default {
             sharedUrls: [],
             loading: false,
             selectedUrl: '',
-            showLarge: false
+            showLarge: false,
+            shareUser: ''
         }
     },
     mounted() {
@@ -68,6 +69,7 @@ export default {
             $axios.get('/api/share/query', {params}).then((res) => {
                 if (res.data) {
                     this.sharedUrls = res.data.data && res.data.data.sharedUrls || [];
+                    this.shareUser = res.data.data && res.data.data.shareUser; 
                 }
             })
         },
@@ -201,9 +203,10 @@ export default {
 
     .img-wrapper {
         max-width: 400px;
-        max-height: 400px;
+        max-height: 420px;
         width: 100%;
         height: 100%;
+        margin: 0 auto;
     }
     .img-wrapper > img {
         max-width: 400px;
