@@ -46,11 +46,13 @@ export default {
     props: {
         tag: {
             type: Array
+        },
+        sortList: {
+            type: Array
         }
     },
     data() {
         return {
-            sortList: [{sortId: "", sortName: "全部分类" }, ...this.$store.state.sortList] || [],
             selectedSort: '',
             tagList: [], //搜索输入的标签列表
             tagInputVisible: false,
@@ -102,13 +104,13 @@ export default {
     },
     mounted() {
         // console.log('mounted dddddd');
-        this.$store.dispatch('getSortList', {
-            sortId: '',
-            sortName: '',
-            type: 'get'
-        }).then((res) => {
-            this.sortList = [{sortId: "", sortName: "全部分类" }, ...res] || [];
-        })
+        // this.$store.dispatch('getSortList', {
+        //     sortId: '',
+        //     sortName: '',
+        //     type: 'get'
+        // }).then((res) => {
+        //     this.sortList = [{sortId: "", sortName: "全部分类" }, ...res] || [];
+        // })
         // this.$refs.saveTagInput.$refs.input.focus();
     },
     created() {

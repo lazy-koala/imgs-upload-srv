@@ -1,7 +1,7 @@
 <template>
 <div class="footer">
-    <a href="https://github.com/lazy-koala/"><img src="https://img.shields.io/badge/org-@LazyKoala-yellow.svg" alt="org" data-canonical-src="https://img.shields.io/badge/org-@LazyKoala-yellow.svg" style="max-width:100%;"></a>
-    <p>&copy;Copyright (C) 2019 All rights reserved</p>
+    <!-- <a href="https://github.com/lazy-koala/"><img src="https://img.shields.io/badge/org-@LazyKoala-yellow.svg" alt="org" data-canonical-src="https://img.shields.io/badge/org-@LazyKoala-yellow.svg" style="max-width:70%;"></a> -->
+    <span>&copy;Copyright (C) 2019 All rights reserved</span>
 </div>
 </template>
 <script type="text/javascript">
@@ -16,14 +16,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
+    /* flex-direction: column; */
     width: 100%;
-    height: 60px;
+    /* height: 60px; */
     /*background: #efefef;*/
     background: #EEEEEE;
     border-top: 1px solid #ccc;
     text-align: center;
-    p {
+    padding: 10px 0;
+    span {
         color: #888;
         /*color: #fff;*/
         font-size: 12px;

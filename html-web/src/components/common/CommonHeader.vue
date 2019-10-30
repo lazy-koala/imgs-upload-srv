@@ -1,7 +1,7 @@
 <template>
 <div class="menu">
     <div class="title-wrapper">
-        <span :class="['element-icons', 'menu',isCollapse ? 'el-icon-menuoff' : 'el-icon-menuon']" @click="taggleMenuList"></span>
+        <span v-if="isIndex != 2" :class="['element-icons', 'menu',isCollapse ? 'el-icon-menuoff' : 'el-icon-menuon']" @click="taggleMenuList"></span>
         <div class="title" @click="gotoIndex">在线图床服务</div>        
     </div>
     <transition name="fade">
@@ -40,7 +40,7 @@
 
     <div class="menu-wrapper" @click="taggleMenuList" v-show="isCollapse"></div>
     
-    <div class="tip">
+    <div class="tip" v-if="isIndex != 2">
         <img v-show="headImg" class="head-img" :src="headImg">
         <span>{{nickname}},欢迎你~</span>
         <!-- <span v-if="isIndex==0" class="exit" @click="gotoPerson">个人中心</span> -->

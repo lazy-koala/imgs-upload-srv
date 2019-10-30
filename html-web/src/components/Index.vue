@@ -5,7 +5,7 @@
         </template>        
         <div class="list-wrapper" v-loading="globalLoading"> 
             <div class="sort">
-                <search @handleSearch="searchHandler" :tag="tag"></search>                
+                <search :sortList="sortList" @handleSearch="searchHandler" :tag="tag"></search>                
             </div>           
             <div class="scroll-wrapper">
                 <div class="list" ref="list">
@@ -17,7 +17,7 @@
                         </div>
                     </div>
                     <div class="list-item" :key="item._id" v-for="item in imgList">
-                        <img-item @handleSearch="searchHandler" :data="item"></img-item>
+                        <img-item :sortList="sortList" @handleSearch="searchHandler" :data="item"></img-item>
                     </div>
                 </div>
             </div>
@@ -42,7 +42,7 @@
         center
         :before-close="handleClose"
         >
-            <img-edit @refresh="getImgList" ref="editor" :data="data" :sortId="sortId"></img-edit>
+            <img-edit :sortList="sortList" @refresh="getImgList" ref="editor" :data="data" :sortId="sortId"></img-edit>
         </el-dialog>
     </div>
 </template>
@@ -72,7 +72,7 @@ export default {
                 type: '',
                 url: '',
                 isGif: false,
-                base64Url: '',                
+                base64Url: '',   
             },
             page: {
                 pageNumber: 1,
@@ -88,7 +88,8 @@ export default {
             nickName: '',            
             defaultPageSize: 14,
             pageSize: 14,
-            globalLoading: true
+            globalLoading: true,
+            sortList: [] 
         }
     },
     components: {
@@ -180,6 +181,17 @@ export default {
             this.sortId = search.sortId || '';
             this.tag = [...search.tag];
             this.getImgList(1);
+        },
+        getSortList() {
+            let params = {
+                sortName: '',
+                sortId: ''
+            };
+            $axios.get('/api/sort/list', {params}).then((res) => {
+                if (res.data) {
+                    this.sortList = res.data && res.data.data && res.data.data.list || [];
+                }
+            })
         }
     },
     mounted () {
@@ -204,6 +216,8 @@ export default {
         this.$on('refreshImgList', (num) => {
             this.getImgList(num);
         });
+
+        this.getSortList()
     }
 }
 </script>
@@ -215,7 +229,7 @@ export default {
     .list-wrapper {
         position: absolute;
         top: 80px;
-        bottom: 80px;
+        bottom: 40px;
         left: 0px;
         right: 0px;
     }

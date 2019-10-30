@@ -74,6 +74,9 @@
       sortId: {
           type: String,
           default: ''
+      },
+      sortList: {
+        type: Array
       }
     },
 
@@ -389,21 +392,28 @@
             
       },
       updateSortName() {
-        this.$store.dispatch('getSortList', {
-            sortId: '',
-            sortName: '',
-            type: 'get'
-        }).then((res) => {
-            let msg = '';
-            this.sortList = [...res] || [];
-            // console.log('watchwatchwatch', this.sortId);
-            this.sortList.forEach(item => {
-              if(item.sortId == this.sortId) {
-                msg =  item.sortName + '';
-              }
-            });
-            this.tipMessage =  `该图片将上传至"${msg || '默认分类'}"分类`;
-        })
+        let msg = "";
+        this.sortList.forEach(item => {
+          if(item.sortId == this.sortId) {
+            msg =  item.sortName + '';
+          }
+        });
+        this.tipMessage =  `该图片将上传至"${msg || '默认分类'}"分类`;
+        // this.$store.dispatch('getSortList', {
+        //     sortId: '',
+        //     sortName: '',
+        //     type: 'get'
+        // }).then((res) => {
+        //     let msg = '';
+        //     this.sortList = [...res] || [];
+        //     // console.log('watchwatchwatch', this.sortId);
+        //     this.sortList.forEach(item => {
+        //       if(item.sortId == this.sortId) {
+        //         msg =  item.sortName + '';
+        //       }
+        //     });
+        //     this.tipMessage =  `该图片将上传至"${msg || '默认分类'}"分类`;
+        // })
       }
     },
     // watch: {
@@ -432,13 +442,14 @@
   .canvas {
     align-items: center;
     display: flex;
-    height: 350px;
+    height: 300px;
     justify-content: center;
-
-    & > img {
-      max-height: 100%;
-      max-width: 100%;
-    }
+  }
+  .canvas >img {
+    width: auto;
+    height: auto;
+    max-height: 260px;
+    max-width: 300px;
   }
 
   .toolbar-wrapper, .cropper-wrapper {
