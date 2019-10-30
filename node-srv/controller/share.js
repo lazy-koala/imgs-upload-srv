@@ -8,6 +8,7 @@ const imagesModel = require('../models/images');
 const shareListModel = require('../models/shareList');
 const shareImgModel = require('../models/shareImg');
 const sortsModel = require('../models/sorts');
+const userModel = require('../models/user');
 
 const baseController = require('./baseController');
 const util = require('../lib/util');
@@ -129,6 +130,16 @@ module.exports = new Router(
         return baseController.responseWithCode(ctx, baseController.CODE.EXPIRED_SHARE, '该分享已经失效');
     }
 
+
+    let shareUser = await userModel.selectById(shareList.userId);
+    let shareUsername;
+
+    if (!shareUser.nickname) {
+        shareUsername = shareUser.username.replace(baseController.REG.USERNAME_ENCODE, "$1**$2");
+    } else {
+        shareUsername = shareUser.nickname;
+    }
+
     let shareImgs = await shareImgModel.selectManyByCondition({
         shareId: params.shareId
     });
@@ -139,7 +150,8 @@ module.exports = new Router(
     }
 
     baseController.response(ctx, {
-        sharedUrls: array
+        sharedUrls: array,
+        shareUser: shareUsername
     });
 
 }).delete('del', async ctx => {

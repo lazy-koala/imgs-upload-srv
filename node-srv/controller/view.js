@@ -28,7 +28,6 @@ module.exports = new Router(
     await readFile(image, ctx);
 }).get('share/:urn', async ctx => {
     let params = ctx.params;
-    console.log(params);
     if (!params.urn) {
         await readInvalidFile(ctx);
         return;

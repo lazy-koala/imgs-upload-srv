@@ -11,6 +11,8 @@ module.exports = {
     PASSWORD: /^[a-zA-Z0-9_-]{6,20}$/,
     // token 脱敏
     TOKEN_ENCODE: /^(\w{3})\w*(\w{4})$/,
+    // token 脱敏
+    USERNAME_ENCODE: /^(\w{2})\w*(\w{1})$/,
     // 邮箱脱敏
     MAIL_ENCODE: /(.{2}).+(.{2}@.+)/,
 };
