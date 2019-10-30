@@ -96,6 +96,9 @@ export default {
         },
         imgList: {
             type: Array
+        },
+        sortList: {
+            type: Array
         }
     },
     data() {
@@ -111,7 +114,7 @@ export default {
             inputValue: '',
             // 分类相关数据
             selectedSort: this.$props.data.sortId,
-            sortList: this.$store.state.sortList,
+            // sortList: this.$store.state.sortList,
             delLoading: false
          }
     },
@@ -242,7 +245,7 @@ export default {
             if (document.execCommand('copy')) {
                 document.execCommand('copy');
                 Message.success({
-                    message: '已复制',
+                    message: '图片链接已复制～',
                     type: 'info',
                     center: true
                 });
@@ -297,10 +300,15 @@ export default {
         height: 160px;
         position: relative;
         text-align: center;
+        display: flex;
+        align-items: center;
     }
     .image {
-        width: 160px;
-        height: 160px;
+        width: auto;
+        height: auto;
+        max-height: 160px;
+        max-width: 160px;
+        /* height: 160px; */
     }
 
     .mask-wrapper {
@@ -394,17 +402,14 @@ export default {
     }
 
     .zoomin-wrapper {
-        width: 100%;
-        height: 450px;
+        /* width: 100%; */
+        /* height: 450px; */
         display: flex;
         justify-content: center;
         flex-direction: column;
         align-items: center;
         img {
-            width: 100%;
-            height: 60%;
             max-width: 100%;
-            max-height: 100%;
         }
 
         .btn {

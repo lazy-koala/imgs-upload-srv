@@ -7,6 +7,7 @@ import Category from "@/components/Category";
 import HeadImg from "@/components/common/Person/HeadImg";
 import MailCode from "@/components/common/Person/MailCode";
 import Token from "@/components/common/Person/Token";
+import Share from "@/components/Share";
 Vue.use(Router)
 
 export default new Router({
@@ -29,6 +30,11 @@ export default new Router({
             path: '/category',
             name: 'category',
             component: Category
+        },
+        {
+            path: '/share',
+            name: 'share',
+            component: Share
         },
         {
             path: '*',

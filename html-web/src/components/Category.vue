@@ -186,14 +186,19 @@ export default {
                 case 'share': 
                     let sortId = data.sortId;
                     $axios.post('/api/share/create_sort', {sortId: sortId}).then((res) => {
+                        this.tableLoading = false;
+
                         // this.shareBox = true;
+                        if(res.data && res.data.code && res.data.code != '0000') {
+                            Message.error(res.data.message || '分享失败，请稍后重试~');
+                            return;
+                        }
                         // 提示成功
                         Message.success({
                             message: res.message || '分享分类成功',
                             type: 'info',
                             center: true
                         });
-                        this.tableLoading = false;
                         // 刷新列表修改状态
                         this.getSortList('get');                        
                     });
@@ -216,7 +221,7 @@ export default {
                     break;
 
                 case 'copy': 
-                    let url = data.url;     
+                    let url = data.shareUrl;     
                     const input = document.createElement('input');
                     document.body.appendChild(input);
                     input.setAttribute('value', url);
@@ -247,20 +252,20 @@ export default {
 
         // 获取分类列表
         getSortList: function (params) {
-            // $axios.get('/api/sort/list', {params}).then((res) => {
-            //     if (res.data) {
-            //         this.tableData = res.data && res.data.data && res.data.data.list || [];
-            //     }
-            // })
-            this.tableLoading = true;
-            this.$store.dispatch('getSortList', {
-                sortId: '',
-                sortName: '',
-                type: params
-            }).then((res) => {
-                this.tableLoading = false;
-                this.tableData = res || [];
+            $axios.get('/api/sort/list', {params}).then((res) => {
+                if (res.data) {
+                    this.tableLoading = false;
+                    this.tableData = res.data && res.data.data && res.data.data.list || [];
+                }
             })
+            // this.$store.dispatch('getSortList', {
+            //     sortId: '',
+            //     sortName: '',
+            //     type: params
+            // }).then((res) => {
+            //     this.tableLoading = false;
+            //     this.tableData = res || [];
+            // })
         },
 
         // 点击删除弹框
