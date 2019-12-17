@@ -124,12 +124,12 @@ export default {
 <style scoped>
     .wrapper {
         position: relative;
-        float: left;        
+        /* float: left;        
         margin: 20px;
         display: flex;
         flex-direction: column;
         justify-content: center;
-        align-items: center;
+        align-items: center; */
         overflow: hidden;
     }
     .imgage-wrapper {
@@ -139,6 +139,8 @@ export default {
         text-align: center;
         display: flex;
         align-items: center;
+        float: left;        
+        margin: 20px;
     }
     .image {
         max-width: 160px;
