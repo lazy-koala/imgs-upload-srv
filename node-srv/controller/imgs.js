@@ -11,6 +11,8 @@ const busboyUpload = require('../lib/busboyUpload');
 const baseController = require('./baseController');
 const imagesModel = require('../models/images');
 const sortsModel = require('../models/sorts');
+const shareImgModel = require('../models/shareImg');
+
 const asyncRedisClient = require('../lib/asyncRedis').client;
 const redisKey = require('../const/redisKey');
 
@@ -41,14 +43,14 @@ module.exports = new Router(
 
     let incr;
 
-
     // TODO : 此处图片上传设计为多张, 但是标签和分类只设计传一张, 所以上传暂时约定一张一张上传
+    let img;
     for (let index in uploadResult) {
 
         incr = await asyncRedisClient.incrAsync(redisKey.IMG_INCR_NO());
 
         if (uploadResult[index].flag) {
-            let img = {
+            img = {
                 userId: userId,
                 url: uploadResult[index].path,
                 urn: '/' + algorithm10to64.number10to64(incr + Date.now()),
@@ -65,6 +67,20 @@ module.exports = new Router(
 
     if (saveImages.length > 0) {
         await imagesModel.saveMany(saveImages);
+    }
+
+    // 自动进行分享
+    // FIXME 如果多张图片上传这里是有问题的
+    if (sortId !== defaultSortId) {
+        let sort = await sortsModel.selectOwnById(sortId, userId);
+        if (sort.shared) {
+            await shareImgModel.save({
+                imgId: img._id,
+                shareId: sort.shareId,
+                status: true,
+                urn: util.md5(img.urn + Date.now())
+            });
+        }
     }
 
     baseController.response(ctx, uploadResult);

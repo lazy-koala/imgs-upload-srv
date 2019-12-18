@@ -6,7 +6,7 @@
 const Router = require('koa-router');
 const sortsModel = require('../models/sorts');
 const imagesModel = require('../models/images');
-const defaultLoadSortId = require('../models/defaultLoadSortId');
+const defaultLoadSortIdModel = require('../models/defaultLoadSortId');
 const baseController = require('./baseController');
 const baseConfig = require('../config/basic');
 
@@ -130,22 +130,26 @@ module.exports = new Router(
     }
     return baseController.response(ctx, {
         list: array,
-        defaultLoadSortId: (await defaultLoadSortId.selectOneByOwnId(userId))
+        defaultLoadSortId: (await defaultLoadSortIdModel.selectOneByOwnId(userId))
     });
 
 }).post('set_default_load_sort_id', async ctx => {
 
     let params = ctx.request.body;
-    if (!params || params.sortId) return baseController.response400(ctx);
+    if (!params) return baseController.response400(ctx);
+    if (!params.sortId) {
+        await defaultLoadSortIdModel.removeOwnById(userId);
+        return baseController.response(ctx);
+    }
     let sortId = params.sortId;
 
     let userId = ctx.state.authInfo.id;
 
-    let defaultSortId = await defaultLoadSortId.selectOneByOwnId(userId);
+    let defaultSortId = await defaultLoadSortIdModel.selectOneByOwnId(userId);
     if (defaultSortId) {
-        await defaultLoadSortId.updateOwnById(sortId, userId);
+        await defaultLoadSortIdModel.updateOwnById(sortId, userId);
     } else {
-        await defaultLoadSortId.save(userId, sortId)
+        await defaultLoadSortIdModel.save(userId, sortId)
     }
 
     baseController.response(ctx);
