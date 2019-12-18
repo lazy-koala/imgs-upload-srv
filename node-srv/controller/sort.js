@@ -6,6 +6,7 @@
 const Router = require('koa-router');
 const sortsModel = require('../models/sorts');
 const imagesModel = require('../models/images');
+const defaultLoadSortId = require('../models/defaultLoadSortId');
 const baseController = require('./baseController');
 const baseConfig = require('../config/basic');
 
@@ -127,6 +128,26 @@ module.exports = new Router(
             array.push(obj)
         }
     }
-    return baseController.response(ctx, {list: array});
+    return baseController.response(ctx, {
+        list: array,
+        defaultLoadSortId: (await defaultLoadSortId.selectOneByOwnId(userId))
+    });
+
+}).post('set_default_load_sort_id', async ctx => {
+
+    let params = ctx.request.body;
+    if (!params || params.sortId) return baseController.response400(ctx);
+    let sortId = params.sortId;
+
+    let userId = ctx.state.authInfo.id;
+
+    let defaultSortId = await defaultLoadSortId.selectOneByOwnId(userId);
+    if (defaultSortId) {
+        await defaultLoadSortId.updateOwnById(sortId, userId);
+    } else {
+        await defaultLoadSortId.save(userId, sortId)
+    }
+
+    baseController.response(ctx);
 
 }).routes();
