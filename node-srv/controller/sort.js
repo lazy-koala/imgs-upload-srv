@@ -145,10 +145,12 @@ module.exports = new Router(
 
     let userId = ctx.state.authInfo.id;
 
-    let defaultSortId = await defaultLoadSortIdModel.selectOneByOwnId(userId);
-    if (defaultSortId && defaultSortId.sortId) {
+    let defaultSort = await defaultLoadSortIdModel.selectOneByOwnId(userId);
+    if (defaultSort && defaultSort.sortId) {
+        console.log('已存在默认设置执行更新: ' + defaultSort.sortId);
         await defaultLoadSortIdModel.updateOwnById(sortId, userId);
     } else {
+        console.log('不存在默认设置, 保存当前配置' + sortId);
         await defaultLoadSortIdModel.save(userId, sortId);
     }
 
