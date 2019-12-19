@@ -137,13 +137,14 @@ module.exports = new Router(
 
     let params = ctx.request.body;
     if (!params) return baseController.response400(ctx);
+    let userId = ctx.state.authInfo.id;
+
     if (!params.sortId) {
         await defaultLoadSortIdModel.removeOwnById(userId);
         return baseController.response(ctx);
     }
     let sortId = params.sortId;
 
-    let userId = ctx.state.authInfo.id;
 
     let defaultSort = await defaultLoadSortIdModel.selectOneByOwnId(userId);
     if (defaultSort && defaultSort.sortId) {
