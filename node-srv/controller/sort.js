@@ -6,6 +6,7 @@
 const Router = require('koa-router');
 const sortsModel = require('../models/sorts');
 const imagesModel = require('../models/images');
+const defaultLoadSortIdModel = require('../models/defaultLoadSortId');
 const baseController = require('./baseController');
 const baseConfig = require('../config/basic');
 
@@ -127,6 +128,35 @@ module.exports = new Router(
             array.push(obj)
         }
     }
-    return baseController.response(ctx, {list: array});
+
+    let defaultLoadSort = await defaultLoadSortIdModel.selectOneByOwnId(userId);
+    return baseController.response(ctx, {
+        list: array,
+        defaultLoadSortId: defaultLoadSort ? defaultLoadSort.sortId : null
+    });
+
+}).post('set_default_load_sort_id', async ctx => {
+
+    let params = ctx.request.body;
+    if (!params) return baseController.response400(ctx);
+    let userId = ctx.state.authInfo.id;
+
+    if (!params.sortId) {
+        await defaultLoadSortIdModel.removeOwnById(userId);
+        return baseController.response(ctx);
+    }
+    let sortId = params.sortId;
+
+
+    let defaultLoadSort = await defaultLoadSortIdModel.selectOneByOwnId(userId);
+    if (defaultLoadSort && defaultLoadSort.sortId) {
+        console.log('已存在默认设置执行更新: ' + defaultLoadSort.sortId);
+        await defaultLoadSortIdModel.updateOwnById(sortId, userId);
+    } else {
+        console.log('不存在默认设置, 保存当前配置' + sortId);
+        await defaultLoadSortIdModel.save(userId, sortId);
+    }
+
+    baseController.response(ctx);
 
 }).routes();

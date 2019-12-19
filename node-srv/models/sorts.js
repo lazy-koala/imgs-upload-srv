@@ -13,6 +13,7 @@ class sort extends baseModel {
             userId: {type: String, required: true},
             shared: {type: Boolean, default: false},
             shareId: {type: String, required: false},
+            isDefault: {type: Boolean, default: false}
         };
     };
 
@@ -26,6 +27,10 @@ class sort extends baseModel {
 
     selectById(id) {
         return this.model.findOne({_id: id}).exec();
+    }
+
+    selectOwnById(sortId, userId) {
+        return this.model.findOne({_id: sortId, userId: userId}).exec();
     }
 
     updateOwnById(condition, sortId, userId) {
@@ -44,7 +49,12 @@ class sort extends baseModel {
         return this.model.find(condition).exec();
     }
 
-    updateForDelShare(sortId) {
+    /**
+     * 删除已经分享的分类
+     * @param sortId
+     * @returns {*|RegExpExecArray}
+     */
+    updateForDeleteShareId(sortId) {
         return this.model.updateOne({_id: sortId}, {shared: false, "$unset": {shareId: ""}}).exec();
     }
 }

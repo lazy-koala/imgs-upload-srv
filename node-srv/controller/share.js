@@ -173,7 +173,7 @@ module.exports = new Router(
     });
 
     if (shareList.type === 'sort') {
-        await sortsModel.updateForDelShare(shareList.sortId);
+        await sortsModel.updateForDeleteShareId(shareList.sortId);
     }
 
     await shareListModel.updateById({
