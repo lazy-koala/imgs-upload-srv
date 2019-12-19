@@ -129,10 +129,10 @@ module.exports = new Router(
         }
     }
 
-    let defaultSort = await defaultLoadSortIdModel.selectOneByOwnId(userId);
+    let defaultLoadSort = await defaultLoadSortIdModel.selectOneByOwnId(userId);
     return baseController.response(ctx, {
         list: array,
-        defaultLoadSortId: defaultSort ? defaultSort.sortId : null
+        defaultLoadSortId: defaultLoadSort ? defaultLoadSort.sortId : null
     });
 
 }).post('set_default_load_sort_id', async ctx => {
@@ -148,9 +148,9 @@ module.exports = new Router(
     let sortId = params.sortId;
 
 
-    let defaultSort = await defaultLoadSortIdModel.selectOneByOwnId(userId);
-    if (defaultSort && defaultSort.sortId) {
-        console.log('已存在默认设置执行更新: ' + defaultSort.sortId);
+    let defaultLoadSort = await defaultLoadSortIdModel.selectOneByOwnId(userId);
+    if (defaultLoadSort && defaultLoadSort.sortId) {
+        console.log('已存在默认设置执行更新: ' + defaultLoadSort.sortId);
         await defaultLoadSortIdModel.updateOwnById(sortId, userId);
     } else {
         console.log('不存在默认设置, 保存当前配置' + sortId);
