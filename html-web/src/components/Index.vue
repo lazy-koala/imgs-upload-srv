@@ -5,7 +5,7 @@
         </template>        
         <div class="list-wrapper" v-loading="globalLoading"> 
             <div class="sort">
-                <search :sortList="sortList" @handleSearch="searchHandler" :tag="tag"></search>                
+                <search :sortList="sortList" :defaultSortId="defaultSortId" @handleSearch="searchHandler" :tag="tag"></search>                
             </div>           
             <div class="scroll-wrapper">
                 <div class="list" ref="list">
@@ -89,7 +89,8 @@ export default {
             defaultPageSize: 14,
             pageSize: 14,
             globalLoading: true,
-            sortList: [] 
+            sortList: [],
+            defaultSortId: "" //默认加载的分类id
         }
     },
     components: {
@@ -190,6 +191,9 @@ export default {
             $axios.get('/api/sort/list', {params}).then((res) => {
                 if (res.data) {
                     this.sortList = res.data && res.data.data && res.data.data.list || [];
+                    this.defaultSortId = res.data && res.data.data && res.data.data.defaultLoadSortId || '';
+                    this.sortId = this.defaultSortId;
+                    this.getImgList(this.page.pageNumber);
                 }
             })
         }
@@ -201,7 +205,7 @@ export default {
             that.$router.push('/');
             return false;
         }
-        that.getImgList(this.page.pageNumber);
+        
         $axios.get('/api/user/uinfo').then((res) => {
             if (res.data && res.data.data) {
                 var info = res.data.data || {};

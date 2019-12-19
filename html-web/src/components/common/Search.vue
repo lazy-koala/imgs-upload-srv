@@ -7,6 +7,7 @@
                 v-for="item in sortList"
                 :key="item.sortId"
                 :label="item.sortName"
+                :v-model="defaultSortId"
                 :value="item.sortId">
                 </el-option>
             </el-select>
@@ -49,11 +50,14 @@ export default {
         },
         sortList: {
             type: Array
+        },
+        defaultSortId: {
+            type: String
         }
     },
     data() {
         return {
-            selectedSort: '',
+            selectedSort: this.defaultSortId,
             tagList: [], //搜索输入的标签列表
             tagInputVisible: false,
             tagValue: '' //输入标签的值
@@ -62,8 +66,12 @@ export default {
     watch: {
         tag(val) {
             this.tagList = val;
+        },
+        defaultSortId(val) {
+            this.selectedSort = val;
         }
     },
+    
     methods: {        
         handleClose(tag) {
             this.tagList.splice(this.tagList.indexOf(tag), 1);

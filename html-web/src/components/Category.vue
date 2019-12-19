@@ -4,7 +4,55 @@
             <common-header isIndex="1"></common-header>
         </template>
         <div class="content-wrapper">
-            <el-button type="primary" class="add-btn" @click="popAddBox('add')">新增分类</el-button>
+            <div class="category-list">
+                <header style="display: flex;">
+                    <h3>分类列表</h3>
+                    <el-button size="small" type="primary" class="add-btn" @click="popAddBox('add')">新增分类</el-button>
+                </header>
+                
+                <!-- 分类列表 -->
+                <el-table
+                    v-loading="tableLoading"
+                    :data="tableData"
+                    border
+                    style="width: 100%">   
+                    <el-table-column
+                    prop="createTime"
+                    label="创建时间">
+                        <template slot-scope="scope">
+                            {{timeFormat(scope.row.createTime)}}
+                        </template>
+                    </el-table-column>
+
+                    <el-table-column
+                    prop="sortName"
+                    label="分类名称">
+                    </el-table-column>
+                    
+                    <el-table-column
+                    label="操作"
+                    width="250">
+                    <template slot-scope="scope">
+                        <el-button v-show="scope.row.sortName != '默认分类'" @click="popDelBox(scope.row)" type="text" size="small">删除</el-button>
+                        <el-button v-show="scope.row.sortName != '默认分类'" type="text" size="small" @click="popAddBox('edit', scope.row)">编辑</el-button>
+                        <el-button type="text" v-show="!scope.row.shareId && scope.row.sortName != '默认分类'" size="small" @click="popShareBox(scope.row, 'share')">分享该分类</el-button>
+                        <el-button type="text" v-show="scope.row.shareId" size="small" @click="popShareBox(scope.row, 'cancel')">取消分享</el-button>
+                        <el-button type="text" v-show="scope.row.shareId" size="small" @click="popShareBox(scope.row, 'copy')">复制分享链接</el-button>
+                    </template>
+                    </el-table-column>
+                </el-table>
+            </div>
+            <div class="category-manage">
+                <header>
+                    <h3>分类管理</h3>
+                    <small>点击分类设置为默认加载的分类</small>
+                </header>
+                <el-radio-group v-model="selecetedId" @change="changeDefault">
+                    <el-radio class="radio-button" v-for="item in setTableData" :label="item.sortId" :key="item.sortId" border>{{item.sortName}}</el-radio>
+                </el-radio-group>
+
+            </div>
+            <!-- 删除分类 -->
             <el-dialog
                 :visible.sync="delBox"
                 :before-close="handleDelCancel"
@@ -42,37 +90,7 @@
                 <p class="tips">温馨提示：该链接仅分享该分类当前包含的所有图片，后续上传至该分类的图片不会被自动分享</p>          
             </el-dialog>
 
-            <!-- 分类列表 -->
-            <el-table
-                v-loading="tableLoading"
-                :data="tableData"
-                border
-                style="width: 100%">   
-                <el-table-column
-                prop="createTime"
-                label="创建时间">
-                    <template slot-scope="scope">
-                        {{timeFormat(scope.row.createTime)}}
-                    </template>
-                </el-table-column>
-
-                <el-table-column
-                prop="sortName"
-                label="分类名称">
-                </el-table-column>
-                
-                <el-table-column
-                label="操作"
-                width="250">
-                <template slot-scope="scope">
-                    <el-button v-show="scope.row.sortName != '默认分类'" @click="popDelBox(scope.row)" type="text" size="small">删除</el-button>
-                    <el-button v-show="scope.row.sortName != '默认分类'" type="text" size="small" @click="popAddBox('edit', scope.row)">编辑</el-button>
-                    <el-button type="text" v-show="!scope.row.shareId && scope.row.sortName != '默认分类'" size="small" @click="popShareBox(scope.row, 'share')">分享该分类</el-button>
-                    <el-button type="text" v-show="scope.row.shareId" size="small" @click="popShareBox(scope.row, 'cancel')">取消分享</el-button>
-                    <el-button type="text" v-show="scope.row.shareId" size="small" @click="popShareBox(scope.row, 'copy')">复制分享链接</el-button>
-                </template>
-                </el-table-column>
-            </el-table>
+            
         </div>
         <template class='footer'>
             <common-footer></common-footer>
@@ -96,6 +114,7 @@ export default {
     data() {
         return {
             tableData: [],
+            setTableData: [],
             dialogVisible: false,
             sortName: '',
             handleType: '', //操作分类的类型 'add'新增分类 'edit'编辑分类
@@ -105,7 +124,8 @@ export default {
             tableLoading: true,
             // 分享相关变量
             shareBox: false, //分享弹框显示
-            shareLink: {}  //分享链接
+            shareLink: {}, //分享链接
+            selecetedId: "" //默认加载的分类ID
         }
     },
     methods: { 
@@ -262,6 +282,9 @@ export default {
                 if (res.data) {
                     this.tableLoading = false;
                     this.tableData = res.data && res.data.data && res.data.data.list || [];
+                    this.setTableData = [{sortId: "", sortName: "全部"}, ...this.tableData];
+                    this.selecetedId = res.data && res.data.data && res.data.data.defaultLoadSortId;
+                    
                 }
             })
             // this.$store.dispatch('getSortList', {
@@ -272,6 +295,21 @@ export default {
             //     this.tableLoading = false;
             //     this.tableData = res || [];
             // })
+        },
+
+        // 更改默认加载分类
+        changeDefault(val) {
+            $axios.post('/api/sort/set_default_load_sort_id', { sortId: val }).then((res) => {
+                // 提示成功
+                Message.success({
+                    message: '设置默认加载分类成功',
+                    type: 'info',
+                    center: true
+                });
+                // 添加成功，刷新列表
+                // this.getSortList('update');
+            })
+            // console.log('defalut', val)
         },
 
         // 点击删除弹框
@@ -331,9 +369,7 @@ export default {
         margin: 20px auto;
         width: 70%;
     }
-    .add-btn {
-        margin-bottom: 20px;
-    }
+    
     .title {
         text-align: center;
         font-size: 16px;
@@ -343,6 +379,28 @@ export default {
         padding-top: 10px;
         line-height: 18px;
         color: rgb(64, 158, 255);
+    }
+    .category-list header {
+        display: flex;
+        align-items: center;
+        margin: 10px;
+    }
+    .category-list header h3 {
+        flex: 1;
+    }
+
+    .category-manage {
+        margin-top: 30px;
+    }
+    .category-manage header {
+        display: flex;
+        align-items: center;
+        margin: 10px;
+    }
+    .category-manage small {
+        font-size: 12px;
+        color: #bbb;
+        padding-left: 5px;
     }
 </style>
 
