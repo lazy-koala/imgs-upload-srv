@@ -130,7 +130,7 @@ module.exports = new Router(
     }
     return baseController.response(ctx, {
         list: array,
-        defaultLoadSortId: (await (defaultLoadSortIdModel.selectOneByOwnId(userId)._id))
+        defaultLoadSortId: (await defaultLoadSortIdModel.selectOneByOwnId(userId))._id
     });
 
 }).post('set_default_load_sort_id', async ctx => {
@@ -149,7 +149,7 @@ module.exports = new Router(
     if (defaultSortId && defaultSortId.sortId) {
         await defaultLoadSortIdModel.updateOwnById(sortId, userId);
     } else {
-        await defaultLoadSortIdModel.save(userId, sortId)
+        await defaultLoadSortIdModel.save(userId, sortId);
     }
 
     baseController.response(ctx);
