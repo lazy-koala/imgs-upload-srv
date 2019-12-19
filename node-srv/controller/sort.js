@@ -146,7 +146,7 @@ module.exports = new Router(
     let userId = ctx.state.authInfo.id;
 
     let defaultSortId = await defaultLoadSortIdModel.selectOneByOwnId(userId);
-    if (defaultSortId) {
+    if (defaultSortId && defaultSortId.sortId) {
         await defaultLoadSortIdModel.updateOwnById(sortId, userId);
     } else {
         await defaultLoadSortIdModel.save(userId, sortId)
