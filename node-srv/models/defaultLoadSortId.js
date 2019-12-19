@@ -23,7 +23,7 @@ class defaultLoadSortId extends baseModel {
     }
 
     updateOwnById(sortId, userId) {
-        return this.model.updateOne({sortId: sortId}, {userId: userId}).exec();
+        return this.model.updateOne({userId: userId}, {sortId: sortId}).exec();
     }
 
     removeOwnById(userId) {
