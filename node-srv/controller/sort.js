@@ -128,9 +128,11 @@ module.exports = new Router(
             array.push(obj)
         }
     }
+
+    let defaultSort = await defaultLoadSortIdModel.selectOneByOwnId(userId);
     return baseController.response(ctx, {
         list: array,
-        defaultLoadSortId: (await defaultLoadSortIdModel.selectOneByOwnId(userId)).sortId
+        defaultLoadSortId: defaultSort ? defaultSort.sortId : null
     });
 
 }).post('set_default_load_sort_id', async ctx => {
