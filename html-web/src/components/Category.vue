@@ -402,5 +402,11 @@ export default {
         color: #bbb;
         padding-left: 5px;
     }
+    .category-manage .radio-button {
+        margin: 0 10px 10px 10px;
+        width: 150px;
+        text-align: center;
+
+    }
 </style>
 
