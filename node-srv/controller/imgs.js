@@ -66,7 +66,7 @@ module.exports = new Router(
     }
 
     if (saveImages.length > 0) {
-        await imagesModel.saveMany(saveImages);
+        console.log('save images' + JSON.stringify(await imagesModel.saveMany(saveImages)));
     }
 
     // 自动进行分享
