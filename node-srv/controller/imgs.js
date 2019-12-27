@@ -44,13 +44,12 @@ module.exports = new Router(
     let incr;
 
     // TODO : 此处图片上传设计为多张, 但是标签和分类只设计传一张, 所以上传暂时约定一张一张上传
-    let img;
     for (let index in uploadResult) {
 
         incr = await asyncRedisClient.incrAsync(redisKey.IMG_INCR_NO());
 
         if (uploadResult[index].flag) {
-            img = {
+            let img = {
                 userId: userId,
                 url: uploadResult[index].path,
                 urn: '/' + algorithm10to64.number10to64(incr + Date.now()),
@@ -66,22 +65,30 @@ module.exports = new Router(
     }
 
     if (saveImages.length > 0) {
-        await imagesModel.saveMany(saveImages);
+        let result = await imagesModel.saveMany(saveImages);
+        if (result.length > 0) {
+            // 自动进行分享
+            // FIXME 如果多张图片上传这里是有问题的
+            if (sortId !== defaultSortId) {
+                let img = result[0];
+                let sort = await sortsModel.selectOwnById(sortId, userId);
+                if (sort.shared) {
+                    await shareImgModel.save({
+                        imgId: String(img._id),
+                        shareId: sort.shareId,
+                        status: true,
+                        urn: util.md5(img.urn + Date.now())
+                    });
+                }
+            }
+        } else {
+            return baseController.response400(ctx, '请求参数异常')
+        }
+    } else {
+        return baseController.response400(ctx, '请求参数异常')
+
     }
 
-    // 自动进行分享
-    // FIXME 如果多张图片上传这里是有问题的
-    if (sortId !== defaultSortId) {
-        let sort = await sortsModel.selectOwnById(sortId, userId);
-        if (sort.shared) {
-            await shareImgModel.save({
-                imgId: img._id,
-                shareId: sort.shareId,
-                status: true,
-                urn: util.md5(img.urn + Date.now())
-            });
-        }
-    }
 
     baseController.response(ctx, uploadResult);
 
