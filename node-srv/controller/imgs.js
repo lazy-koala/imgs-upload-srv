@@ -134,11 +134,14 @@ module.exports = new Router(
     let imgs = await imagesModel.selectOwnByIds(ids, ctx.state.authInfo.id); // 防止删除别人的数据
     if (!imgs) return baseController.response(ctx);
     let uriArray = [];
-    for (var i in imgs) {
+    for (let i in imgs) {
         uriArray.push(uploadConfig.path + imgs[i].url); // 得到有效的需要删除的 物理路径图片位置
     }
     util.fsDel(uriArray); // 异步移除图片
-    await imagesModel.removeOwnManyById(ids, ctx.state.authInfo.id); // 清除数据库记录
+
+    await imagesModel.removeOwnManyById(ids, ctx.state.authInfo.id);        // 清除数据库记录
+    await shareImgModel.updateManyByImgId(ids, {status: false});    // 清楚分享的记录
+
     baseController.response(ctx);
 
 }).post('update', async ctx => {

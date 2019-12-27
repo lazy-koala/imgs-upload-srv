@@ -40,6 +40,18 @@ class shareImg extends baseModel {
     updateManyByShareId(shareId, condition) {
         return this.model.updateMany({shareId: shareId}, condition).exec();
     }
+
+    updateManyByImgId(imgIds, condition) {
+        let query;
+        if (typeof imgIds === 'string') {
+            query = {imgId: imgIds}
+        } else if (Array.isArray(imgIds)) {
+            query = {
+                imgId: {'$in': imgIds}
+            };
+        }
+        return this.model.updateMany(query, condition).exec();
+    }
 }
 
 module.exports = new shareImg();

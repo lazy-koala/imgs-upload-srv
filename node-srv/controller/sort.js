@@ -123,7 +123,6 @@ module.exports = new Router(
             };
             if (obj.shared) {
                 obj.shareUrl = baseConfig.shareUri + SHARE_PARAM_PREFIX + sorts[i].shareId
-
             }
             array.push(obj)
         }
