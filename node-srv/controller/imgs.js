@@ -70,10 +70,11 @@ module.exports = new Router(
             // 自动进行分享
             // FIXME 如果多张图片上传这里是有问题的
             if (sortId !== defaultSortId) {
+                let img = result[0];
                 let sort = await sortsModel.selectOwnById(sortId, userId);
                 if (sort.shared) {
                     await shareImgModel.save({
-                        imgId: String(result[0]._id),
+                        imgId: String(img._id),
                         shareId: sort.shareId,
                         status: true,
                         urn: util.md5(img.urn + Date.now())
