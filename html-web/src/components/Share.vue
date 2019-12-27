@@ -67,10 +67,17 @@ export default {
                 shareId: this.shareId
             };
             $axios.get('/api/share/query', {params}).then((res) => {
+                if(res.data.code) {
+                     Message.error({
+                        message: res.data.message || '网络异常，请稍后重试~',
+                        center: true
+                    });
+                    return false;
+                }
                 if (res.data) {
                     this.sharedUrls = res.data.data && res.data.data.sharedUrls || [];
                     this.shareUser = res.data.data && res.data.data.shareUser; 
-                }
+                } 
             })
         },
          toggleShow: function (id, index) {
