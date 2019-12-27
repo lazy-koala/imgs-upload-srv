@@ -141,7 +141,8 @@ module.exports = new Router(
     }
 
     let shareImgs = await shareImgModel.selectManyByCondition({
-        shareId: params.shareId
+        shareId: params.shareId,
+        status: true
     });
 
     let array = [];
