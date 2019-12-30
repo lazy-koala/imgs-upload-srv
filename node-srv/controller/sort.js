@@ -63,10 +63,17 @@ module.exports = new Router(
     if (params.sortId.length != 12 && params.sortId.length != 24) {
         return baseController.responseWithCode(ctx, baseController.CODE.BAD_OBJECT_ID, '不合法的sortId')
     }
+
+
     let imgs = await imagesModel.selectByCondition({
         userId: ctx.state.authInfo.id,
         sortId: params.sortId
     });
+
+    let sort = await sortsModel.selectById(params.sortId);
+    if (sort && sort.shared) {
+        return baseController.response(ctx, baseController.CODE.SHARED_SORT_ID,'该分类正在分享不能直接删除');
+    }
 
     let message = '删除成功';
 
@@ -82,7 +89,6 @@ module.exports = new Router(
         });
         message = '删除成功,相关图片已归档至默认分类';
     }
-
     await sortsModel.removeOwnById(params.sortId, ctx.state.authInfo.id);
 
     baseController.response(ctx, message);
