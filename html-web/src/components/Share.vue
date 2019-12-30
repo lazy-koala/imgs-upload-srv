@@ -2,13 +2,18 @@
     <div>
         <common-header isIndex="2" :shareUser="shareUser"></common-header>
         <div class="wrapper">
-            <div class="imgage-wrapper" v-loading="loading" v-for="item in sharedUrls" :key="item"   @mouseover="toggleShow(item, 1)" @mouseleave="toggleShow(item, 0)">
-                <img class="image" :src="item"  @load="hideLoading()" >
-                <div class="mask-wrapper animated fadeIn" :ref="item">
-                    <div class="btn-wrapper">
-                        <el-button type="text" title="复制地址" class="button icon el-icon-fuzhi" @click="copyUrl(item)"></el-button>
-                        <el-button type="text" title="点击放大" class="button icon el-icon-zoom-in" @click="showModal(item)"></el-button>
+            <div v-for="item in sharedImgs" :key="item" class="list-item">
+                <div class="imgage-wrapper" v-loading="loading"    @mouseover="toggleShow(item, 1)" @mouseleave="toggleShow(item, 0)">
+                    <img class="image" :src="item.uri"  @load="hideLoading()" >
+                    <div class="mask-wrapper animated fadeIn" :ref="item">
+                        <div class="btn-wrapper">
+                            <el-button type="text" title="复制地址" class="button icon el-icon-fuzhi" @click="copyUrl(item.uri)"></el-button>
+                            <el-button type="text" title="点击放大" class="button icon el-icon-zoom-in" @click="showModal(item.uri)"></el-button>
+                        </div>
                     </div>
+                </div>
+                <div class="bottom" v-if="item.tags.length">                    
+                    <span class="tag"  v-for="tag in item.tags" :key="tag" >{{tag}}</span>
                 </div>
             </div>
         </div>
@@ -49,7 +54,7 @@ export default {
     data() {
         return {
             shareId: '',
-            sharedUrls: [],
+            sharedImgs: [],
             loading: false,
             selectedUrl: '',
             showLarge: false,
@@ -75,7 +80,7 @@ export default {
                     return false;
                 }
                 if (res.data) {
-                    this.sharedUrls = res.data.data && res.data.data.sharedUrls || [];
+                    this.sharedImgs = res.data.data && res.data.data.sharedImgs || [];
                     this.shareUser = res.data.data && res.data.data.shareUser; 
                 } 
             })
@@ -128,7 +133,7 @@ export default {
     }
 }
 </script>
-<style scoped>
+<style scoped >
     .wrapper {
         position: relative;
         /* float: left;        
@@ -222,6 +227,36 @@ export default {
         max-height: 400px;
         width: 100%;
         height: 100%;
+    }
+
+    .bottom {
+        overflow: hidden;
+        height: 50px;
+        width: 160px;
+        text-align: center;
+    }
+
+    .tag {
+        margin: 2px 5px 2px 0;            
+        background: #f1f8ff;
+        border-radius: 3px;
+        display: inline-block;
+        margin: 5px 5px 0;
+        padding: 4px 6px;
+        white-space: nowrap;
+        color: #0366d6;
+        font-size: 12px;
+    }
+    .list-item {
+        position: relative;
+        float: left;        
+        margin-right: 20px;
+        margin-top: 15px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
     }
 
     
