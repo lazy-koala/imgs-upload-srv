@@ -149,7 +149,7 @@ module.exports = new Router(
     for (let len = shareImgs.length, i = 0; i < len; i++) {
         let imgObj = {};
         imgObj.uri = baseConfig.imgUri + SHARE_PREFIX + shareImgs[i].urn;
-        imgObj.tags = (await imagesModel.selectByUrn(shareImgs[i].urn)).tags;
+        imgObj.tags = (await imagesModel.selectById(shareImgs[i].imgId)).tags;
         array.push(imgObj);
     }
 
