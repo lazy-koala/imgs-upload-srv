@@ -147,11 +147,14 @@ module.exports = new Router(
 
     let array = [];
     for (let len = shareImgs.length, i = 0; i < len; i++) {
-        array.push(baseConfig.imgUri + SHARE_PREFIX + shareImgs[i].urn);
+        let imgObj = {};
+        imgObj.uri = baseConfig.imgUri + SHARE_PREFIX + shareImgs[i].urn;
+        imgObj.tags = (await imagesModel.selectByUrn(shareImgs[i].urn)).tags;
+        array.push(imgObj);
     }
 
     baseController.response(ctx, {
-        sharedUrls: array,
+        sharedImgs: array,
         shareUser: shareUsername
     });
 
