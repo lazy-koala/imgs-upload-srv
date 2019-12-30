@@ -72,7 +72,7 @@ module.exports = new Router(
 
     let sort = await sortsModel.selectById(params.sortId);
     if (sort && sort.shared) {
-        return baseController.response(ctx, baseController.CODE.SHARED_SORT_ID,'该分类正在分享不能直接删除');
+        return baseController.responseWithCode(ctx, baseController.CODE.SHARED_SORT_ID,'该分类正在分享不能直接删除');
     }
 
     let message = '删除成功';
