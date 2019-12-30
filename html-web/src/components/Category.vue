@@ -337,14 +337,22 @@ export default {
                 return false;
             }
             $axios.delete('/api/sort/del', {params: params}).then((res) => {
+                // 关闭弹框
+                that.delBox = false;
                 // 提示成功
+                if(res.data && res.data.code) {
+                    Message.error({
+                        message: res.data.message,
+                        center: true
+                    });
+                    return false;
+                }
                 Message.success({
-                    message: res.message || '删除分类成功',
+                    message: res.data.message || '删除分类成功',
                     type: 'info',
                     center: true
                 });
-                // 关闭弹框
-                that.delBox = false;
+                
                 // 添加成功，刷新列表
                 that.getSortList('update');
             })
