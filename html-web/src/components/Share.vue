@@ -248,6 +248,7 @@ export default {
         font-size: 12px;
     }
     .list-item {
+        height: 250px;
         position: relative;
         float: left;        
         margin-right: 20px;
