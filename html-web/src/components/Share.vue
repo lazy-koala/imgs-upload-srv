@@ -3,16 +3,16 @@
         <common-header isIndex="2" :shareUser="shareUser"></common-header>
         <div class="wrapper">
             <div v-for="item in sharedImgs" :key="item" class="list-item">
-                <div class="imgage-wrapper" v-loading="loading"    @mouseover="toggleShow(item, 1)" @mouseleave="toggleShow(item, 0)">
+                <div class="imgage-wrapper" v-loading="loading"    @mouseover="toggleShow(item.uri, 1)" @mouseleave="toggleShow(item.uri, 0)">
                     <img class="image" :src="item.uri"  @load="hideLoading()" >
-                    <div class="mask-wrapper animated fadeIn" :ref="item">
+                    <div class="mask-wrapper animated fadeIn" :ref="item.uri">
                         <div class="btn-wrapper">
                             <el-button type="text" title="复制地址" class="button icon el-icon-fuzhi" @click="copyUrl(item.uri)"></el-button>
                             <el-button type="text" title="点击放大" class="button icon el-icon-zoom-in" @click="showModal(item.uri)"></el-button>
                         </div>
                     </div>
                 </div>
-                <div class="bottom" v-if="item.tags.length">                    
+                <div class="bottom">                    
                     <span class="tag"  v-for="tag in item.tags" :key="tag" >{{tag}}</span>
                 </div>
             </div>
@@ -152,13 +152,15 @@ export default {
         display: flex;
         align-items: center;
         float: left;        
-        margin: 20px;
+        margin: 10px;
     }
     .image {
         max-width: 160px;
         max-height: 160px;
         width: auto;
         height: auto;
+        display: inline-block;
+        margin: 0 auto;
         /* height: 160px; */
     }
 
@@ -231,7 +233,7 @@ export default {
 
     .bottom {
         overflow: hidden;
-        height: 50px;
+        height: 40px;
         width: 160px;
         text-align: center;
     }
@@ -248,7 +250,7 @@ export default {
         font-size: 12px;
     }
     .list-item {
-        height: 250px;
+        height: 230px;
         position: relative;
         float: left;        
         margin-right: 20px;
