@@ -16,8 +16,8 @@
       <!-- <button type="text" class="toolbar__button" data-action="ok" title="OK (Enter)" v-if="data.cropping"><span class="el-icon-ok"></span></button> -->
     </div>
     <!-- <div class="tip-message">{{ `该图片将上传至"${tipMessage || '默认分类'}"分类` }}</div> -->
-    <div class="tip-message">{{ tipMessage }}</div>
-    <div class="tag-list" v-if="tagList">
+    <div class="tip-message" v-if="!isEditHead">{{ tipMessage }}</div>
+    <div class="tag-list" v-if="tagList && !isEditHead">
         <el-tag
             :key="`${tag}`"
             v-for="tag in tagList"
@@ -422,10 +422,15 @@
     //   }
     // },
     mounted() {
-      this.updateSortName()
+      if(!this.isEditHead) {
+        this.updateSortName()
+      }
+      
     },
     beforeUpdate() {
-      this.updateSortName()
+      if(!this.isEditHead) {
+        this.updateSortName()
+      }
     },
     beforeDestroy () {
       this.stop();
