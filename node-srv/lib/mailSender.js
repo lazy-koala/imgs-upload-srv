@@ -58,7 +58,7 @@ const buildContent = (config, params) => {
         templates.set(config.templateName, template);
     }
     if (params) {
-        for (var index = 0; index < params.length; index++) {
+        for (let index = 0; index < params.length; index++) {
             template = template.replace('{' + index + '}', params[index]);
         }
     }

@@ -15,9 +15,6 @@ const userModel = require('../models/user');
 const authTokenModel = require('../models/authToken');
 const mailSender = require('../lib/mailSender');
 const mailType = require('../const/mailType');
-const imagesModel = require('../models/images');
-const fs = require('fs');
-const uploadConfig = require('../config/upload');
 
 
 module.exports = new Router(
@@ -169,7 +166,7 @@ module.exports = new Router(
     let code = util.randomNum(6);
     let data = [
         user.nickname,
-        params.username,
+        user.username,
         code
     ];
 
