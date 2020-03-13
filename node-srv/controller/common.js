@@ -175,7 +175,7 @@ module.exports = new Router(
 
     let token = util.uuid();
 
-    await asyncRedisClient.setAsync(redisKey.FORGET_MAIL_CODE(token), code + '|' + params.username, 'EX', baseController.CONSTS.FORGET_MAIL_MINUTE * 60);
+    await asyncRedisClient.setAsync(redisKey.FORGET_MAIL_CODE(token), code + '|' + user.username, 'EX', baseController.CONSTS.FORGET_MAIL_MINUTE * 60);
 
     baseController.response(ctx, {
         token: token
@@ -200,8 +200,11 @@ module.exports = new Router(
     let authTokens = await authTokenModel.selectByUserIdSortByCreateTimeAsc(info._id);
     if (authTokens && authTokens.length > 0) {
         for (let i = 0; i < authTokens.length; i++) {
-            await asyncRedisClient.delAsync(redisKey.AUTH_TOKEN(authTokens[i].token));
-            await authTokenModel.removeOwnByTokens(authTokens[i].token, info._id);
+            if (authTokens[i].token) {
+                await asyncRedisClient.delAsync(redisKey.AUTH_TOKEN(authTokens[i].token));
+                await authTokenModel.removeOwnByTokens(authTokens[i].token, info._id);
+            }
+
         }
     }
 
