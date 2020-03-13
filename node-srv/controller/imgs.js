@@ -30,7 +30,7 @@ module.exports = new Router(
     let fields = uploadResult.fields;
     uploadResult = uploadResult.uploadResult;
     let sortId;
-    if (!fields && !fields.sortId) {
+    if (!fields || !fields.sortId) {
         if (!defaultSortId) {
             defaultSortId = (await sortsModel.selectOneByUserId('system'))._id.toString();
         }
