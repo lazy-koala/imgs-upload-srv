@@ -72,7 +72,7 @@ module.exports = new Router(
             if (sortId !== defaultSortId) {
                 let img = result[0];
                 let sort = await sortsModel.selectOwnById(sortId, userId);
-                if (sort.shared) {
+                if (!sort && sort.shared) {
                     await shareImgModel.save({
                         imgId: String(img._id),
                         shareId: sort.shareId,
