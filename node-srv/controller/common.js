@@ -201,14 +201,12 @@ module.exports = new Router(
     if (authTokens && authTokens.length > 0) {
         for (let i = 0; i < authTokens.length; i++) {
             if (authTokens[i].token) {
-                console.log(redisKey.AUTH_TOKEN(authTokens[i].token));
                 await asyncRedisClient.delAsync(redisKey.AUTH_TOKEN(authTokens[i].token));
                 await authTokenModel.removeOwnByTokens(authTokens[i].token, info._id);
             }
 
         }
     }
-
     // 移除邮件验证 token
     await asyncRedisClient.delAsync(redisKey.FORGET_MAIL_CODE(params.token));
     await doLogin(ctx, info, false, util.uuid(), Date.now());
