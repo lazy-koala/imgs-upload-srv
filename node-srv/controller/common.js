@@ -210,7 +210,7 @@ module.exports = new Router(
     }
 
     // 移除邮件验证 token
-    await asyncRedisClient.dekAsync(redisKey.FORGET_MAIL_CODE(params.token));
+    await asyncRedisClient.delAsync(redisKey.FORGET_MAIL_CODE(params.token));
     await doLogin(ctx, info, false, util.uuid(), Date.now());
 
     baseController.response(ctx);
