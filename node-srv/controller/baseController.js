@@ -79,11 +79,9 @@ module.exports.responseWithCode = (ctx, code, message, data) => {
 // 创建返回对象数据
 const responseBuilder = (code, message, data) => {
 
-    if (code) {
-        if (!data && typeof message !== 'string') {
-            data = message;
-            message = undefined;
-        }
+    if (!data && typeof message !== 'string') {
+        data = message;
+        message = undefined;
     }
 
     return {
