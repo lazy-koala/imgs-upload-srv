@@ -19,7 +19,7 @@ const redisKey = require('../const/redisKey');
 const algorithm10to64 = require('../lib/algorithm10to64');
 const util = require('../lib/util');
 
-let defaultSortId;
+let systemDefaultSortId;
 
 module.exports = new Router(
 
@@ -32,10 +32,10 @@ module.exports = new Router(
 
     let sortId;
     if (!fields || !fields.sortId) {
-        if (!defaultSortId) {
-            defaultSortId = (await sortsModel.selectOneByUserId('system'))._id.toString();
+        if (!systemDefaultSortId) {
+            systemDefaultSortId = (await sortsModel.selectOneByUserId('system'))._id.toString();
         }
-        sortId = defaultSortId;
+        sortId = systemDefaultSortId;
     } else {
         sortId = fields.sortId;
     }
@@ -70,7 +70,9 @@ module.exports = new Router(
         if (result.length > 0) {
             // 自动进行分享
             // FIXME 如果多张图片上传这里是有问题的
-            if (sortId !== defaultSortId) {
+
+            // 不等于系统默认分类的才可以分享
+            if (sortId !== systemDefaultSortId) {
                 let img = result[0];
                 let sort = await sortsModel.selectOwnById(sortId, userId);
                 if (sort && sort.shared) {
@@ -193,7 +195,7 @@ module.exports = new Router(
 
     let param = ctx.query;
     if (!param || !param.imgId) return baseController.response400(ctx, '缺失参数: imgId');
-    let image = await imagesModel.selectOwnByIds(params.imgId, ctx.state.authInfo.id);
+    let image = await imagesModel.selectOwnByIds(param.imgId, ctx.state.authInfo.id);
     if (!image) return baseController.responseWithCode(ctx, baseController.CODE.UNKNOWN_IMG_ID, '无效的imgId');
     let urn = '/' + algorithm10to64.number10to64((await asyncRedisClient.incrAsync(redisKey.IMG_INCR_NO())) + Date.now());
     await imagesModel.updateById({
