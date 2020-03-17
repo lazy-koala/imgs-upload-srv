@@ -88,7 +88,6 @@ module.exports = new Router(
         return baseController.response400(ctx, '请求参数异常')
     }
 
-
     baseController.response(ctx, uploadResult);
 
 }).get('list', async ctx => {

@@ -14,19 +14,7 @@ const allowedMimeType = require('../const/allowedMimeType');
 module.exports.upload = (ctx) => new Promise(resolve => {
     let uploadResult = [];
     let nodeHttpReq = ctx.req;
-    let busboy;
-    if (uploadConfig.maxFileSize) {
-        try {
-            busboy = new Busboy({headers: nodeHttpReq.headers, limits: {fileSize: uploadConfig.maxFileSize}});
-        } catch (e) {
-            uploadResult.push({
-                flag: false,
-                message: '文件超过最大限制'
-            });
-        }
-    } else {
-        busboy = new Busboy({headers: nodeHttpReq.headers});
-    }
+    let busboy = new Busboy({headers: nodeHttpReq.headers});
 
     busboy.on('file', function (fieldname, file, filename, encoding, mimetype) { // 每次接收文件就触发
 
@@ -64,6 +52,13 @@ module.exports.upload = (ctx) => new Promise(resolve => {
                 let buf = Buffer.concat(bfs);
                 let imgBase64 = buf.toString();
                 fs.writeFileSync(absPath, Buffer.from(imgBase64, 'base64'));
+
+                if (uploadConfig.maxFileSize) {
+                    if (fs.statSync(absPath).size > uploadConfig.maxFileSize) {
+                        result.flag = false;
+                        result.message = '图片超过最大限制';
+                    }
+                }
 
                 result.path = path.sep + uriPath;
                 result.flag = true;
