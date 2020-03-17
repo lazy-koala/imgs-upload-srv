@@ -26,9 +26,10 @@ module.exports = new Router(
 ).post('upload', async (ctx) => {
 
     let uploadResult = await busboyUpload.upload(ctx);
-    if (!uploadResult.flag) return baseController.response500(ctx, uploadResult.message ? uploadResult.message: '图片上传异常');
+    if (!uploadResult.flag) return baseController.response500(ctx, uploadResult.message ? uploadResult.message : '图片上传异常');
     let fields = uploadResult.fields;
     uploadResult = uploadResult.uploadResult;
+
     let sortId;
     if (!fields || !fields.sortId) {
         if (!defaultSortId) {
@@ -45,10 +46,8 @@ module.exports = new Router(
 
     // TODO : 此处图片上传设计为多张, 但是标签和分类只设计传一张, 所以上传暂时约定一张一张上传
     for (let index in uploadResult) {
-
-        incr = await asyncRedisClient.incrAsync(redisKey.IMG_INCR_NO());
-
         if (uploadResult[index].flag) {
+            incr = await asyncRedisClient.incrAsync(redisKey.IMG_INCR_NO());
             let img = {
                 userId: userId,
                 url: uploadResult[index].path,
@@ -61,6 +60,8 @@ module.exports = new Router(
             saveImages.push(img);
 
             uploadResult[index].path = baseConfig.imgUri + img.urn;
+        } else {
+            return baseController.response400(ctx, uploadResult[index].message);
         }
     }
 
