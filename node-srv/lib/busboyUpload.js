@@ -12,12 +12,22 @@ const path = require('path');
 const allowedMimeType = require('../const/allowedMimeType');
 
 module.exports.upload = (ctx) => new Promise(resolve => {
-
-    let nodeHttpReq = ctx.req;
-
-    let busboy = new Busboy({headers: nodeHttpReq.headers});
-
     let uploadResult = [];
+    let nodeHttpReq = ctx.req;
+    let busboy;
+    if (uploadConfig.maxFileSize) {
+        try {
+            busboy = new Busboy({headers: nodeHttpReq.headers, limits: {fileSize: 5368709120}});
+        } catch (e) {
+            uploadResult.push({
+                flag: false,
+                message: '文件超过最大限制'
+            });
+        }
+    } else {
+        busboy = new Busboy({headers: nodeHttpReq.headers});
+    }
+
     busboy.on('file', function (fieldname, file, filename, encoding, mimetype) { // 每次接收文件就触发
 
         if (allowedMimeType.indexOf(mimetype) != -1) {
