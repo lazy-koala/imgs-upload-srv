@@ -171,7 +171,7 @@ module.exports = new Router(
     ];
 
     let flag = await mailSender.send(mailType.type.FORGET_CODE, user.email, data);
-    if (!flag) return baseController.response(ctx, baseController.CODE.SEND_MAIL_FAILED, '邮件发送失败，请检查你的邮箱或重试');
+    if (!flag) return baseController.responseWithCode(ctx, baseController.CODE.SEND_MAIL_FAILED, '邮件发送失败，请检查你的邮箱或重试');
 
     let token = util.uuid();
 
