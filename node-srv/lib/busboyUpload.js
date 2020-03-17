@@ -17,7 +17,7 @@ module.exports.upload = (ctx) => new Promise(resolve => {
     let busboy;
     if (uploadConfig.maxFileSize) {
         try {
-            busboy = new Busboy({headers: nodeHttpReq.headers, limits: {fileSize: 5368709120}});
+            busboy = new Busboy({headers: nodeHttpReq.headers, limits: {fileSize: uploadConfig.maxFileSize}});
         } catch (e) {
             uploadResult.push({
                 flag: false,
