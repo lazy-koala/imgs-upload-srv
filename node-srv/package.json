@@ -16,17 +16,17 @@
   ],
   "dependencies": {
     "bluebird": "^3.7.2",
-    "busboy": "^0.2.14",
+    "busboy": "^0.3.1",
     "colour": "^0.7.1",
     "koa": "^2.11.0",
     "koa-bodyparser": "^4.2.1",
-    "koa-router": "^7.4.0",
+    "koa-router": "^8.0.8",
     "md5": "^2.2.1",
     "mongoose": "^5.9.5",
-    "nodemailer": "^4.7.0",
-    "redis": "^2.8.0",
+    "nodemailer": "^6.4.5",
+    "redis": "^3.0.2",
     "request": "^2.88.2",
-    "uuid": "^3.4.0"
+    "uuid": "^7.0.2"
   },
   "author": "acexy@thankjava.com",
   "license": "ISC",
