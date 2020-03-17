@@ -52,7 +52,7 @@ module.exports.randomMin2Max = randomMin2Max;
  */
 module.exports.randomNum = length => {
     let code = '';
-    for (var index = 0; index < length; index++) {
+    for (let index = 0; index < length; index++) {
         code += randomMin2Max(0, 9);
     }
     return code;
