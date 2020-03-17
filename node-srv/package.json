@@ -15,18 +15,18 @@
     "srv"
   ],
   "dependencies": {
-    "bluebird": "^3.5.1",
+    "bluebird": "^3.7.2",
     "busboy": "^0.2.14",
     "colour": "^0.7.1",
-    "koa": "^2.5.1",
+    "koa": "^2.11.0",
     "koa-bodyparser": "^4.2.1",
     "koa-router": "^7.4.0",
     "md5": "^2.2.1",
-    "mongoose": "^5.7.5",
-    "nodemailer": "^4.6.7",
+    "mongoose": "^5.9.5",
+    "nodemailer": "^4.7.0",
     "redis": "^2.8.0",
-    "request": "^2.88.0",
-    "uuid": "^3.2.1"
+    "request": "^2.88.2",
+    "uuid": "^3.4.0"
   },
   "author": "acexy@thankjava.com",
   "license": "ISC",
