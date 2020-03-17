@@ -55,9 +55,13 @@ module.exports.upload = (ctx) => new Promise(resolve => {
 
                 if (uploadConfig.maxFileSize) {
                     if (fs.statSync(absPath).size > uploadConfig.maxFileSize) {
+
+                        util.fsDel(absPath);
+
                         result.flag = false;
                         result.message = '图片超过最大限制';
                         uploadResult.push(result);
+
                         return;
                     }
                 }
