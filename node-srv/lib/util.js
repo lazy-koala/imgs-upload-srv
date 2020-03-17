@@ -4,8 +4,9 @@
  * @Description:utils
  */
 const md5 = require('md5');
-const uuid = require('uuid/v4');
 const fs = require('fs');
+
+const uuid = require('uuid');
 
 /**
  * md5
@@ -17,7 +18,7 @@ module.exports.md5 = content => md5(content);
  * uuid生成器
  * @returns {string}
  */
-module.exports.uuid = () => String(uuid()).replace(/-/g, '');
+module.exports.uuid = () => String(uuid.v4()).replace(/-/g, '');
 
 /**
  * 文件删除
