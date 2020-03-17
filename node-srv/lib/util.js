@@ -24,9 +24,8 @@ module.exports.uuid = () => String(uuid()).replace(/-/g, '');
  */
 module.exports.fsDel = uris => {
     for (let i in uris) {
-        fs.unlink(uris[i], err => {
+        fs.rename(uris[i], uris[i] + '.del', err => {
             if (err) {
-                console.log('=> util.fsDel: '.cyan + 'uri = '.grey + uris[i] + ' error'.red);
                 console.error(err)
             }
         });

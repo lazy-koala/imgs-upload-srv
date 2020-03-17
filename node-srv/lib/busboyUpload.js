@@ -66,6 +66,7 @@ module.exports.upload = (ctx) => new Promise(resolve => {
                 result.flag = true;
                 result.message = '上传完成';
                 console.log('=> busboyUpload'.cyan + ' finished to upload filename = '.grey + filename.blue + ' path = '.grey + absPath.blue);
+
                 uploadResult.push(result);
             });
         } else {
