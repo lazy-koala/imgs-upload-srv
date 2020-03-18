@@ -12,8 +12,7 @@ class sort extends baseModel {
             sortName: {type: String, required: true},
             userId: {type: String, required: true},
             shared: {type: Boolean, default: false},
-            shareId: {type: String, required: false},
-            isDefault: {type: Boolean, default: false}
+            shareId: {type: String, required: false}
         };
     };
 

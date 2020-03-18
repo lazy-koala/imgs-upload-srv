@@ -54,7 +54,7 @@ module.exports = new Router(
         await asyncRedisClient.setAsync(redisKey.UPDATE_MAIL_CODE(token), code + '|' + params.mail, 'EX', baseController.CONSTS.UPDATE_MAIL_MINUTE * 60);
         baseController.response(ctx, {token: token});
     } else {
-        baseController.response(ctx, baseController.CODE.SEND_MAIL_FAILED, '邮件发送失败，请检查你的邮箱或重试');
+        baseController.responseWithCode(ctx, baseController.CODE.SEND_MAIL_FAILED, '邮件发送失败，请检查你的邮箱或重试');
     }
 
 }).post('update_uinfo', async ctx => {

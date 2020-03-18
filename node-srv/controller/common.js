@@ -15,9 +15,6 @@ const userModel = require('../models/user');
 const authTokenModel = require('../models/authToken');
 const mailSender = require('../lib/mailSender');
 const mailType = require('../const/mailType');
-const imagesModel = require('../models/images');
-const fs = require('fs');
-const uploadConfig = require('../config/upload');
 
 
 module.exports = new Router(
@@ -169,16 +166,16 @@ module.exports = new Router(
     let code = util.randomNum(6);
     let data = [
         user.nickname,
-        params.username,
+        user.username,
         code
     ];
 
     let flag = await mailSender.send(mailType.type.FORGET_CODE, user.email, data);
-    if (!flag) return baseController.response(ctx, baseController.CODE.SEND_MAIL_FAILED, '邮件发送失败，请检查你的邮箱或重试');
+    if (!flag) return baseController.responseWithCode(ctx, baseController.CODE.SEND_MAIL_FAILED, '邮件发送失败，请检查你的邮箱或重试');
 
     let token = util.uuid();
 
-    await asyncRedisClient.setAsync(redisKey.FORGET_MAIL_CODE(token), code + '|' + params.username, 'EX', baseController.CONSTS.FORGET_MAIL_MINUTE * 60);
+    await asyncRedisClient.setAsync(redisKey.FORGET_MAIL_CODE(token), code + '|' + user.username, 'EX', baseController.CONSTS.FORGET_MAIL_MINUTE * 60);
 
     baseController.response(ctx, {
         token: token
@@ -203,11 +200,15 @@ module.exports = new Router(
     let authTokens = await authTokenModel.selectByUserIdSortByCreateTimeAsc(info._id);
     if (authTokens && authTokens.length > 0) {
         for (let i = 0; i < authTokens.length; i++) {
-            await asyncRedisClient.delAsync(redisKey.AUTH_TOKEN(authTokens[i].token));
-            await authTokenModel.removeOwnByTokens(authTokens[i].token, info._id);
+            if (authTokens[i].token) {
+                await asyncRedisClient.delAsync(redisKey.AUTH_TOKEN(authTokens[i].token));
+                await authTokenModel.removeOwnByTokens(authTokens[i].token, info._id);
+            }
+
         }
     }
-
+    // 移除邮件验证 token
+    await asyncRedisClient.delAsync(redisKey.FORGET_MAIL_CODE(params.token));
     await doLogin(ctx, info, false, util.uuid(), Date.now());
 
     baseController.response(ctx);

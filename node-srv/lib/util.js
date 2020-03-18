@@ -4,8 +4,9 @@
  * @Description:utils
  */
 const md5 = require('md5');
-const uuid = require('uuid/v4');
 const fs = require('fs');
+
+const uuid = require('uuid');
 
 /**
  * md5
@@ -17,16 +18,15 @@ module.exports.md5 = content => md5(content);
  * uuid生成器
  * @returns {string}
  */
-module.exports.uuid = () => String(uuid()).replace(/-/g, '');
+module.exports.uuid = () => String(uuid.v4()).replace(/-/g, '');
 
 /**
  * 文件删除
  */
 module.exports.fsDel = uris => {
     for (let i in uris) {
-        fs.unlink(uris[i], err => {
+        fs.rename(uris[i], uris[i] + '.del', err => {
             if (err) {
-                console.log('=> util.fsDel: '.cyan + 'uri = '.grey + uris[i] + ' error'.red);
                 console.error(err)
             }
         });
@@ -52,7 +52,7 @@ module.exports.randomMin2Max = randomMin2Max;
  */
 module.exports.randomNum = length => {
     let code = '';
-    for (var index = 0; index < length; index++) {
+    for (let index = 0; index < length; index++) {
         code += randomMin2Max(0, 9);
     }
     return code;

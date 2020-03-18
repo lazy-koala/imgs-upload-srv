@@ -12,12 +12,10 @@ const path = require('path');
 const allowedMimeType = require('../const/allowedMimeType');
 
 module.exports.upload = (ctx) => new Promise(resolve => {
-
+    let uploadResult = [];
     let nodeHttpReq = ctx.req;
-
     let busboy = new Busboy({headers: nodeHttpReq.headers});
 
-    let uploadResult = [];
     busboy.on('file', function (fieldname, file, filename, encoding, mimetype) { // 每次接收文件就触发
 
         if (allowedMimeType.indexOf(mimetype) != -1) {
@@ -55,10 +53,24 @@ module.exports.upload = (ctx) => new Promise(resolve => {
                 let imgBase64 = buf.toString();
                 fs.writeFileSync(absPath, Buffer.from(imgBase64, 'base64'));
 
+                if (uploadConfig.maxFileSize) {
+                    if (fs.statSync(absPath).size > uploadConfig.maxFileSize) {
+
+                        util.fsDel(absPath);
+
+                        result.flag = false;
+                        result.message = '图片超过最大限制';
+                        uploadResult.push(result);
+
+                        return;
+                    }
+                }
+
                 result.path = path.sep + uriPath;
                 result.flag = true;
                 result.message = '上传完成';
                 console.log('=> busboyUpload'.cyan + ' finished to upload filename = '.grey + filename.blue + ' path = '.grey + absPath.blue);
+
                 uploadResult.push(result);
             });
         } else {
