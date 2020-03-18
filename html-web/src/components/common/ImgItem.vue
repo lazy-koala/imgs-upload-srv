@@ -153,6 +153,7 @@ export default {
                     this.$parent.$emit('refreshImgList', '1')
                 }
             }).catch(function (error) {
+                this.delLoading = false;
                 that.catchError(error);
             })
         },

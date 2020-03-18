@@ -333,6 +333,11 @@
               that.initUpload();
             }
           }
+        }).catch(function (error) {
+          if (that.loading) {
+              that.loading.close();
+          }
+          that.catchError(error);
         })
       },
 
@@ -351,6 +356,8 @@
                 message: res.data.message || '头像上传失败！'
               })
           }
+        }).catch(function (error) {
+          that.catchError(error);
         })
       },
 
