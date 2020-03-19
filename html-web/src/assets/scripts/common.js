@@ -9,19 +9,28 @@ function trimString (value) {
     return (value || '').replace(/\s/g, '');
 }
 function catchError(error) {
-    let response = error.response;
-    let message = error.data && error.data.message || '';
+    let response = error.response || {};
+    let message = response.data && response.data.message || '';
    if (response && response.status && response.status == '401') {
         // 登录态失效
         Cookies.set('uinfo', '');
         this.$router.push('/');
    } else if (response && response.status && response.status == '400') {
         // 参数错误
-        Message.error(message ? message  : '参数有误，请重试');
+        Message.error({
+            message: message ? message : '参数有误，请重试',
+            center: true
+        });
    } else if (response && response.status && response.status == '502') {
-        Message.error('网络异常，请重试');
+        Message.error({
+            message: '网络异常，请重试',
+            center: true
+        });
    } else {
-       Message.error('网络异常，请重试');
+       Message.error({
+           message: '网络异常，请重试',
+           center: true
+       });
    }
  }
 export default {

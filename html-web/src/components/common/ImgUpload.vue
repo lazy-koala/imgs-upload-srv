@@ -122,7 +122,8 @@
                     target.value = '';
 
                     Message.error({
-                        message: e
+                        message: e,
+                        center: true
                     })
                     // this.alert(e);
                 });
