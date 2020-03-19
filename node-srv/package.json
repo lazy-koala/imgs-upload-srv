@@ -1,6 +1,6 @@
 {
   "name": "imgs-node-srv",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "图床服务端",
   "main": "app.js",
   "scripts": {
