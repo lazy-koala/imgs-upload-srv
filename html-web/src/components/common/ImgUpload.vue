@@ -15,6 +15,7 @@
     </div>
 </template>
 <script type="text/javascript">
+    import { Message, Loading } from 'element-ui';
 
     const URL = window.URL || window.webkitURL;
 
@@ -75,11 +76,14 @@
                     var imgUrl = '';
 
                     if (!/^image\/\w+$/.test(file.type)) {
-                        reject(new Error('Please choose an image file.'));
+                        reject('请上传图片文件');
                     }
 
                     if (!URL) {
-                        reject(new Error('Your browser is not supported.'));
+                        reject('该浏览器不支持上传功能');
+                    }
+                    if(file.size > 5.5 * 1024 * 1024) {
+                        reject('图片大小不能超过5M~')
                     }
 
                     if (isGif) {
@@ -114,8 +118,14 @@
                     target.value = '';
                     this.update(data);
                 }).catch((e) => {
+                    console.log('e: ', e);
                     target.value = '';
-                    this.alert(e);
+
+                    Message.error({
+                        message: e,
+                        center: true
+                    })
+                    // this.alert(e);
                 });
             },
 
@@ -124,6 +134,8 @@
             },
 
             update (data) {
+                console.log('this.data: ', this.data);
+
                 Object.assign(this.data, data);
             }
         }

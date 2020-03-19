@@ -320,19 +320,27 @@
               let item = data[i];
               if (item.flag) {
                 Message.success({
-                  message: item.fileName + '上传成功！'
+                  message: item.fileName + '上传成功！',
+                  center: true
                 })
                 that.$emit('refresh', 1);
                 that.tagList = [];
                 // that.$parent.$parent.getImgList (1, 20);
               } else {
                 Message.error({
-                  message: res.data.message || item.fileName + '上传失败！'
+                  message: res.data.message || item.fileName + '上传失败！',
+                  center: true
                 })
               }
               that.initUpload();
             }
           }
+        }).catch(function (error) {
+          if (that.loading) {
+              that.loading.close();
+          }
+          that.data.loaded = false;
+          that.catchError(error);
         })
       },
 
@@ -344,13 +352,17 @@
             let data = res.data.data;
             that.$store.commit('changeInfo', {"headImg": data.headImg});
             Message.success({
-                message: '头像上传成功！'
+                message: '头像上传成功！',
+                center: true
               })
           } else {
               Message.error({
-                message: res.data.message || '头像上传失败！'
+                message: res.data.message || '头像上传失败！',
+                center: true
               })
           }
+        }).catch(function (error) {
+          that.catchError(error);
         })
       },
 

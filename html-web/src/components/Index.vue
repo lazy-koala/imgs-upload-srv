@@ -37,6 +37,7 @@
         </template>
         <el-dialog
         title="图片裁剪"
+        v-if="data.loaded"
         :visible.sync="data.loaded"
         width="45%"
         center
@@ -139,6 +140,7 @@ export default {
                     });
                 }
             }).catch(function (error) {
+                that.globalLoading = false; 
                 that.catchError(error);
             })
         },        
@@ -155,13 +157,6 @@ export default {
             // console.log(val);
             this.getImgList(val);
         },
-        catchError: function (error) {
-            if (error.response && error.response.status && error.response.status == '401') {
-                Cookies.set('uinfo', '');
-                this.$router.push('/');
-            }
-        },
-
 
         toggleShow: function (id, index) {
             if (+index === 0) {
