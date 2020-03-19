@@ -27,6 +27,8 @@
         - 升级node服务端所有第三方依赖至最新
         - 上传图片的相关异常反馈处理
         - 限制了上传图片的大小
+    
+    - [历史记录](https://github.com/lazy-koala/imgs-upload-srv/blob/master/doc/changelog.md)
 ---
 > #### 技术栈
 - Server:
