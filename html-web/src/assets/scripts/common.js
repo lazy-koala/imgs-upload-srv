@@ -1,4 +1,5 @@
-    import { Message } from 'element-ui';
+import { Message } from 'element-ui';
+import Cookies from "js-cookie";
 
 function formatTime (time) {
     time = new Date(parseInt(time, 10));
