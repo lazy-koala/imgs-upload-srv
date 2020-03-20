@@ -250,12 +250,21 @@ const doLogin = async (ctx, user, keepLogged, token, nowTime) => {
             await authTokenModel.removeOwnByTokens(deleteTokens, userInfo.id);
         }
 
-        await authTokenModel.save({
+        let tokenObject = {
             userId: userInfo.id,
             token: token,
             expiration: nowTime + authExTime * 1000,
             userInfo: userInfo
-        });
+        };
+
+        let uaInfo = util.ua(ctx.request.get('user-agent'));
+        if (uaInfo) {
+            tokenObject.osName = uaInfo.osName;
+            tokenObject.browserName = uaInfo.browserName;
+            tokenObject.browserVersion = uaInfo.browserVersion;
+        }
+
+        await authTokenModel.save(tokenObject);
 
         cookieOpt.maxAge = authExTime * 1000;
     }
