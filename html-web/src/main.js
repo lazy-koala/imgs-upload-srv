@@ -19,9 +19,9 @@ Vue.prototype.catchError = Commonjs.catchError;
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css'
 import { createNamespacedHelpers } from 'vuex';
- 
+Vue.prototype.$axios = $axios;
 Vue.use(ElementUI)
-Vue.use($axios);
+// Vue.use($axios);
 new Vue({
     el: '#app',
     router,
