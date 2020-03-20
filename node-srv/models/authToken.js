@@ -10,6 +10,9 @@ class authToken extends baseModel {
         return {
             userId: {type: String, required: true},
             token: {type: String, required: true, unique: true},
+            osName: {type: String, required: false},
+            browserName: {type: String, required: false},
+            browserVersion: {type: String, required: false},
             expiration: {type: Number, required: true},
             remark: {type: String, required: false},
         };

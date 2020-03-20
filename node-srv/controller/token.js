@@ -11,7 +11,6 @@ const baseController = require('./baseController');
 const asyncRedisClient = require('../lib/asyncRedis').client;
 const redisKey = require('../const/redisKey');
 
-
 module.exports = new Router(
 
 ).get('list', async ctx => {

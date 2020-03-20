@@ -7,6 +7,7 @@ const md5 = require('md5');
 const fs = require('fs');
 
 const uuid = require('uuid');
+const UA = require('ua-device');
 
 /**
  * md5
@@ -57,3 +58,22 @@ module.exports.randomNum = length => {
     }
     return code;
 };
+
+
+/**
+ * 格式化 User-Agent
+ * @param uaString
+ * @returns {null|{browserVersion: *, browserName: *, osName: *}}
+ */
+module.exports.ua = uaString => {
+    if (!uaString) return null;
+    let ua = new UA(uaString);
+    if (ua) {
+        return {
+            osName: ua.os.name,
+            browserName: ua.browser.name,
+            browserVersion: ua.browser.version.original
+        }
+    }
+    return null;
+}
