@@ -340,7 +340,7 @@
               that.loading.close();
           }
           that.data.loaded = false;
-          that.catchError(error);
+          // that.catchError(error);
         })
       },
 
@@ -362,7 +362,7 @@
               })
           }
         }).catch(function (error) {
-          that.catchError(error);
+          // that.catchError(error);
         })
       },
 

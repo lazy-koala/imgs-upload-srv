@@ -1,5 +1,6 @@
 import { Message } from 'element-ui';
 import Cookies from "js-cookie";
+import router from '../../router';
 
 function formatTime (time) {
     time = new Date(parseInt(time, 10));

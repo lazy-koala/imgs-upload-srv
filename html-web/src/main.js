@@ -19,6 +19,18 @@ Vue.prototype.catchError = Commonjs.catchError;
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css'
 import { createNamespacedHelpers } from 'vuex';
+$axios.interceptors.response.use(function (response) {
+  // Do something with response data
+    return response;
+}, function (error) {
+    console.log('interceptorserror: ', error);
+    Commonjs.catchError(error);
+  // Do something with response error
+    return Promise.reject(error);
+});
+$axios.defaults.timeout = 60000;
+
+
 Vue.prototype.$axios = $axios;
 Vue.use(ElementUI)
 // Vue.use($axios);

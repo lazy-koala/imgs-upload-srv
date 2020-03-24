@@ -141,7 +141,7 @@ export default {
                 }
             }).catch(function (error) {
                 that.globalLoading = false; 
-                that.catchError(error);
+                // that.catchError(error);
             })
         },        
         update (data) {
@@ -207,7 +207,7 @@ export default {
                 that.$store.commit('changeInfo', info);
             }
         }).catch(function (error) {
-            that.catchError(error);
+            // that.catchError(error);
         })
         // this.$refs.saveTagInput.$refs.input.focus();
     },

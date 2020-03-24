@@ -71,12 +71,7 @@
                     }
                 });
             },
-            catchError: function (error) {
-                if (error.response && error.response.status && error.response.status == '401') {
-                    Cookies.set('uinfo', '');
-                    this.$router.push('/');
-                }
-            }
+            
         },
         // computed: {
         //     activeName() {
@@ -97,7 +92,7 @@
                     that.$store.commit('changeInfo', info);
                 }
             }).catch(function (error) {
-                that.catchError(error);
+                // that.catchError(error);
             })
 
             // 第一次路由过来加载组件

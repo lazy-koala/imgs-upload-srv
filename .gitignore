@@ -90,3 +90,6 @@ resources/.arch-internal-preview.css
 .DS_Store
 node-srv/config/*.json
 pm2.json
+
+html-web/www/
+html-web/rev/
