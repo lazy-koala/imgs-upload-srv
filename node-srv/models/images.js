@@ -11,10 +11,20 @@ class images extends baseModel {
         return {
             userId: {type: String, required: true},
             url: {type: String, required: true},
-            remark: {type: String, required: false},
             urn: {type: String, unique: true},
             sortId: {type: String, required: true},
-            tags: {type: Array, required: false}
+            tags: {type: Array, required: false},
+            // 00 图片状态正常
+            // 01 图片涉及违规
+            status: {type: String, default: '00'},
+            // 图片系统自动分级
+            // everyone | teen | adult
+            sysScyLevel: {type: String, default: 'everyone'},
+            sysScyLevelTime: {type: Number, required: false},
+            sysScyLevelDetail: {type: String, required: false},
+            confirmScyLevel: {type: String, required: false},
+            confirmScyLevelTime: {type: Number, required: false},
+            confirmedByUser: {type: Boolean, required: false}
         };
     };
 

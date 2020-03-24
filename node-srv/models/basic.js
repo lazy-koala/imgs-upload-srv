@@ -24,7 +24,6 @@ class baseModel {
         }
     }
 
-
     Schema() {
     };
 
@@ -72,7 +71,7 @@ module.exports.selectByPage = (page, model) => new Promise(resolve => {
                 totalCount: count,
                 hasNext: false
             };
-            if (count == 0) {
+            if (count === 0) {
                 resolve(response);
             } else {
                 model.find(query, fields, {sort: sort}).skip(page.pageSize * (page.pageNumber - 1)).limit(page.pageSize).exec((err, docs) => {
