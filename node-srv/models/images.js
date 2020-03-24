@@ -19,7 +19,7 @@ class images extends baseModel {
             status: {type: String, default: '00'},
             // 图片系统自动分级
             // everyone | teen | adult
-            sysScyLevel: {type: String, default: 'everyone'},
+            sysScyLevel: {type: Number, default: 1},
             sysScyLevelTime: {type: Number, required: false},
             sysScyLevelDetail: {type: String, required: false},
             confirmScyLevel: {type: String, required: false},
