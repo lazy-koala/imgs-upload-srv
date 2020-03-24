@@ -21,6 +21,18 @@
             prop="expiration"
             label="失效日期">
           </el-table-column>
+          <el-table-column
+            prop="osName"
+            label="操作系统">
+          </el-table-column>
+          <el-table-column
+            prop="browserName"
+            label="浏览器">
+          </el-table-column>
+          <el-table-column
+            prop="browserVersion"
+            label="浏览器版本">
+          </el-table-column>
         </el-table>
         <div class="del-btn">
           <el-button @click="handleDelete()" type="primary" size="small">批量删除</el-button>
@@ -72,7 +84,10 @@
                 "userId" : obj.userId,
                 "token" : obj.token,
                 "expiration" : Common.formatTime(obj.expiration),
-                "createTime" : Common.formatTime(obj.createTime)
+                "createTime" : Common.formatTime(obj.createTime),
+                "osName": obj.osName || "-",
+                "browserName": obj.browserName || "-",
+                "browserVersion": obj.browserVersion || "-",
               };
               list.push(item);
             }

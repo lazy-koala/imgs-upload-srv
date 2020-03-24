@@ -15,7 +15,7 @@
                 </el-tab-pane>
                 <el-tab-pane name="person_token">
                     <span slot="label"><i class="el-icon-key gap"></i>token管理</span>
-                    <token :tokenList="tokenList" @refreshToken="getToken" class="tab-right"></token>
+                    <token :tokenList="tokenList" @refreshToken="getToken"></token>
                 </el-tab-pane>
             </el-tabs>
         </div>
@@ -130,10 +130,13 @@
         padding-right: 6px;
     }
     .el-tab-pane {
-        width: 650px;
+        width: 1000px;
         margin: 50px auto;
     }
     .el-form-item__content {
         display: flex;
+    }
+    .tab-right {
+        width: 70%;
     }
 </style>
