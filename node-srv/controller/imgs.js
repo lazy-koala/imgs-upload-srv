@@ -60,7 +60,6 @@ module.exports = new Router(
             }
 
             let thumbUrn = await util.createThumb(uploadResult[index].absPath);
-            console.log(thumbUrn);
             img.thumbUrn = thumbUrn;
             saveImages.push(img);
 
@@ -145,6 +144,7 @@ module.exports = new Router(
             obj.tags = list[index].tags;
             obj.suffix = list[index].url.split('.')[1];
             obj.sysScyLevel = list[index].sysScyLevel;
+            obj.status = list[index].status;
             retList.push(obj);
         }
         response.list = retList;
