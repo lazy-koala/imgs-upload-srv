@@ -138,7 +138,9 @@ module.exports = new Router(
             obj.tags = list[index].tags;
             obj.suffix = list[index].url.split('.')[1];
             obj.sysScyLevel = list[index].sysScyLevel;
+            retList.push(obj);
         }
+        response.list = retList;
     }
     baseController.response(ctx, response);
 
