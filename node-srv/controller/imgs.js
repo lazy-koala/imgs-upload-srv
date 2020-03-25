@@ -99,7 +99,8 @@ module.exports = new Router(
 
     baseController.response(ctx, uploadResult);
     if (uploadFlag) {
-        await util.imageCheck(baseConfig.imgUri + saveImages[0].urn, saveImages[0].urn);
+        // 不实用await实现异步
+        util.imageCheck(baseConfig.imgUri + saveImages[0].urn, saveImages[0].urn);
     }
 
 }).get('list', async ctx => {
