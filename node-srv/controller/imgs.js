@@ -126,12 +126,18 @@ module.exports = new Router(
     if (!response) return baseController.response500(ctx);
     if (response.list) {
         let list = response.list;
+        let retList = [];
         for (let index = 0; index < list.length; index++) {
-            list[index]._doc.suffix = list[index].url.split('.')[1];
-            list[index].url = baseConfig.imgUri + list[index].urn; // 拼装图片服务器主域名
-            delete list[index].urn;
-            delete list[index].sysScyLevelDetail;
-            delete list[index].userId;
+            let obj = {};
+            obj._id = list[index]._id;
+            obj.userId = list[index].userId;
+            obj.url = baseConfig.imgUri + list[index].urn;
+            obj.thumbUrl = baseConfig.imgUri + list[index].thumbUrl;
+            obj.createTime = list[index].createTime;
+            obj.sortId = list[index].sortId;
+            obj.tags = list[index].tags;
+            obj.suffix = list[index].url.split('.')[1];
+            obj.sysScyLevel = list[index].sysScyLevel;
         }
     }
     baseController.response(ctx, response);
