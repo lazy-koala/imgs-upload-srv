@@ -22,3 +22,17 @@ module.exports.doRequestBuffer = requestParam => new Promise(resolve => {
         resolve(data);
     });
 });
+
+module.exports.doRequestString = requestParam => new Promise(resolve => {
+    request(requestParam, (err, response, body) => {
+        let data = {flag: false};
+        if (err) {
+            data.error = err;
+            resolve(data);
+        } else {
+            data.flag = true;
+            data.body = body;
+            resolve(data);
+        }
+    });
+});

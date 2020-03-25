@@ -8,6 +8,12 @@ const fs = require('fs');
 
 const uuid = require('uuid');
 const UA = require('ua-device');
+const sharp = require('sharp');
+const path = require('path');
+
+const httpRequest = require('./httpRequest');
+const imagesModel = require('../models/images');
+const basicConfig = require('../config/basic');
 
 /**
  * md5
@@ -59,7 +65,6 @@ module.exports.randomNum = length => {
     return code;
 };
 
-
 /**
  * 格式化 User-Agent
  * @param uaString
@@ -76,4 +81,37 @@ module.exports.ua = uaString => {
         }
     }
     return null;
-}
+};
+
+module.exports.createThumb = async (absPath) => {
+    let dirPath = path.join(absPath, '..');
+    let fileName = absPath.replace(dirPath + '/', '');
+    await sharp(fs.readFileSync(absPath))
+        .resize({width: 160})
+        .toFile(dirPath + '/thumb-' + fileName);
+    return '/thumb/' + md5(fileName);
+};
+
+module.exports.imageCheck = async (imgUri, urn) => {
+    let res = await httpRequest.doRequestString(basicConfig.imageVerify + imgUri);
+    if (res.flag) {
+
+        let obj = JSON.parse(res.body);
+
+        let update = {
+            sysScyLevel: obj.rating_index,
+            sysScyLevelTime: Date.now(),
+            sysScyLevelDetail: JSON.stringify(obj.predictions)
+        };
+
+        if (obj.rating_index === 3) {
+            update.status = '01';
+        }
+
+        await imagesModel.updateByCondition(update, {urn: urn});
+        console.log('图片自动分级完成 urn =', urn);
+
+    } else {
+        console.error('图片自动分级异常 urn =', urn, res.error);
+    }
+};

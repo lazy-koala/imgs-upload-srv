@@ -15,6 +15,7 @@ const shareImgModel = require('../models/shareImg');
 
 const asyncRedisClient = require('../lib/asyncRedis').client;
 const redisKey = require('../const/redisKey');
+const path = require('path');
 
 const algorithm10to64 = require('../lib/algorithm10to64');
 const util = require('../lib/util');
@@ -54,9 +55,12 @@ module.exports = new Router(
                 urn: '/' + algorithm10to64.number10to64(incr + Date.now()),
                 sortId: sortId
             };
+
             if (fields && fields.tags && fields.tags.length > 0) {
                 img.tags = fields.tags;
             }
+
+            img.thumbUrn = await util.createThumb(uploadResult[index].absPath);
             saveImages.push(img);
 
             uploadResult[index].path = baseConfig.imgUri + img.urn;
@@ -65,9 +69,11 @@ module.exports = new Router(
         }
     }
 
+    let uploadFlag = false;
     if (saveImages.length > 0) {
         let result = await imagesModel.saveMany(saveImages);
         if (result.length > 0) {
+            uploadFlag = true;
             // 自动进行分享
             // FIXME 如果多张图片上传这里是有问题的
 
@@ -92,6 +98,10 @@ module.exports = new Router(
     }
 
     baseController.response(ctx, uploadResult);
+    if (uploadFlag) {
+        // 不实用await实现异步
+        util.imageCheck(baseConfig.imgUri + saveImages[0].urn, saveImages[0].urn);
+    }
 
 }).get('list', async ctx => {
 
@@ -126,10 +136,24 @@ module.exports = new Router(
     if (!response) return baseController.response500(ctx);
     if (response.list) {
         let list = response.list;
+        let retList = [];
         for (let index = 0; index < list.length; index++) {
-            list[index]._doc.suffix = list[index].url.split('.')[1];
-            list[index].url = baseConfig.imgUri + list[index].urn; // 拼装图片服务器主域名
+            let obj = {};
+            obj._id = list[index]._id;
+            obj.userId = list[index].userId;
+            obj.url = baseConfig.imgUri + list[index].urn;
+            if (list[index].thumbUrn) {
+                obj.thumbUrl = baseConfig.imgUri + list[index].thumbUrn;
+            }
+            obj.createTime = list[index].createTime;
+            obj.sortId = list[index].sortId;
+            obj.tags = list[index].tags;
+            obj.suffix = list[index].url.split('.')[1];
+            obj.sysScyLevel = list[index].sysScyLevel;
+            obj.status = list[index].status;
+            retList.push(obj);
         }
+        response.list = retList;
     }
     baseController.response(ctx, response);
 
@@ -144,6 +168,9 @@ module.exports = new Router(
     let uriArray = [];
     for (let i in imgs) {
         uriArray.push(uploadConfig.path + imgs[i].url); // 得到有效的需要删除的 物理路径图片位置
+        let dirPath = path.join(imgs[i].url, '..');
+        let fileName = imgs[i].url.replace(dirPath + '/', '');
+        uriArray.push(path.join(uploadConfig.path, dirPath, 'thumb-' + fileName)); // 得到有效的需要删除的 物理路径图片位置
     }
     util.fsDel(uriArray); // 异步移除图片
 

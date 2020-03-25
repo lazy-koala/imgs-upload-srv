@@ -6,12 +6,12 @@
 const baseModel = require('./basic.js');
 
 class images extends baseModel {
-
     Schema() {
         return {
             userId: {type: String, required: true},
             url: {type: String, required: true},
             urn: {type: String, unique: true},
+            thumbUrn: {type: String, unique: true},
             sortId: {type: String, required: true},
             tags: {type: Array, required: false},
             // 00 图片状态正常
@@ -19,7 +19,7 @@ class images extends baseModel {
             status: {type: String, default: '00'},
             // 图片系统自动分级
             // everyone | teen | adult
-            sysScyLevel: {type: Number, default: 1},
+            sysScyLevel: {type: Number},
             sysScyLevelTime: {type: Number, required: false},
             sysScyLevelDetail: {type: String, required: false},
             confirmScyLevel: {type: String, required: false},
