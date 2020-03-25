@@ -95,12 +95,20 @@ module.exports.createThumb = async (absPath) => {
 module.exports.imageCheck = async (imgUri, urn) => {
     let res = await httpRequest.doRequestString(basicConfig.imageVerify + imgUri);
     if (res.flag) {
+
         let obj = JSON.parse(res.body);
-        await imagesModel.updateByCondition({
+
+        let update = {
             sysScyLevel: obj.rating_index,
             sysScyLevelTime: Date.now(),
             sysScyLevelDetail: JSON.stringify(obj.predictions)
-        }, {urn: urn});
+        };
+
+        if (obj.rating_index === 3) {
+            update.status = '01';
+        }
+
+        await imagesModel.updateByCondition(update, {urn: urn});
         console.log('图片自动分级完成 urn =', urn);
 
     } else {
