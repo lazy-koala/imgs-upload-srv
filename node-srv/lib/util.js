@@ -9,6 +9,7 @@ const fs = require('fs');
 const uuid = require('uuid');
 const UA = require('ua-device');
 const sharp = require('sharp');
+const path = require('path');
 
 /**
  * md5
