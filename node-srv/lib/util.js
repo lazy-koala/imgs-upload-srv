@@ -8,6 +8,7 @@ const fs = require('fs');
 
 const uuid = require('uuid');
 const UA = require('ua-device');
+const sharp = require('sharp');
 
 /**
  * md5
@@ -76,4 +77,12 @@ module.exports.ua = uaString => {
         }
     }
     return null;
-}
+};
+module.exports.createThumb = async (absPath) => {
+    let dirPath = path.join(absPath, '..');
+    let fileName = absPath.replace(dirPath + '/', '');
+    await sharp(fs.readFileSync(absPath))
+        .resize({width: 160})
+        .toFile(dirPath + '/thumb-' + fileName);
+    return '/thumb/' + util.md5(fileName);
+};

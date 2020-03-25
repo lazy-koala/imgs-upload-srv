@@ -68,6 +68,7 @@ module.exports.upload = (ctx) => new Promise(resolve => {
 
                 result.path = path.sep + uriPath;
                 result.flag = true;
+                result.absPath = absPath;
                 result.message = '上传完成';
                 console.log('=> busboyUpload'.cyan + ' finished to upload filename = '.grey + filename.blue + ' path = '.grey + absPath.blue);
 

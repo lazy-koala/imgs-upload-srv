@@ -54,9 +54,14 @@ module.exports = new Router(
                 urn: '/' + algorithm10to64.number10to64(incr + Date.now()),
                 sortId: sortId
             };
+
             if (fields && fields.tags && fields.tags.length > 0) {
                 img.tags = fields.tags;
             }
+
+            let thumbUrn = await util.createThumb(uploadResult[index].absPath);
+            console.log(thumbUrn);
+            img.thumbUrn = thumbUrn;
             saveImages.push(img);
 
             uploadResult[index].path = baseConfig.imgUri + img.urn;
