@@ -73,7 +73,7 @@ module.exports = new Router(
     if (saveImages.length > 0) {
         let result = await imagesModel.saveMany(saveImages);
         if (result.length > 0) {
-            uploadResult = true;
+            uploadFlag = true;
             // 自动进行分享
             // FIXME 如果多张图片上传这里是有问题的
 
@@ -98,7 +98,7 @@ module.exports = new Router(
     }
 
     baseController.response(ctx, uploadResult);
-    if (uploadResult) {
+    if (uploadFlag) {
         await util.imageCheck(baseConfig.imgUri + saveImages[0].urn, saveImages[0].urn);
     }
 
