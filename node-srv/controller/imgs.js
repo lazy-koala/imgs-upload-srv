@@ -15,6 +15,7 @@ const shareImgModel = require('../models/shareImg');
 
 const asyncRedisClient = require('../lib/asyncRedis').client;
 const redisKey = require('../const/redisKey');
+const path = require('path');
 
 const algorithm10to64 = require('../lib/algorithm10to64');
 const util = require('../lib/util');
@@ -59,8 +60,7 @@ module.exports = new Router(
                 img.tags = fields.tags;
             }
 
-            let thumbUrn = await util.createThumb(uploadResult[index].absPath);
-            img.thumbUrn = thumbUrn;
+            img.thumbUrn = await util.createThumb(uploadResult[index].absPath);
             saveImages.push(img);
 
             uploadResult[index].path = baseConfig.imgUri + img.urn;
@@ -69,9 +69,11 @@ module.exports = new Router(
         }
     }
 
+    let uploadFlag = false;
     if (saveImages.length > 0) {
         let result = await imagesModel.saveMany(saveImages);
         if (result.length > 0) {
+            uploadResult = true;
             // 自动进行分享
             // FIXME 如果多张图片上传这里是有问题的
 
@@ -96,6 +98,9 @@ module.exports = new Router(
     }
 
     baseController.response(ctx, uploadResult);
+    if (uploadResult) {
+        await util.imageCheck(baseConfig.imgUri + saveImages[0].urn, saveImages[0].urn);
+    }
 
 }).get('list', async ctx => {
 
@@ -162,6 +167,9 @@ module.exports = new Router(
     let uriArray = [];
     for (let i in imgs) {
         uriArray.push(uploadConfig.path + imgs[i].url); // 得到有效的需要删除的 物理路径图片位置
+        let dirPath = path.join(imgs[i].url, '..');
+        let fileName = imgs[i].url.replace(dirPath + '/', '');
+        uriArray.push(path.join(uploadConfig.path, dirPath, fileName)); // 得到有效的需要删除的 物理路径图片位置
     }
     util.fsDel(uriArray); // 异步移除图片
 
