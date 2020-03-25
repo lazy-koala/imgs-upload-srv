@@ -12,6 +12,8 @@ class images extends baseModel {
             userId: {type: String, required: true},
             url: {type: String, required: true},
             urn: {type: String, unique: true},
+            thumbUrn: {type: String, unique: true},
+            thumbUrl: {type: String, required: true},
             sortId: {type: String, required: true},
             tags: {type: Array, required: false},
             // 00 图片状态正常

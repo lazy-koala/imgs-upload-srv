@@ -129,6 +129,9 @@ module.exports = new Router(
         for (let index = 0; index < list.length; index++) {
             list[index]._doc.suffix = list[index].url.split('.')[1];
             list[index].url = baseConfig.imgUri + list[index].urn; // 拼装图片服务器主域名
+            delete list[index].urn;
+            delete list[index].sysScyLevelDetail;
+            delete list[index].userId;
         }
     }
     baseController.response(ctx, response);
