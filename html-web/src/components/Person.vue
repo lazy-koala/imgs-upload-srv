@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="wrapper">
         <template>
             <common-header isIndex="1"></common-header>
         </template>

@@ -16,7 +16,9 @@ function catchError(error) {
    if (response && response.status && response.status == '401') {
         // 登录态失效
         Cookies.set('uinfo', '');
-        this.$router.push('/');
+        console.log('router: ', router);
+
+        router.push('/');
    } else if (response && response.status && response.status == '400') {
         // 参数错误
         Message.error({

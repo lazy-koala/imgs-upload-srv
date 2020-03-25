@@ -1,44 +1,38 @@
 <template>
-<div class="menu">
+<div class="header-menu">
     <div class="title-wrapper">
-        <span v-if="isIndex != 2" :class="['element-icons', 'menu',isCollapse ? 'el-icon-menuoff' : 'el-icon-menuon']" @click="taggleMenuList"></span>
-        <div class="title" @click="gotoIndex">在线图床服务</div>        
-    </div>
-    <transition name="fade">
-        <div class="menu-list" v-show="isCollapse">
-            <el-menu
-                default-active="index"
-                
-                @select="gotoMenu"
-            >
-                <el-menu-item index="index">
-                    <i class="element-icons el-icon-menu"></i>
-                    <span slot="title">首页</span>
-                </el-menu-item>
-                <el-submenu index="person">
-                    <template slot="title">
-                        <i class="element-icons el-icon-person"></i>
-                        <span>个人中心</span>
-                    </template>
-                    <el-menu-item-group>
-                        <el-menu-item class="element-icons el-icon-renyuan" index="person_headimg">头像昵称</el-menu-item>
-                        <el-menu-item index="person_pwd">密码邮箱</el-menu-item>
-                        <el-menu-item index="person_token">Token管理</el-menu-item>
-                    </el-menu-item-group>
-                </el-submenu>
-                <el-menu-item index="category">
-                    <i class="element-icons el-icon-menu"></i>
-                    <span slot="title">分类管理</span>
-                </el-menu-item>            
-                <el-menu-item index="exit">
-                    <i class="element-icons el-icon-exit"></i>
-                    <span slot="title">退出</span>
-                </el-menu-item>
-            </el-menu>
-        </div>
-    </transition>
-
-    <div class="menu-wrapper" @click="taggleMenuList" v-show="isCollapse"></div>
+        <!-- <span v-if="isIndex != 2" :class="['element-icons', 'menu',isCollapse ? 'el-icon-menuoff' : 'el-icon-menuon']" @click="taggleMenuList"></span> -->
+        <div class="title" @click="gotoIndex">在线图床服务</div>   
+        <el-menu
+            default-active="index"
+            mode="horizontal"
+            @select="gotoMenu"
+        >
+            <el-menu-item index="index">
+                <i class="element-icons el-icon-menu"></i>
+                <span slot="title">首页</span>
+            </el-menu-item>
+            <el-submenu index="person">
+                <template slot="title">
+                    <i class="element-icons el-icon-person"></i>
+                    <span>个人中心</span>
+                </template>
+                <el-menu-item-group>
+                    <el-menu-item index="person_headimg">头像昵称</el-menu-item>
+                    <el-menu-item index="person_pwd">密码邮箱</el-menu-item>
+                    <el-menu-item index="person_token">Token管理</el-menu-item>
+                </el-menu-item-group>
+            </el-submenu>
+            <el-menu-item index="category">
+                <i class="element-icons el-icon-menu"></i>
+                <span slot="title">分类管理</span>
+            </el-menu-item>            
+            <el-menu-item index="exit">
+                <i class="element-icons el-icon-exit"></i>
+                <span slot="title">退出</span>
+            </el-menu-item>
+        </el-menu>    
+    </div>     
     
     <div class="tip" v-if="isIndex != 2">
         <img v-show="headImg" class="head-img" :src="headImg">
@@ -70,7 +64,6 @@ import { Message } from 'element-ui';
         },
         data() {
             return {
-                isCollapse: false,
             }
         },
         computed: {
@@ -82,10 +75,7 @@ import { Message } from 'element-ui';
             }
         },
         methods: {
-            // 切换显示侧边栏
-            taggleMenuList: function () {
-                this.isCollapse = !this.isCollapse;
-            },
+           
             logout: function () {
                 var that = this;
                 $axios.get('/api/logout').then((res) => {
@@ -101,7 +91,6 @@ import { Message } from 'element-ui';
             },
             gotoMenu: function (key, keyPath) {
                 // 关闭侧边栏菜单
-                this.isCollapse = false;
                 switch (key) {
                     case 'person_headimg': case 'person_token': case 'person_pwd':
                         this.$router.push({
@@ -134,103 +123,102 @@ import { Message } from 'element-ui';
         }        
     }
 </script>
-<style type="text/css" scoped>
-.head-img {
-    display: inline-block;
-    width: 30px;
-    height: 30px;
-    padding-right: 20px;
-}
-.menu {
+<style type="text/css">
+.header-menu {
     position: relative;
     background: #409EFF;
     color: #fff;
     font-size: 24px;
-}
-.menu-wrapper {
-    position: fixed;
-    z-index: 888;
-    top: 50px;
-    bottom: 60px;
-    left: 0;
-    right: 0;
-}
-.menu-list {
-    position: fixed;
-    /* background: rgb(84, 92, 100); */
-    z-index: 999;
-    top: 50px;
-    bottom: 60px;
-    width: 200px;
-    -moz-box-shadow: 1px 2px 2px rgba(221,221,221, 0.5); 
-    -webkit-box-shadow: 1px 2px 2px rgba(221,221,221, 0.5);
-    box-shadow: 1px 2px 2px rgba(221,221,221, 0.5);
-    background: #fff; 
-}
-.el-menu {
-    border: none;
-    span {
-        font-size: 18px;        
-    }
-    li {
-        font-size: 16px;
-    }
-}
-.title-wrapper {
-    position: relative;
-    display: -webkit-box;
-    -webkit-box-align: center;
-    .el-icon-menuon, .el-icon-menuoff {
-        position: absolute;
-        top: 0;
-    }
-    .title {
-        margin-left: 50px;
-        line-height: 50px;
-        cursor:pointer;
-    }
-    span {
-        font-size: 28px;
+    .head-img {
         display: inline-block;
-        line-height: 50px;
-        margin-left: 10px;
-        cursor:pointer;
+        width: 30px;
+        height: 30px;
+        padding-right: 20px;
     }
-}
+    .el-menu {
+        margin-right: 160px;
+        border: none;
+        background: none;
+        span {
+            font-size: 12px;        
+        }
+        li {
+            font-size: 14px;
+        }
+        li:hover {
+            background: none;
+        }
+        
+        &.el-menu--horizontal > .el-menu-item.is-active {
+            color: #fff;
+        }
+        .el-menu-item:focus,.el-menu-item:hover {
+            outline: 0;
+            background-color: initial;
+        }
+        .el-dropdown-menu__item--divided:before,
+        &.el-menu--horizontal > .el-menu-item:not(.is-disabled):focus,
+        &.el-menu--horizontal > .el-menu-item:not(.is-disabled):hover,
+        &.el-menu--horizontal > .el-submenu .el-submenu__title:hover {
+            background-color: initial;
+        }
+        .el-menu--horizontal>.el-submenu .el-submenu__title:hover {
+            background-color: initial !important;
+        } 
+        .el-menu-item-group .el-menu-item:hover {
+            background-color: rgba(0, 0, 0, 0.4) !important;
+        }
+    }
 
-.sort {
-    height: 100%;
-    margin-left: 20px;
-}
-.tip {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    line-height: 30px;
-    bottom: 10px;
-    right: 10px;
-    font-size: 14px;
-}
-.exit {
-    padding-left: 10px;
-    color: #fff;
-    cursor: pointer;
-}
-.exit:hover{
-    cursor: pointer
-}
+  
 
-.fade-enter-active {
-    transition: all .3s cubic-bezier(1.0, 0.9, 0.9, 1.0);
-    opacity: 0.9;
-}
-.fade-leave-active {
-    transition: all .3s cubic-bezier(1.0, 0.9, 0.9, 1.0);
-}
-.fade-enter, .fade-leave-to
-/* .slide-fade-leave-active for below version 2.1.8 */ {
-  transform: translateX(-200px);
-  opacity: 0.9;
+    .title-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .el-icon-menuon, .el-icon-menuoff {
+            position: absolute;
+            top: 0;
+        }
+        .element-icons {
+            color: #fff;
+        }
+        .title {
+            margin-left: 20px;
+            cursor:pointer;
+            flex: 1;
+        }
+        span {
+            font-size: 14px;
+            display: inline-block;
+            margin-left: 10px;
+            cursor:pointer;
+            color: #fff;
+        }
+    }
+
+    .sort {
+        height: 100%;
+        margin-left: 20px;
+    }
+    .tip {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        line-height: 40px;
+        bottom: 10px;
+        right: 10px;
+        font-size: 14px;
+    }
+    .exit {
+        padding-left: 10px;
+        color: #fff;
+        cursor: pointer;
+    }
+    .exit:hover{
+        cursor: pointer
+    }
 }
 </style>

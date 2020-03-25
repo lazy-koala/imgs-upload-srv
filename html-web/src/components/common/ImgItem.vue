@@ -1,7 +1,7 @@
 <template> 
     <div class="">
         <div class="imgage-wrapper" v-loading="loading"   @mouseover="toggleShow(data._id, 1)" @mouseleave="toggleShow(data._id, 0)">
-            <img class="image" :src="data.url"  @load="hideLoading()" >
+            <img class="image" :src="data.thumbUrl || data.url"  @load="hideLoading()" >
             <div class="mask-wrapper animated fadeIn" :ref="data._id">
                 <div class="btn-wrapper">
                     <el-button type="text" title="编辑图片" class="button icon el-icon-eidt" @click="zoomIn(data)"></el-button>

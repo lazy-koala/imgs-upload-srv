@@ -224,6 +224,7 @@ export default {
     .wrapper {
         position: relative;
         height: 100%;
+        overflow: hidden;
     }
     .list-wrapper {
         position: absolute;

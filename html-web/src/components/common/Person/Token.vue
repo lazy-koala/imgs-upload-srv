@@ -27,6 +27,7 @@
           </el-table-column>
           <el-table-column
             prop="browserName"
+            width="100"
             label="浏览器">
           </el-table-column>
           <el-table-column
