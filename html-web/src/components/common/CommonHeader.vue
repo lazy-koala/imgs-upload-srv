@@ -36,7 +36,7 @@
     
     <div class="tip" v-if="isIndex != 2">
         <img v-show="headImg" class="head-img" :src="headImg">
-        <span>{{nickname}},欢迎你~</span>
+        <!-- <span>{{nickname}},欢迎你~</span> -->
         <!-- <span v-if="isIndex==0" class="exit" @click="gotoPerson">个人中心</span> -->
         <!-- <span v-if="isIndex==1" class="exit" @click="gotoIndex">返回首页</span> -->
         <!-- <span class="exit">|</span> -->
@@ -131,12 +131,12 @@ import { Message } from 'element-ui';
     font-size: 24px;
     .head-img {
         display: inline-block;
-        width: 30px;
-        height: 30px;
+        width: 40px;
+        height: 40px;
         padding-right: 20px;
     }
     .el-menu {
-        margin-right: 160px;
+        margin-right: 100px;
         border: none;
         background: none;
         span {
@@ -147,6 +147,17 @@ import { Message } from 'element-ui';
         }
         li:hover {
             background: none;
+        }
+
+        .el-menu-item {
+            padding: 0 15px;
+        }
+
+        .el-submenu__title {
+            padding: 0 10px;
+        }
+        &.el-menu--horizontal > .el-submenu .el-submenu__icon-arrow {
+            display: none;
         }
         
         &.el-menu--horizontal > .el-menu-item.is-active {
@@ -190,9 +201,9 @@ import { Message } from 'element-ui';
             flex: 1;
         }
         span {
-            font-size: 14px;
+            font-size: 15px;
             display: inline-block;
-            margin-left: 10px;
+            margin-left: 3px;
             cursor:pointer;
             color: #fff;
         }

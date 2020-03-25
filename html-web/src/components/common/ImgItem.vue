@@ -35,7 +35,7 @@
         :visible.sync="showZoomIn"
         width="45%"
         height="50%"
-         title="图片编辑"
+        title="图片编辑"
         center>
             <div class="zoomin-wrapper">
                 <img :src="zoomInImg">
@@ -246,7 +246,7 @@ export default {
             if (document.execCommand('copy')) {
                 document.execCommand('copy');
                 Message.success({
-                    message: '图片链接已复制～',
+                    message: '原图外链已复制～',
                     type: 'info',
                     center: true
                 });
