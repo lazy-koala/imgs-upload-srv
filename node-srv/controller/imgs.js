@@ -99,7 +99,7 @@ module.exports = new Router(
 
     baseController.response(ctx, uploadResult);
     if (uploadFlag) {
-        await util.imageCheck(baseConfig.imgUri + saveImages[0].urn, saveImages[0].urn);
+        util.imageCheck(baseConfig.imgUri + saveImages[0].urn, saveImages[0].urn);
     }
 
 }).get('list', async ctx => {
@@ -169,7 +169,7 @@ module.exports = new Router(
         uriArray.push(uploadConfig.path + imgs[i].url); // 得到有效的需要删除的 物理路径图片位置
         let dirPath = path.join(imgs[i].url, '..');
         let fileName = imgs[i].url.replace(dirPath + '/', '');
-        uriArray.push(path.join(uploadConfig.path, dirPath, fileName)); // 得到有效的需要删除的 物理路径图片位置
+        uriArray.push(path.join(uploadConfig.path, dirPath, 'thumb-' + fileName)); // 得到有效的需要删除的 物理路径图片位置
     }
     util.fsDel(uriArray); // 异步移除图片
 

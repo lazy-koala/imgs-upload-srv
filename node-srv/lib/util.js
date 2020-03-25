@@ -101,6 +101,8 @@ module.exports.imageCheck = async (imgUri, urn) => {
             sysScyLevelTime: Date.now(),
             sysScyLevelDetail: JSON.stringify(obj.predictions)
         }, {urn: urn});
+        console.log('图片自动分级完成 urn =', urn);
+
     } else {
         console.error('图片自动分级异常 urn =', urn, res.error);
     }
