@@ -132,7 +132,9 @@ module.exports = new Router(
             obj._id = list[index]._id;
             obj.userId = list[index].userId;
             obj.url = baseConfig.imgUri + list[index].urn;
-            obj.thumbUrl = baseConfig.imgUri + list[index].thumbUrl;
+            if (list[index].thumbUrn) {
+                obj.thumbUrl = baseConfig.imgUri + list[index].thumbUrn;
+            }
             obj.createTime = list[index].createTime;
             obj.sortId = list[index].sortId;
             obj.tags = list[index].tags;
