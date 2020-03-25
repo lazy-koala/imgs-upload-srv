@@ -11,7 +11,7 @@ const UA = require('ua-device');
 const sharp = require('sharp');
 const path = require('path');
 
-const httpRequest = require('httpRequest');
+const httpRequest = require('./httpRequest');
 const imagesModel = require('../models/images');
 const basicConfig = require('../config/basic');
 
