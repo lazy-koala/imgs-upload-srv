@@ -85,5 +85,5 @@ module.exports.createThumb = async (absPath) => {
     await sharp(fs.readFileSync(absPath))
         .resize({width: 160})
         .toFile(dirPath + '/thumb-' + fileName);
-    return '/thumb/' + util.md5(fileName);
+    return '/thumb/' + md5(fileName);
 };
