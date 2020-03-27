@@ -263,20 +263,21 @@ export default {
                 });
                 return false;
             };
-            var index = this.findIndex(url, '/', 2);
-            url = url.slice(index, url.length);
+            // var index = this.findIndex(url, '/', 2);
+            // url = url.slice(index, url.length);
+            let urn = url.split('/view/')[1];
             var newDomain = window.location.protocol + "//" + window.location.host;
             // console.log(url);
             // var newDomain = "https://imgs.thankjava.com";
-            var downLoadUrl = newDomain + '/' + url;
+            var downLoadUrl = newDomain + '/api/imgs/download/' + urn;
             var alink = document.createElement("a");
-            var typeIndex = downLoadUrl.lastIndexOf(".");
             var ext = suffix;
             document.body.appendChild(alink);
             alink.style.display='none';
             alink.href = downLoadUrl;
             alink.download = id + '.' + ext;
             alink.click();
+            
         },
 
         findIndex: function (str, cha, num) {
