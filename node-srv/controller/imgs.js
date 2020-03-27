@@ -235,9 +235,9 @@ module.exports = new Router(
 }).get('download/:urn', async ctx => {
     let params = ctx.params;
     if (!params.urn) {
-        return;
+        return baseController.response400(ctx, '请求参数异常');
     }
-
     let image = await imagesModel.selectByUrn(params.urn);
+    if (!image) return baseController.response400(ctx, '请求参数异常');
     ctx.body = fs.readFileSync(uploadConfig.path + image.url);
 }).routes();
