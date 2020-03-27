@@ -9,7 +9,7 @@
         "start": "npm run dev",
         "lint": "eslint --ext .js,.vue src",
         "build": "node build/build.js",
-        "replace": "./node_modules/gulp/bin/gulp.js replace",
+        "replace": "./node_modules/gulp/bin/gulp.js",
         "prd": "npm run build && npm run replace"
     },
     "dependencies": {

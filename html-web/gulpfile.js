@@ -20,26 +20,67 @@ gulp.task('js', function () {
 });
 
 gulp.task('fonts', function () {
+    // return gulp.src('dist/static/fonts/*')
+    //     .pipe(gulp.dest('www/static/fonts'))
     return gulp.src('dist/static/fonts/*')
-        .pipe(gulp.dest('www/static/fonts'))
+      .pipe(rev())
+      .pipe(gulp.dest('www/static/fonts'))
+      .pipe(rev.manifest())
+      .pipe(gulp.dest('rev/fonts'));
 });
 
 gulp.task('img', function () {
     return gulp.src('dist/static/img/*')
+        .pipe(rev())
         .pipe(gulp.dest('www/static/img'))
+        .pipe(rev.manifest())
+        .pipe(gulp.dest('rev/img'));
 });
 
-gulp.task('rev', function () {
+// gulp.task('revhtml', function () {
+//     return gulp.src(['rev/**/*.json', 'dist/*.html'])
+//         .pipe(revCollector({
+//             replaceReved: true,//允许替换, 已经被替换过的文件
+//             dirReplacements: {
+//                 '/static/css': prdPath + 'css',
+//                 '/static/js': prdPath + 'js'
+//             }
+//         }))
+//         .pipe(gulp.dest('www'));
+// });
+gulp.task('revcss', gulp.series('fonts', 'img', 'css', function () {
+    return gulp.src(['rev/**/*.json', 'www/static/css/*'])
+    .pipe(revCollector({
+        replaceReved: true, //允许替换, 已经被替换过的文件
+        dirReplacements: {
+            '/static/img/': prdPath + 'img',
+            '/static/fonts/': prdPath + 'fonts'
+        }
+    }))
+    .pipe(gulp.dest('www/static/css'));
+}));
+gulp.task('revhtml', gulp.series('js', 'revcss', function () {
     return gulp.src(['rev/**/*.json', 'dist/*.html'])
-        .pipe(revCollector({
-            replaceReved: true,//允许替换, 已经被替换过的文件
-            dirReplacements: {
-                '/static/css': prdPath + 'css',
-                '/static/js': prdPath + 'js'
-            }
-        }))
-        .pipe(gulp.dest('www'));
-});
+    .pipe(revCollector({
+        replaceReved: true, //允许替换, 已经被替换过的文件
+        dirReplacements: {
+            '/static/css': prdPath + 'css',
+            '/static/js': prdPath + 'js'
+        }
+    }))
+    .pipe(gulp.dest('www'));
+}));
+// gulp.task('revhtml',  function () {
+//     return gulp.src(['rev/**/*.json', 'dist/*.html'])
+//         .pipe(revCollector({
+//             replaceReved: true, //允许替换, 已经被替换过的文件
+//             dirReplacements: {
+//                 '/static/css': prdPath + 'css',
+//                 '/static/js': prdPath + 'js'
+//             }
+//         }))
+//         .pipe(gulp.dest('www'));
+// });
 
 gulp.task('clean', function () {
     return gulp.src(['www', 'rev'], {
@@ -48,6 +89,14 @@ gulp.task('clean', function () {
     })
         .pipe(clean());
 });
-gulp.task('replace', gulp.series('clean', 'css', 'js', 'fonts', 'img', 'rev', function (done) {
+// gulp.task('revhtml', ['clean', 'fonts', 'img'], done => {
+//     done();
+// });
+
+// gulp.task('replace', gulp.parallel('clean', 'revhtml', 'revcss', function (done) {
+//     done();
+// }));
+
+gulp.task('default', gulp.series('clean', 'revhtml', function (done) {
     done();
 }));
