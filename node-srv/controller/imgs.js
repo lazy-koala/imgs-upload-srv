@@ -232,4 +232,12 @@ module.exports = new Router(
     baseController.response(ctx, "请求完成", {
         uri: baseConfig.imgUri + urn
     })
+}).get('download/:urn', async ctx => {
+    let params = ctx.params;
+    if (!params.urn) {
+        return;
+    }
+
+    let image = await imagesModel.selectByUrn(params.urn);
+    ctx.body = fs.readFileSync(uploadConfig.path + image.url);
 }).routes();
