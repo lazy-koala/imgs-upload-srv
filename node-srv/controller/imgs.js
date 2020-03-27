@@ -21,6 +21,7 @@ const algorithm10to64 = require('../lib/algorithm10to64');
 const util = require('../lib/util');
 
 let systemDefaultSortId;
+const fs = require('fs');
 
 module.exports = new Router(
 
