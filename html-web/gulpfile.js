@@ -73,7 +73,7 @@ gulp.task('revhtml', gulp.series('js', 'revcss', function () {
             '/static/js': prdPath + 'js'
         }
     }))
-    .pipe(gulp.dest('www/static/'+ time ));
+    .pipe(gulp.dest('www/static' ));
 }));
 // gulp.task('revhtml',  function () {
 //     return gulp.src(['rev/**/*.json', 'dist/*.html'])
