@@ -23,6 +23,11 @@ const util = require('../lib/util');
 let systemDefaultSortId;
 const fs = require('fs');
 
+const useWebpBrowserNames = [
+    'firefox',
+    'chrome',
+];
+
 module.exports = new Router(
 
 ).post('upload', async (ctx) => {
@@ -256,17 +261,26 @@ module.exports = new Router(
     }
     let image = await imagesModel.selectByUrnOwn('/' + params.urn, ctx.state.authInfo.id);
     if (!image) return baseController.response400(ctx, '请求参数异常');
-    let absPath = uploadConfig.path + image.url;
-    let dirPath = path.join(absPath, '..');
-    let fileName = absPath.replace(dirPath + '/', '');
-    fileName = fileName.split('.')[0] + '.webp';
-    let webpPath = path.join(dirPath, fileName);
+
+    let userAgent = ctx.request.get('user-agent');
+    userAgent = util.ua(userAgent);
     ctx.set('Cache-Control', 'max-age=3600');
-    if (fs.existsSync(webpPath)) {
-        ctx.set('Content-Type', 'image/webp');
-        ctx.body = fs.readFileSync(webpPath);
-    } else {
-        ctx.set('Content-Type', 'image/' + image.url.split('.')[1]);
-        ctx.body = fs.readFileSync(uploadConfig.path + image.url);
+
+    if (userAgent && userAgent.browser && userAgent.browser.name) {
+        if (useWebpBrowserNames.indexOf(userAgent.browser.name.trim().toLowerCase()) !== -1) {
+            let absPath = uploadConfig.path + image.url;
+            let dirPath = path.join(absPath, '..');
+            let fileName = absPath.replace(dirPath + '/', '');
+            fileName = fileName.split('.')[0] + '.webp';
+            let webpPath = path.join(dirPath, fileName);
+            if (fs.existsSync(webpPath)) {
+                ctx.set('Content-Type', 'image/webp');
+                ctx.body = fs.readFileSync(webpPath);
+                return;
+            }
+        }
     }
+
+    ctx.set('Content-Type', 'image/' + image.url.split('.')[1]);
+    ctx.body = fs.readFileSync(uploadConfig.path + image.url);
 }).routes();
