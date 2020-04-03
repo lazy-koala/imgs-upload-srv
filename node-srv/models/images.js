@@ -10,12 +10,13 @@ class images extends baseModel {
         return {
             userId: {type: String, required: true},
             url: {type: String, required: true},
+            violationUrl: {type: String, require: false},
             urn: {type: String, unique: true},
             thumbUrn: {type: String, unique: true},
             sortId: {type: String, required: true},
             tags: {type: Array, required: false},
             // 00 图片状态正常
-            // 01 图片涉及违规
+            // 01 违规 成人图片
             status: {type: String, default: '00'},
             // 图片系统自动分级
             // everyone | teen | adult
