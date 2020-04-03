@@ -40,6 +40,16 @@ module.exports.fsDel = uris => {
     }
 };
 
+module.exports.fsDelReal = uris => {
+    for (let i in uris) {
+        fs.unlink(uris[i], uris[i], err => {
+            if (err) {
+                console.error(err)
+            }
+        });
+    }
+};
+
 /**
  * 生成指定范围随机数
  * @param min

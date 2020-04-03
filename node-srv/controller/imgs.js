@@ -162,18 +162,22 @@ module.exports = new Router(
 
     let params = ctx.request.body;
     if (!params) return baseController.response400(ctx, '请求参数缺失');
-    if (!params.ids || params.ids.length == 0) return baseController.response400(ctx, '请求参数异常');
+    if (!params.ids || params.ids.length === 0) return baseController.response400(ctx, '请求参数异常');
     let ids = params.ids;
     let imgs = await imagesModel.selectOwnByIds(ids, ctx.state.authInfo.id); // 防止删除别人的数据
     if (!imgs) return baseController.response(ctx);
+
     let uriArray = [];
     for (let i in imgs) {
-        uriArray.push(uploadConfig.path + imgs[i].url); // 得到有效的需要删除的 物理路径图片位置
+
+        util.fsDel([uploadConfig.path + imgs[i].url]);
         let dirPath = path.join(imgs[i].url, '..');
         let fileName = imgs[i].url.replace(dirPath + '/', '');
+
         uriArray.push(path.join(uploadConfig.path, dirPath, 'thumb-' + fileName)); // 得到有效的需要删除的 物理路径图片位置
+        // if (imgs.)
     }
-    util.fsDel(uriArray); // 异步移除图片
+    util.fsDelReal(uriArray); // 异步移除图片
 
     await imagesModel.removeOwnManyById(ids, ctx.state.authInfo.id);        // 清除数据库记录
     await shareImgModel.updateManyByImgId(ids, {status: false});    // 清楚分享的记录
@@ -186,15 +190,15 @@ module.exports = new Router(
 
     if (!params) return baseController.response400(ctx);
     if (!params.imgId) return baseController.response400(ctx, '缺失参数: imgId');
-    if (params.imgId.length != 12 && params.imgId.length != 24) {
+    if (params.imgId.length !== 12 && params.imgId.length !== 24) {
         return baseController.responseWithCode(ctx, baseController.CODE.BAD_OBJECT_ID, '不合法的imgId')
     }
 
-    if (!params.sortId && (!params.tags || params.tags.length == 0)) return baseController.response400(ctx, '缺失参数: tags|sortId不能同时为空');
+    if (!params.sortId && (!params.tags || params.tags.length === 0)) return baseController.response400(ctx, '缺失参数: tags|sortId不能同时为空');
 
 
     let image = await imagesModel.selectOwnByIds(params.imgId, ctx.state.authInfo.id);
-    if (!image || image.length == 0) return baseController.responseWithCode(ctx, baseController.CODE.UNKNOWN_IMG_ID, '无效的imgId');
+    if (!image || image.length === 0) return baseController.responseWithCode(ctx, baseController.CODE.UNKNOWN_IMG_ID, '无效的imgId');
 
     if (params.tags.length > 3) {
         return baseController.responseWithCode(ctx, baseController.CODE.MAX_IMG_TAG, "标签超出上限");
@@ -220,7 +224,6 @@ module.exports = new Router(
     baseController.response(ctx);
 
 }).get('refresh_uri', async ctx => {
-
     let param = ctx.query;
     if (!param || !param.imgId) return baseController.response400(ctx, '缺失参数: imgId');
     let image = await imagesModel.selectOwnByIds(param.imgId, ctx.state.authInfo.id);
@@ -234,11 +237,17 @@ module.exports = new Router(
         uri: baseConfig.imgUri + urn
     })
 }).get('download/:urn', async ctx => {
+
     let params = ctx.params;
     if (!params.urn) {
         return baseController.response400(ctx, '请求参数异常');
     }
+
     let image = await imagesModel.selectByUrn('/' + params.urn);
     if (!image) return baseController.response400(ctx, '请求参数异常');
+    ctx.set('Content-Type', 'image/' + image.url.split('.')[1]);
     ctx.body = fs.readFileSync(uploadConfig.path + image.url);
+
+}).get('view/:urn', async ctx => {
+
 }).routes();
