@@ -125,3 +125,16 @@ module.exports.imageCheck = async (imgUri, urn) => {
         console.error('图片自动分级异常 urn =', urn, res.error);
     }
 };
+
+module.exports.changeToWebp = absPath => {
+
+    let dirPath = path.join(absPath, '..');
+    let fileName = absPath.replace(dirPath + '/', '');
+    fileName = fileName.split('.')[0] + '.webp';
+
+    sharp(fs.readFileSync(absPath))
+        .webp({lossless: true})
+        .toFile(path.join(dirPath, fileName), (err, info) => {
+            console.log(info)
+        });
+};

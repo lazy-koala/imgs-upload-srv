@@ -62,8 +62,8 @@ module.exports = new Router(
             }
 
             img.thumbUrn = await util.createThumb(uploadResult[index].absPath);
+            util.changeToWebp(uploadResult[index].absPath);
             saveImages.push(img);
-
             uploadResult[index].path = baseConfig.imgUri + img.urn;
         } else {
             return baseController.response400(ctx, uploadResult[index].message);
@@ -171,11 +171,15 @@ module.exports = new Router(
     for (let i in imgs) {
 
         util.fsDel([uploadConfig.path + imgs[i].url]);
+
         let dirPath = path.join(imgs[i].url, '..');
         let fileName = imgs[i].url.replace(dirPath + '/', '');
 
         uriArray.push(path.join(uploadConfig.path, dirPath, 'thumb-' + fileName)); // 得到有效的需要删除的 物理路径图片位置
-        // if (imgs.)
+        uriArray.push(path.join(uploadConfig.path, dirPath, fileName.split('.')[0] + '.webp')); // 得到有效的需要删除的 物理路径图片位置
+        if (imgs.violationUrl) {
+            uriArray.push(uploadConfig.path + imgs[i].violationUrl);
+        }
     }
     util.fsDelReal(uriArray); // 异步移除图片
 
@@ -235,19 +239,34 @@ module.exports = new Router(
 
     baseController.response(ctx, "请求完成", {
         uri: baseConfig.imgUri + urn
-    })
+    });
 }).get('download/:urn', async ctx => {
-
     let params = ctx.params;
     if (!params.urn) {
         return baseController.response400(ctx, '请求参数异常');
     }
-
     let image = await imagesModel.selectByUrn('/' + params.urn);
     if (!image) return baseController.response400(ctx, '请求参数异常');
     ctx.set('Content-Type', 'image/' + image.url.split('.')[1]);
     ctx.body = fs.readFileSync(uploadConfig.path + image.url);
-
 }).get('view/:urn', async ctx => {
-
+    let params = ctx.params;
+    if (!params.urn) {
+        return baseController.response400(ctx, '请求参数异常');
+    }
+    let image = await imagesModel.selectByUrn('/' + params.urn);
+    if (!image) return baseController.response400(ctx, '请求参数异常');
+    let absPath = uploadConfig.path + image.url;
+    let dirPath = path.join(absPath, '..');
+    let fileName = absPath.replace(dirPath + '/', '');
+    fileName = fileName.split('.')[0] + '.webp';
+    let webpPath = path.join(dirPath, fileName);
+    ctx.set('Cache-Control', 'max-age=3600');
+    if (fs.existsSync(webpPath)) {
+        ctx.set('Content-Type', 'image/webp');
+        ctx.body = fs.readFileSync(webpPath);
+    } else {
+        ctx.set('Content-Type', 'image/' + image.url.split('.')[1]);
+        ctx.body = fs.readFileSync(uploadConfig.path + image.url);
+    }
 }).routes();
