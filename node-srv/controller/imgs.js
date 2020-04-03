@@ -245,7 +245,7 @@ module.exports = new Router(
     if (!params.urn) {
         return baseController.response400(ctx, '请求参数异常');
     }
-    let image = await imagesModel.selectByUrn('/' + params.urn);
+    let image = await imagesModel.selectByUrnOwn('/' + params.urn, ctx.state.authInfo.id);
     if (!image) return baseController.response400(ctx, '请求参数异常');
     ctx.set('Content-Type', 'image/' + image.url.split('.')[1]);
     ctx.body = fs.readFileSync(uploadConfig.path + image.url);
@@ -254,7 +254,7 @@ module.exports = new Router(
     if (!params.urn) {
         return baseController.response400(ctx, '请求参数异常');
     }
-    let image = await imagesModel.selectByUrn('/' + params.urn);
+    let image = await imagesModel.selectByUrnOwn('/' + params.urn, ctx.state.authInfo.id);
     if (!image) return baseController.response400(ctx, '请求参数异常');
     let absPath = uploadConfig.path + image.url;
     let dirPath = path.join(absPath, '..');

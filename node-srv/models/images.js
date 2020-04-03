@@ -82,6 +82,11 @@ class images extends baseModel {
         return this.model.findOne({_id: id}).exec();
     }
 
+    selectByUrnOwn(urn, userId) {
+        return this.model.findOne({urn: urn, userId: userId}).exec();
+
+    }
+
     updateById(update, id) {
         return this.model.updateOne({_id: id}, update).exec();
     }
