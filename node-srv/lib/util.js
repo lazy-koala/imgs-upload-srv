@@ -103,6 +103,7 @@ module.exports.createThumb = async (absPath) => {
 };
 
 module.exports.imageCheck = async (imgUri, urn) => {
+
     let res = await httpRequest.doRequestString(basicConfig.imageVerify + imgUri);
     if (res.flag) {
 
