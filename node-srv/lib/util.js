@@ -34,7 +34,6 @@ module.exports.fsDel = uris => {
     for (let i in uris) {
         fs.rename(uris[i], uris[i] + '.del', err => {
             if (err) {
-                console.error(err)
             }
         });
     }
@@ -42,9 +41,8 @@ module.exports.fsDel = uris => {
 
 module.exports.fsDelReal = uris => {
     for (let i in uris) {
-        fs.unlink(uris[i], uris[i], err => {
+        fs.unlink(uris[i], err => {
             if (err) {
-                console.error(err)
             }
         });
     }
