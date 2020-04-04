@@ -67,7 +67,9 @@ module.exports = new Router(
             }
 
             img.thumbUrn = await util.createThumb(uploadResult[index].absPath);
-            util.changeToWebp(uploadResult[index].absPath);
+            if (img.url.split('.')[1].toLocaleLowerCase() !== 'gif') {
+                util.changeToWebp(uploadResult[index].absPath);
+            }
             saveImages.push(img);
             uploadResult[index].path = baseConfig.imgUri + img.urn;
         } else {
@@ -215,7 +217,7 @@ module.exports = new Router(
 
     let sortTag = params.tags;
     for (let i = 0; i < sortTag.length - 1; i++) {
-        if (sortTag[i] == sortTag[i + 1]) {
+        if (sortTag[i] === sortTag[i + 1]) {
             return baseController.responseWithCode(ctx, baseController.CODE.EXISTS_IMG_TAG, '存在相同的标签: ' + params.tags[i]);
         }
     }
@@ -266,17 +268,20 @@ module.exports = new Router(
     userAgent = util.ua(userAgent);
     ctx.set('Cache-Control', 'max-age=3600');
 
-    if (userAgent && userAgent.browser && userAgent.browser.name) {
-        if (useWebpBrowserNames.indexOf(userAgent.browser.name.trim().toLowerCase()) !== -1) {
-            let absPath = uploadConfig.path + image.url;
-            let dirPath = path.join(absPath, '..');
-            let fileName = absPath.replace(dirPath + '/', '');
-            fileName = fileName.split('.')[0] + '.webp';
-            let webpPath = path.join(dirPath, fileName);
-            if (fs.existsSync(webpPath)) {
-                ctx.set('Content-Type', 'image/webp');
-                ctx.body = fs.readFileSync(webpPath);
-                return;
+    if (image.url.split('.')[1].toLocaleLowerCase() !== 'gif') {
+
+        if (userAgent && userAgent.browser && userAgent.browser.name) {
+            if (useWebpBrowserNames.indexOf(userAgent.browser.name.trim().toLowerCase()) !== -1) {
+                let absPath = uploadConfig.path + image.url;
+                let dirPath = path.join(absPath, '..');
+                let fileName = absPath.replace(dirPath + '/', '');
+                fileName = fileName.split('.')[0] + '.webp';
+                let webpPath = path.join(dirPath, fileName);
+                if (fs.existsSync(webpPath)) {
+                    ctx.set('Content-Type', 'image/webp');
+                    ctx.body = fs.readFileSync(webpPath);
+                    return;
+                }
             }
         }
     }
