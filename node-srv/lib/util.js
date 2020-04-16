@@ -34,7 +34,15 @@ module.exports.fsDel = uris => {
     for (let i in uris) {
         fs.rename(uris[i], uris[i] + '.del', err => {
             if (err) {
-                console.error(err)
+            }
+        });
+    }
+};
+
+module.exports.fsDelReal = uris => {
+    for (let i in uris) {
+        fs.unlink(uris[i], err => {
+            if (err) {
             }
         });
     }
@@ -93,6 +101,7 @@ module.exports.createThumb = async (absPath) => {
 };
 
 module.exports.imageCheck = async (imgUri, urn) => {
+
     let res = await httpRequest.doRequestString(basicConfig.imageVerify + imgUri);
     if (res.flag) {
 
@@ -114,4 +123,17 @@ module.exports.imageCheck = async (imgUri, urn) => {
     } else {
         console.error('图片自动分级异常 urn =', urn, res.error);
     }
+};
+
+module.exports.changeToWebp = absPath => {
+
+    let dirPath = path.join(absPath, '..');
+    let fileName = absPath.replace(dirPath + '/', '');
+    fileName = fileName.split('.')[0] + '.webp';
+
+    sharp(fs.readFileSync(absPath))
+        .webp({lossless: true})
+        .toFile(path.join(dirPath, fileName), (err, info) => {
+            console.log(info)
+        });
 };
