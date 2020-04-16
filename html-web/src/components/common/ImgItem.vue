@@ -1,6 +1,6 @@
 <template> 
     <div class="">
-        <div class="imgage-wrapper" v-loading="loading"   @mouseover="toggleShow(data._id, 1)" @mouseleave="toggleShow(data._id, 0)">
+        <div v-if="data.status == '00'" class="imgage-wrapper" v-loading="loading"   @mouseover="toggleShow(data._id, 1)" @mouseleave="toggleShow(data._id, 0)">
             <img class="image" :src="data.thumbUrl || data.url"  @load="hideLoading()" >
             <div class="mask-wrapper animated fadeIn" :ref="data._id">
                 <div class="btn-wrapper">
@@ -11,6 +11,24 @@
                 </div>
                 <div class="time">{{dateFormat(data.createTime)}}</div>                    
             </div>
+        </div>
+        <div v-if="data.status == '01'" class="imgage-wrapper imgage-error">
+            <el-popover
+                placement="top"
+                trigger="hover"
+                width="200">
+                <p style="font-size: 14px; font-weight: 500;"><i class="el-icon-warning" style="padding-right: 5px; color: #ebb563"></i>图片涉嫌违规</p>
+                <!-- <p style="font-size: 12px; color: #bbb; padding: 5px;">系统可能存在误识别，你可以使用该功能立即申诉恢复访问，但可能后续进行人工审核，如果你滥用该功能将对你的账号进行限制。</p> -->
+                <div style="padding: 5px; color: #aaa; font-size: 12px;">
+                    <p style="">温馨提示：滥用恢复访问功能将会导致账号被限制，请谨慎使用</p>
+                </div>
+                <div style="text-align: right; margin-top: 5px;">
+                    <el-button plain size="mini" type="text" @click="visible = false">删除</el-button>
+                    <el-button plain type="text" size="mini" @click="visible = false">恢复访问</el-button>
+                </div>
+                <span style="color:#DC143C" class="icon el-icon-warning" slot="reference"></span>
+            </el-popover>
+            <img class="image" :src="data.thumbUrl || data.url"  @load="hideLoading()">
         </div>
         <div class="bottom">                    
             <span class="tag" @click="clickTag(tag)" v-for="tag in data.tags" :key="tag" >{{tag}}</span>
@@ -33,12 +51,13 @@
         <!-- 编辑图片开始 -->
         <el-dialog
         :visible.sync="showZoomIn"
+        v-if="showZoomIn"
         width="45%"
         height="50%"
         title="图片编辑"
         center>
-            <div class="zoomin-wrapper">
-                <img :src="zoomInImg">
+            <div class="zoomin-wrapper" v-loading="editLoading">
+                <img :src="zoomInImg" @load="hideEditloading">
                 <div class="sort">
                     <el-select v-model="selectedSort" filterable placeholder="请选择分类">
                         <el-option
@@ -115,7 +134,8 @@ export default {
             // 分类相关数据
             selectedSort: this.$props.data.sortId,
             // sortList: this.$store.state.sortList,
-            delLoading: false
+            delLoading: false,
+            editLoading: false
          }
     },
     methods: {
@@ -159,9 +179,16 @@ export default {
         },
         // 图片编辑弹框
         zoomIn: function (data) {
-            this.zoomInImg = data.url;
+            this.editLoading = true;
+            // url需拼接https://imgs.thankjava.com/view/${urn}
+            let urn = data.url && data.url.split('/view/')[1];
+            let origin = "https://imgs.thankjava.com/api/imgs/view/";
+            this.zoomInImg = origin + urn;
             this.showZoomIn = true;
             this.tagList = [...data.tags] || [];
+        },
+        hideEditloading(){
+            this.editLoading = false;
         },
 
         // 取消图片编辑
@@ -304,6 +331,24 @@ export default {
         text-align: center;
         display: flex;
         align-items: center;
+    }
+    .imgage-error {
+        .image {
+            filter: blur(1px);
+            -webkit-filter: blur(1px);
+        }
+        .icon {
+            color: red;
+            position: absolute;
+            left: 35%;
+            top: 35%;
+            z-index: 5;
+        }
+        .el-icon-warning:hover {
+            color: #B34D4D;
+            background: initial;
+        }
+
     }
     .image {
         width: auto;

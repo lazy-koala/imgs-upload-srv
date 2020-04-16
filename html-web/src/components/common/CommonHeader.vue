@@ -7,6 +7,7 @@
             default-active="index"
             mode="horizontal"
             @select="gotoMenu"
+            v-if="isIndex != 2"
         >
             <el-menu-item index="index">
                 <i class="element-icons el-icon-menu"></i>
@@ -129,6 +130,7 @@ import { Message } from 'element-ui';
     background: #409EFF;
     color: #fff;
     font-size: 24px;
+    height: 60px;
     .head-img {
         display: inline-block;
         width: 40px;
@@ -187,6 +189,7 @@ import { Message } from 'element-ui';
         position: relative;
         display: flex;
         align-items: center;
+        line-height: 60px;
         justify-content: space-between;
         .el-icon-menuon, .el-icon-menuoff {
             position: absolute;
