@@ -15,6 +15,11 @@
     5. 想要安安静静存储个人图片(其他人不能访问)
     ...
     ```
+- DIY
+
+    ```
+    本项目以互助为目的，如果你有好的想法建议欢迎 mailto team@thankjava.com 一起diy图床服务吧.
+    ```
 
 - #### 在线使用 [https://imgs.thankjava.com](https://imgs.thankjava.com)
 
