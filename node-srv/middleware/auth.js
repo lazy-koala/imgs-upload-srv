@@ -28,7 +28,7 @@ module.exports = async (ctx, next) => {
 
             userInfo = JSON.parse(userInfo);
 
-            if (JSON.parse(decodeURI(uinfo)).id != userInfo.id) {
+            if (JSON.parse(decodeURI(uinfo)).id !== userInfo.id) {
                 ctx.body = {message: 'unauthorized'};
                 ctx.status = 401;
                 return;
