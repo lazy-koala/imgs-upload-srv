@@ -95,8 +95,12 @@ class images extends baseModel {
         return this.model.find(condition).exec();
     }
 
-    updateByCondition(update, conditon) {
-        return this.model.updateOne(conditon, update).exec();
+    selectByConditionOne(condition) {
+        return this.model.findOne(condition).exec();
+    }
+
+    updateByCondition(update, condition) {
+        return this.model.updateOne(condition, update).exec();
     }
 
 }

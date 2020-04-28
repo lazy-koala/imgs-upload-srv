@@ -288,4 +288,22 @@ module.exports = new Router(
 
     ctx.set('Content-Type', 'image/' + image.url.split('.')[1]);
     ctx.body = fs.readFileSync(uploadConfig.path + image.url);
+
+}).post('confirm_to_visit', async ctx => {
+
+    let params = ctx.request.body;
+    if (!params) return baseController.response400(ctx, '请求参数缺失');
+    if (!params.imgId) return baseController.response400(ctx, '请求参数异常');
+
+    let image = await imagesModel.selectByConditionOne({
+        userId: ctx.state.authInfo.id,
+        _id: params.imgId
+    });
+
+    if (!image) return baseController.responseWithCode(ctx, baseController.CODE.UNKNOWN_IMG_ID, '无效的imgId');
+    if (image.confirmedByUser) return baseController.responseWithCode(ctx, baseController.CODE.REPEAT_CONFIRMED, '重复提交申请');
+
+    await imagesModel.updateById({confirmedByUser: true, status: '00'}, params.imgId);
+    baseController.response(ctx);
+
 }).routes();
