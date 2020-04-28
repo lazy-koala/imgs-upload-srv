@@ -18,9 +18,9 @@ module.exports = async (ctx, next) => {
 
 const beforeController = ctx => {
     let requestContent = '';
-    if (ctx.method == "GET") {
+    if (ctx.method === "GET") {
         requestContent = ctx.query ? JSON.stringify(ctx.query) : 'null';
-    } else if (ctx.method == "POST") {
+    } else if (ctx.method === "POST") {
         requestContent = ctx.request.body ? JSON.stringify(ctx.request.body) : 'null';
     }
 
@@ -35,12 +35,13 @@ const beforeController = ctx => {
 /**
  * 公共处理 controller 完毕后执行
  * @param ctx
+ * @param startTime
  */
 const afterController = (ctx, startTime) => {
 
-    if (ctx.response.status == 404) {
+    if (ctx.response.status === 404) {
         ctx.body = {message: '404 Or Invalid Response'};
-    } else if (ctx.response.status == 405) {
+    } else if (ctx.response.status === 405) {
         ctx.body = {message: '405 Method Not Allowed'};
     }
 
