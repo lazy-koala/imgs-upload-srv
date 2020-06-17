@@ -184,7 +184,7 @@ module.exports = new Router(
 
         uriArray.push(path.join(uploadConfig.path, dirPath, 'thumb-' + fileName)); // 得到有效的需要删除的 物理路径图片位置
         uriArray.push(path.join(uploadConfig.path, dirPath, fileName.split('.')[0] + '.webp')); // 得到有效的需要删除的 物理路径图片位置
-        if (imgs.violationUrl) {
+        if (imgs[i].violationUrl) {
             uriArray.push(uploadConfig.path + imgs[i].violationUrl);
         }
     }
