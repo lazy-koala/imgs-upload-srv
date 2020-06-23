@@ -45,9 +45,9 @@
         
           系统 | 浏览器
           --- | ---
-          android | *
-          \* | firefox
-          \* | chrome
+          Android | All
+          All | Firefox
+          All | Chrome
         
     - 1.0.7
 
