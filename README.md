@@ -38,7 +38,7 @@
 
 - #### CHANGELOG **为支持正常运行(防攻击)部分核心代码未开源**
 
-    - *【BETA】* 1.0.7 viewer [问题反馈](https://github.com/lazy-koala/imgs-upload-srv/issues/new)
+    - 1.0.7 viewer **(BETA)** [问题反馈](https://github.com/lazy-koala/imgs-upload-srv/issues/new)
         
         - 图片浏览支持webp格式
         - 当前返回webp格式的设备
