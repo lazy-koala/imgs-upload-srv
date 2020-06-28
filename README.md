@@ -38,6 +38,17 @@
 
 - #### CHANGELOG **为支持正常运行(防攻击)部分核心代码未开源**
 
+    - 1.0.7 viewer **(BETA)** [问题反馈](https://github.com/lazy-koala/imgs-upload-srv/issues/new)
+        
+        - 图片浏览支持webp格式
+        - 当前返回webp格式的设备
+        
+          系统 | 浏览器
+          --- | ---
+          Android | All
+          All | Firefox
+          All | Chrome
+        
     - 1.0.7
 
         - UI小姐姐更新了一波前端展示效果
@@ -71,4 +82,4 @@
 
 [![org](https://img.shields.io/badge/org-@LazyKoala-yellow.svg)](https://github.com/lazy-koala/)
 
-[![author](https://img.shields.io/badge/author-@qazyuan-blue.svg)](https://github.com/qazyuan/) [![author](https://img.shields.io/badge/author-@thankjava-blue.svg)](https://github.com/thankjava/)
+[![author](https://img.shields.io/badge/author-@qazyuan-blue.svg)](https://github.com/qazyuan/) [![author](https://img.shields.io/badge/author-@acexy-blue.svg)](https://github.com/acexy/)
