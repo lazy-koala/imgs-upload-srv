@@ -43,11 +43,12 @@
         - 图片浏览支持webp格式
         - 当前返回webp格式的设备
         
-          系统 | 浏览器
-          --- | ---
-          Android | All
-          All | Firefox
-          All | Chrome
+          系统 | 浏览器 | 其他
+          --- | --- | ---
+          \* | \* | 浏览器主动表示支持 webp
+          Android | \* | -
+          \* | Firefox | -
+          \* | Chrome | -
         
     - 1.0.7
 
