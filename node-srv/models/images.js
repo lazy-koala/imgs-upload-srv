@@ -10,6 +10,7 @@ class images extends baseModel {
         return {
             userId: {type: String, required: true},
             url: {type: String, required: true},
+            // 当图片不允许访问时将返回该字段对应当资源展示
             violationUrl: {type: String, require: false},
             urn: {type: String, unique: true},
             thumbUrn: {type: String, unique: true},
@@ -20,12 +21,12 @@ class images extends baseModel {
             status: {type: String, default: '00'},
             // 图片系统自动分级
             // everyone | teen | adult
-            sysScyLevel: {type: Number},
+            sysScyLevel: {type: Number, default: 1},
             sysScyLevelTime: {type: Number, required: false},
             sysScyLevelDetail: {type: String, required: false},
             confirmScyLevel: {type: String, required: false},
             confirmScyLevelTime: {type: Number, required: false},
-            confirmedByUser: {type: Boolean, required: false}
+            confirmedByUser: {type: Boolean, required: false},
         };
     };
 
@@ -81,6 +82,11 @@ class images extends baseModel {
         return this.model.findOne({_id: id}).exec();
     }
 
+    selectByUrnOwn(urn, userId) {
+        return this.model.findOne({urn: urn, userId: userId}).exec();
+
+    }
+
     updateById(update, id) {
         return this.model.updateOne({_id: id}, update).exec();
     }
@@ -89,8 +95,12 @@ class images extends baseModel {
         return this.model.find(condition).exec();
     }
 
-    updateByCondition(update, conditon) {
-        return this.model.updateOne(conditon, update).exec();
+    selectByConditionOne(condition) {
+        return this.model.findOne(condition).exec();
+    }
+
+    updateByCondition(update, condition) {
+        return this.model.updateOne(condition, update).exec();
     }
 
 }

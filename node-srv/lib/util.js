@@ -34,7 +34,15 @@ module.exports.fsDel = uris => {
     for (let i in uris) {
         fs.rename(uris[i], uris[i] + '.del', err => {
             if (err) {
-                console.error(err)
+            }
+        });
+    }
+};
+
+module.exports.fsDelReal = uris => {
+    for (let i in uris) {
+        fs.unlink(uris[i], err => {
+            if (err) {
             }
         });
     }
@@ -92,26 +100,42 @@ module.exports.createThumb = async (absPath) => {
     return '/thumb/' + md5(fileName);
 };
 
-module.exports.imageCheck = async (imgUri, urn) => {
-    let res = await httpRequest.doRequestString(basicConfig.imageVerify + imgUri);
-    if (res.flag) {
+module.exports.imageCheck = (imgUri, urn) => {
 
-        let obj = JSON.parse(res.body);
+    httpRequest.doRequestString(basicConfig.imageVerify + imgUri).then(res => {
+        if (res.flag) {
 
-        let update = {
-            sysScyLevel: obj.rating_index,
-            sysScyLevelTime: Date.now(),
-            sysScyLevelDetail: JSON.stringify(obj.predictions)
-        };
+            let obj = JSON.parse(res.body);
 
-        if (obj.rating_index === 3) {
-            update.status = '01';
+            let update = {
+                sysScyLevel: obj.rating_index,
+                sysScyLevelTime: Date.now(),
+                sysScyLevelDetail: JSON.stringify(obj.predictions)
+            };
+
+            if (obj.rating_index === 3) {
+                update.status = '01';
+            }
+
+            imagesModel.updateByCondition(update, {urn: urn});
+            console.log('图片自动分级完成 urn =', urn);
+
+        } else {
+            console.error('图片自动分级异常 urn =', urn, res.error);
         }
+    });
 
-        await imagesModel.updateByCondition(update, {urn: urn});
-        console.log('图片自动分级完成 urn =', urn);
+};
 
-    } else {
-        console.error('图片自动分级异常 urn =', urn, res.error);
-    }
+module.exports.changeToWebp = absPath => {
+
+    let dirPath = path.join(absPath, '..');
+    let fileName = absPath.replace(dirPath + '/', '');
+    fileName = fileName.split('.')[0] + '.webp';
+
+    sharp(fs.readFileSync(absPath))
+        .webp({lossless: false})
+        .toFile(path.join(dirPath, fileName), (err, info) => {
+            console.log(info)
+        });
 };
