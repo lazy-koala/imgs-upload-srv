@@ -23,8 +23,8 @@
                     <p style="">温馨提示：滥用恢复访问功能将会导致账号被限制，请谨慎使用</p>
                 </div>
                 <div style="text-align: right; margin-top: 5px;">
-                    <el-button plain size="mini" type="text" @click="visible = false">删除</el-button>
-                    <el-button plain type="text" size="mini" @click="visible = false">恢复访问</el-button>
+                    <el-button size="mini" type="text" @click="deleteImg(data._id)">删除</el-button>
+                    <el-button type="text" size="mini" @click="recover(data._id)">恢复访问</el-button>
                 </div>
                 <span style="color:#DC143C" class="icon el-icon-warning" slot="reference"></span>
             </el-popover>
@@ -158,10 +158,10 @@ export default {
             this.showDel = true;
         },
         // 确认删除图片
-        deleteImg: function () {
+        deleteImg: function (id) {
             this.delLoading = true;
             var that = this;
-            $axios.post('/api/imgs/del', {ids: [that.delId]}).then((res) => {
+            $axios.post('/api/imgs/del', {ids: [id ? id : that.delId]}).then((res) => {
                 if (res.data) {
                     Message.success({
                         message: '删除成功',
@@ -174,6 +174,20 @@ export default {
                 }
             }).catch(function (error) {
                 this.delLoading = false;
+                that.catchError(error);
+            })
+        },
+        recover(id) {
+            $axios.post('/api/imgs/confirm_to_visit', {imgId: id}).then((res) => {
+                if (res.data) {
+                    Message.success({
+                        message: '恢复成功',
+                        type: 'info',
+                        center: true
+                    });
+                    this.$parent.$emit('refreshImgList', '1')
+                }
+            }).catch(function (error) {
                 that.catchError(error);
             })
         },

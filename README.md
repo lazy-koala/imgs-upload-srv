@@ -26,11 +26,11 @@
     ```
     免费的，简洁的图床服务，即开即用，开源免费，基于GNU通用公共许可证v3.0提供在线图片解决方案。
     
-        本服务为在线非盈利服务，本站为非盈利性服务，意在为你提供在线存储解决方案。
+        本站为非盈利性服务，意在为你提供在线存储解决方案。
     
         请勿上传任何违反国家法律的图片！
 
-        互联网为开放网络，如果你泄漏你的在线图片地址，其他任何人均能访问。
+        互联网为开放网络，如果你泄漏你的在线图片地址，其他任何人均能访问，这也是图床的基本概念。
 
         为了你的个人隐私安全，请勿上传敏感信息。
 
@@ -43,6 +43,18 @@
 
 - #### CHANGELOG **为支持正常运行(防攻击)部分核心代码未开源**
 
+    - 1.0.7 viewer **(BETA)** [问题反馈](https://github.com/lazy-koala/imgs-upload-srv/issues/new)
+        
+        - 图片浏览支持webp格式
+        - 当前返回webp格式的设备
+        
+          系统 | 浏览器 | 其他
+          --- | --- | ---
+          \* | \* | 浏览器主动表示支持 webp
+          Android | \* | -
+          \* | Firefox | -
+          \* | Chrome | -
+        
     - 1.0.7
 
         - UI小姐姐更新了一波前端展示效果
@@ -76,4 +88,4 @@
 
 [![org](https://img.shields.io/badge/org-@LazyKoala-yellow.svg)](https://github.com/lazy-koala/)
 
-[![author](https://img.shields.io/badge/author-@qazyuan-blue.svg)](https://github.com/qazyuan/) [![author](https://img.shields.io/badge/author-@thankjava-blue.svg)](https://github.com/thankjava/)
+[![author](https://img.shields.io/badge/author-@qazyuan-blue.svg)](https://github.com/qazyuan/) [![author](https://img.shields.io/badge/author-@acexy-blue.svg)](https://github.com/acexy/)

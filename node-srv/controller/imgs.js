@@ -105,9 +105,13 @@ module.exports = new Router(
         return baseController.response400(ctx, '请求参数异常')
     }
 
+    delete uploadResult.absPath;
+    delete uploadResult.flag;
+    delete uploadResult.message;
+
     baseController.response(ctx, uploadResult);
     if (uploadFlag) {
-        // 不实用await实现异步
+        // 不使用await实现异步
         util.imageCheck(baseConfig.imgUri + saveImages[0].urn, saveImages[0].urn);
     }
 
@@ -184,7 +188,7 @@ module.exports = new Router(
 
         uriArray.push(path.join(uploadConfig.path, dirPath, 'thumb-' + fileName)); // 得到有效的需要删除的 物理路径图片位置
         uriArray.push(path.join(uploadConfig.path, dirPath, fileName.split('.')[0] + '.webp')); // 得到有效的需要删除的 物理路径图片位置
-        if (imgs.violationUrl) {
+        if (imgs[i].violationUrl) {
             uriArray.push(uploadConfig.path + imgs[i].violationUrl);
         }
     }
@@ -288,4 +292,22 @@ module.exports = new Router(
 
     ctx.set('Content-Type', 'image/' + image.url.split('.')[1]);
     ctx.body = fs.readFileSync(uploadConfig.path + image.url);
+
+}).post('confirm_to_visit', async ctx => {
+
+    let params = ctx.request.body;
+    if (!params) return baseController.response400(ctx, '请求参数缺失');
+    if (!params.imgId) return baseController.response400(ctx, '请求参数异常');
+
+    let image = await imagesModel.selectByConditionOne({
+        userId: ctx.state.authInfo.id,
+        _id: params.imgId
+    });
+
+    if (!image) return baseController.responseWithCode(ctx, baseController.CODE.UNKNOWN_IMG_ID, '无效的imgId');
+    if (image.confirmedByUser) return baseController.responseWithCode(ctx, baseController.CODE.REPEAT_CONFIRMED, '重复提交申请');
+
+    await imagesModel.updateById({confirmedByUser: true, status: '00'}, params.imgId);
+    baseController.response(ctx);
+
 }).routes();
