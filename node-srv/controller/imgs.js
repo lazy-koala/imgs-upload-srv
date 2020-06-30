@@ -74,6 +74,7 @@ module.exports = new Router(
             uploadResult[index].path = baseConfig.imgUri + img.urn;
 
             delete uploadResult[index].absPath;
+            delete uploadResult[index].uploadTime;
 
         } else {
             return baseController.response400(ctx, uploadResult[index].message);
