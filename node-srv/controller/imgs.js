@@ -72,6 +72,9 @@ module.exports = new Router(
             }
             saveImages.push(img);
             uploadResult[index].path = baseConfig.imgUri + img.urn;
+
+            delete uploadResult[index].absPath;
+
         } else {
             return baseController.response400(ctx, uploadResult[index].message);
         }
@@ -104,10 +107,6 @@ module.exports = new Router(
     } else {
         return baseController.response400(ctx, '请求参数异常')
     }
-
-    delete uploadResult.absPath;
-    delete uploadResult.flag;
-    delete uploadResult.message;
 
     baseController.response(ctx, uploadResult);
     if (uploadFlag) {
