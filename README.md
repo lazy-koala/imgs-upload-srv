@@ -16,7 +16,15 @@
     ...
     ```
 
-- #### 在线使用 [https://imgs.thankjava.com](https://imgs.thankjava.com)
+- #### 在线使用 [https://imgs.acexy.cn](https://imgs.acexy.cn)
+
+    - 原图床地址 https://imgs.thankjava.com 更改为 https://imgs.acexy.cn
+    
+    - 原图外链主域名 https://source.thankjava.com 更改为 https://source.acexy.cn
+    
+        ```
+        当前两个外链主域名均可使用，预计10月底进行完整切换
+        ```
 
     ```
     免费的，简洁的图床服务，即开即用，开源免费，基于GNU通用公共许可证v3.0提供在线图片解决方案。
