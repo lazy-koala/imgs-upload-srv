@@ -16,28 +16,49 @@
     ...
     ```
 
-- #### 在线使用 [https://imgs.thankjava.com](https://imgs.thankjava.com)
+- #### 在线使用 [https://imgs.acexy.cn](https://imgs.acexy.cn)
 
-    ```
-    免费的，简洁的图床服务，即开即用，开源免费，基于GNU通用公共许可证v3.0提供在线图片解决方案。
+    - 原图床地址 https://imgs.thankjava.com 更改为 https://imgs.acexy.cn
     
-        本服务为在线非盈利服务，本站为非盈利性服务，意在为你提供在线存储解决方案。
+    - 原图外链主域名 https://source.thankjava.com 更改为 https://source.acexy.cn
     
-        请勿上传任何违反国家法律的图片！
+        ```
+        当前两个外链主域名均可使用，预计10月底进行完整切换
+        
+        域名更换不影响用户任何数据。
+        ```
 
-        互联网为开放网络，如果你泄漏你的在线图片地址，其他任何人均能访问。
+    - 使用前言
+    
+        ```
+        免费的，简洁的图床服务，即开即用，开源免费，基于GNU通用公共许可证v3.0提供在线图片解决方案。
 
-        为了你的个人隐私安全，请勿上传敏感信息。
+            本站为非盈利性服务，意在为你提供在线存储解决方案。
 
-        如果你有任何的建议或反馈，可邮件至 team@thankjava.com
+            请勿上传任何违反国家法律的图片！
 
-        科技向善，互利互助。
+            互联网为开放网络，如果你泄漏你的在线图片地址，其他任何人均能访问，这也是图床的基本概念。
 
-    大陆用户访问可能有较大延迟。
-    ```
+            为了你的个人隐私安全，请勿上传敏感信息。
+
+            如果你有任何的建议或反馈，可邮件至 team@thankjava.com
+
+            科技向善，互利互助。
+
+        大陆用户访问可能有较大延迟。
+        ```
 
 - #### CHANGELOG **为支持正常运行(防攻击)部分核心代码未开源**
 
+    - 1.0.7 viewer **(BETA)** [问题反馈](https://github.com/lazy-koala/imgs-upload-srv/issues/new)
+        
+        - 图片浏览支持webp格式
+        - 当前返回webp格式的设备
+        
+          系统 | 浏览器 | 其他
+          --- | --- | ---
+          \* | \* | 浏览器主动表示支持 webp
+        
     - 1.0.7
 
         - UI小姐姐更新了一波前端展示效果
@@ -71,4 +92,4 @@
 
 [![org](https://img.shields.io/badge/org-@LazyKoala-yellow.svg)](https://github.com/lazy-koala/)
 
-[![author](https://img.shields.io/badge/author-@qazyuan-blue.svg)](https://github.com/qazyuan/) [![author](https://img.shields.io/badge/author-@thankjava-blue.svg)](https://github.com/thankjava/)
+[![author](https://img.shields.io/badge/author-@qazyuan-blue.svg)](https://github.com/qazyuan/) [![author](https://img.shields.io/badge/author-@acexy-blue.svg)](https://github.com/acexy/)

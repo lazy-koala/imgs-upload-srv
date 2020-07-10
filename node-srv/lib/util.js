@@ -134,7 +134,7 @@ module.exports.changeToWebp = absPath => {
     fileName = fileName.split('.')[0] + '.webp';
 
     sharp(fs.readFileSync(absPath))
-        .webp({lossless: true})
+        .webp({lossless: false})
         .toFile(path.join(dirPath, fileName), (err, info) => {
             console.log(info)
         });
