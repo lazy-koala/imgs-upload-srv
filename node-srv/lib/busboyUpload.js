@@ -18,9 +18,9 @@ module.exports.upload = (ctx) => new Promise(resolve => {
 
     busboy.on('file', function (fieldname, file, filename, encoding, mimetype) { // 每次接收文件就触发
 
-        if (allowedMimeType.indexOf(mimetype) != -1) {
+        if (allowedMimeType.indexOf(mimetype) !== -1) {
 
-            console.log('=> busboyUpload'.cyan + ' begin to upload filename = '.grey + filename.blue);
+            console.log('=> busboyUpload'.cyan + ' begin to upload filename = '.grey + filename.blue + ' mimetype = '.grey + mimetype.blue);
 
             let result = {
                 fileName: filename,
