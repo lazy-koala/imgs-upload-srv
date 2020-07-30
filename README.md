@@ -64,6 +64,7 @@
         - UI小姐姐更新了一波前端展示效果
         - 缩略图展示正式上线，加速个人中心图片展示
         - 图片分级判断上线(不限制；限制未成年；成人图片)，后续将按照相关分级限制违规图片
+        - 修复一个内部图床访问原图加载失败的问题，取消内部webp处理
     
     - [历史记录](https://github.com/lazy-koala/imgs-upload-srv/blob/master/doc/changelog.md)
 ---
