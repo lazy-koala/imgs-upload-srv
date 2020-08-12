@@ -94,3 +94,6 @@
 [![org](https://img.shields.io/badge/org-@LazyKoala-yellow.svg)](https://github.com/lazy-koala/)
 
 [![author](https://img.shields.io/badge/author-@qazyuan-blue.svg)](https://github.com/qazyuan/) [![author](https://img.shields.io/badge/author-@acexy-blue.svg)](https://github.com/acexy/)
+
+> #### Thanks [Jetbrains Ides](https://www.jetbrains.com/?from=imgs-upload-srv)
+<img src="https://source.acexy.cn/view/XPgu+qW" width = "80" height = "80" alt="jetbrains logo" />
