@@ -104,27 +104,26 @@ module.exports.imageCheck = (imgUri, urn) => {
 
     httpRequest.doRequestString(basicConfig.imageVerify + imgUri).then(res => {
         if (res.flag) {
-
             let obj = JSON.parse(res.body);
-
             let update = {
                 sysScyLevel: obj.rating_index,
                 sysScyLevelTime: Date.now(),
-                sysScyLevelDetail: JSON.stringify(obj.predictions)
+                sysScyLevelDetail: JSON.stringify(obj.predictions),
+                sysScyCode: obj.error_code
             };
-
-            if (obj.rating_index === 3) {
-                update.status = '01';
+            if (obj.error_code === 0) {
+                if (obj.rating_index === 3) {
+                    update.status = '01';
+                }
+            } else {
+                update.sysScyLevelDetail = res.body;
             }
-
             imagesModel.updateByCondition(update, {urn: urn});
             console.log('图片自动分级完成 urn =', urn);
-
         } else {
             console.error('图片自动分级异常 urn =', urn, res.error);
         }
     });
-
 };
 
 module.exports.changeToWebp = absPath => {
