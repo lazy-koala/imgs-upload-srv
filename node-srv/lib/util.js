@@ -102,7 +102,7 @@ module.exports.createThumb = async (absPath) => {
 
 module.exports.imageCheck = (imgUri, urn) => {
 
-    httpRequest.doRequestString(basicConfig.imageVerify + imgUri).then(res => {
+    httpRequest.doRequestString(basicConfig.imageVerify + encodeURIComponent(imgUri)).then(res => {
         if (res.flag) {
             let obj = JSON.parse(res.body);
             let update = {
