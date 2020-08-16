@@ -53,6 +53,7 @@
     - 1.0.7 bugfix
     
         - 调整了对图片进行分级时，若无法正确分级时的相关数据记录问题
+        - 修复一个做图片分级API调用时可能导致的传参异常问题
 
     - 1.0.7 viewer **(BETA)** [问题反馈](https://github.com/lazy-koala/imgs-upload-srv/issues/new)
         
