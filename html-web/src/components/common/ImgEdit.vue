@@ -1,8 +1,12 @@
 <template>
   <div class="editor" ref="editor">
+    <div class="size-wrapper" v-if="picSize.width && picSize.height">
+      {{`截图区域大小：${picSize.width} X ${picSize.height}`}}
+    </div>
     <div class="canvas" @dblclick="dblclick">
       <img ref="image" :alt="data.name" :src="data.url" @load="start">
     </div>
+    
     <div class="toolbar-wrapper" v-if="cropper" @click="click">
       <button type="text" class="toolbar__button" data-action="move" title="Move (M)"><span class="el-icon-move"></span></button>
       <button type="text" class="toolbar__button" data-action="crop" title="Crop (C)"><span class="el-icon-crop"></span></button>
@@ -90,7 +94,11 @@
         tagList: [],
         inputValue: '',
         showTagInput: false,
-        tipMessage: ''
+        tipMessage: '',
+        picSize: {
+          width: '',
+          height: ''
+        }
       };
     },
 
@@ -163,7 +171,8 @@
           autoCrop: false,
           dragMode: 'move',
           background: false,
-
+          info: true,
+          viewMode: '1',
           ready: () => {
             if (this.croppedData) {
               this.cropper
@@ -179,6 +188,14 @@
           },
 
           crop: ({ detail }) => {
+            let width = detail.width || 0;
+            let height = detail.height || 0;
+            this.picSize = {
+              width: width.toFixed(2),
+              height: height.toFixed(2)
+            };
+            console.log('this.picSize: ', this.picSize);
+
             if (detail.width > 0 && detail.height > 0 && !data.cropping) {
               this.update({
                 cropping: true,
@@ -519,5 +536,10 @@
   }
   .el-tag {
       margin-right: 5px;
+  }
+  .size-wrapper {
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 12px;
   }
 </style>
