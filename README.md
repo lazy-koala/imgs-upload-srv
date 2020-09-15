@@ -18,16 +18,6 @@
 
 - #### 在线使用 [https://imgs.acexy.cn](https://imgs.acexy.cn)
 
-    - 原图床地址 https://imgs.thankjava.com 更改为 https://imgs.acexy.cn
-    
-    - 原图外链主域名 https://source.thankjava.com 更改为 https://source.acexy.cn
-    
-        ```
-        当前两个外链主域名均可使用，预计10月底进行完整切换
-        
-        域名更换不影响用户任何数据。
-        ```
-
     - 使用前言
     
         ```
@@ -58,11 +48,6 @@
     - 1.0.7 viewer **(BETA)** [问题反馈](https://github.com/lazy-koala/imgs-upload-srv/issues/new)
         
         - 图片浏览支持webp格式
-        - 当前返回webp格式的设备
-        
-          系统 | 浏览器 | 其他
-          --- | --- | ---
-          \* | \* | 浏览器主动表示支持 webp
         
     - 1.0.7
 
@@ -70,6 +55,7 @@
         - 缩略图展示正式上线，加速个人中心图片展示
         - 图片分级判断上线(不限制；限制未成年；成人图片)，后续将按照相关分级限制违规图片
         - 修复一个内部图床访问原图加载失败的问题，取消内部webp处理
+        - 图片截取界面新增所截区域大小值展示
     
     - [历史记录](https://github.com/lazy-koala/imgs-upload-srv/blob/master/doc/changelog.md)
 ---
