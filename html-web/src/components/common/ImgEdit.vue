@@ -1,7 +1,10 @@
 <template>
   <div class="editor" ref="editor">
-    <div class="size-wrapper" v-if="picSize.width && picSize.height">
-      {{`截图区域大小：${picSize.width} X ${picSize.height}`}}
+    <div class="size-wrapper">
+      <span v-if="picSize.width && picSize.height && data.cropping">
+        {{`截图区域大小：${picSize.width} X ${picSize.height}`}}
+      </span>
+      
     </div>
     <div class="canvas" @dblclick="dblclick">
       <img ref="image" :alt="data.name" :src="data.url" @load="start">
@@ -133,7 +136,8 @@
             break;
 
           case 'clear':
-            cropper.clear();
+            // cropper.clear();
+            this.clear();
             break;
 
           case 'restore':
@@ -194,7 +198,7 @@
               width: width.toFixed(2),
               height: height.toFixed(2)
             };
-            console.log('this.picSize: ', this.picSize);
+            // console.log('this.picSize: ', this.picSize);
 
             if (detail.width > 0 && detail.height > 0 && !data.cropping) {
               this.update({
@@ -538,8 +542,13 @@
       margin-right: 5px;
   }
   .size-wrapper {
+    line-height: 30px;
     text-align: center;
-    margin-bottom: 10px;
     font-size: 12px;
+    margin-top: -30px;
+    height: 30px;
+    span {
+      text-align: center;
+    }
   }
 </style>
