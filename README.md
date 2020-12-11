@@ -16,33 +16,46 @@
     ...
     ```
 
-- #### 在线使用 [https://imgs.thankjava.com](https://imgs.thankjava.com)
+- #### 在线使用 [https://imgs.acexy.cn](https://imgs.acexy.cn)
 
-    ```
-    免费的，简洁的图床服务，即开即用，开源免费，基于GNU通用公共许可证v3.0提供在线图片解决方案。
+    - 使用前言
     
-        本服务为在线非盈利服务，本站为非盈利性服务，意在为你提供在线存储解决方案。
-    
-        请勿上传任何违反国家法律的图片！
+        ```
+        免费的，简洁的图床服务，即开即用，开源免费，基于GNU通用公共许可证v3.0提供在线图片解决方案。
 
-        互联网为开放网络，如果你泄漏你的在线图片地址，其他任何人均能访问。
+            本站为非盈利性服务，意在为你提供在线存储解决方案。
 
-        为了你的个人隐私安全，请勿上传敏感信息。
+            请勿上传任何违反国家法律的图片！
 
-        如果你有任何的建议或反馈，可邮件至 team@thankjava.com
+            互联网为开放网络，如果你泄漏你的在线图片地址，其他任何人均能访问，这也是图床的基本概念。
 
-        科技向善，互利互助。
+            为了你的个人隐私安全，请勿上传敏感信息。
 
-    大陆用户访问可能有较大延迟。
-    ```
+            如果你有任何的建议或反馈，可邮件至 team@thankjava.com
+
+            科技向善，互利互助。
+
+        大陆用户访问可能有较大延迟。
+        ```
 
 - #### CHANGELOG **为支持正常运行(防攻击)部分核心代码未开源**
 
+    - 1.0.7 bugfix
+    
+        - 调整了对图片进行分级时，若无法正确分级时的相关数据记录问题
+        - 修复一个做图片分级API调用时可能导致的传参异常问题
+
+    - 1.0.7 viewer **(BETA)** [问题反馈](https://github.com/lazy-koala/imgs-upload-srv/issues/new)
+        
+        - 图片浏览支持webp格式
+        
     - 1.0.7
 
         - UI小姐姐更新了一波前端展示效果
         - 缩略图展示正式上线，加速个人中心图片展示
         - 图片分级判断上线(不限制；限制未成年；成人图片)，后续将按照相关分级限制违规图片
+        - 修复一个内部图床访问原图加载失败的问题，取消内部webp处理
+        - 图片截取界面新增所截区域大小值展示
     
     - [历史记录](https://github.com/lazy-koala/imgs-upload-srv/blob/master/doc/changelog.md)
 ---
@@ -71,4 +84,7 @@
 
 [![org](https://img.shields.io/badge/org-@LazyKoala-yellow.svg)](https://github.com/lazy-koala/)
 
-[![author](https://img.shields.io/badge/author-@qazyuan-blue.svg)](https://github.com/qazyuan/) [![author](https://img.shields.io/badge/author-@thankjava-blue.svg)](https://github.com/thankjava/)
+[![author](https://img.shields.io/badge/author-@qazyuan-blue.svg)](https://github.com/qazyuan/) [![author](https://img.shields.io/badge/author-@acexy-blue.svg)](https://github.com/acexy/)
+
+> #### Thanks [Jetbrains Ides](https://www.jetbrains.com/?from=imgs-upload-srv)
+<img src="https://source.acexy.cn/view/XPgu+qW" width = "80" height = "80" alt="jetbrains logo" />

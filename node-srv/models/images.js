@@ -17,9 +17,10 @@ class images extends baseModel {
             sortId: {type: String, required: true},
             tags: {type: Array, required: false},
             // 00 图片状态正常
-            // 01 图片涉及违规
+            // 01 违规 成人图片
             status: {type: String, default: '00'},
             // 图片系统自动分级
+            sysScyCode: {type: Number},
             // everyone | teen | adult
             sysScyLevel: {type: Number, default: 1},
             sysScyLevelTime: {type: Number, required: false},

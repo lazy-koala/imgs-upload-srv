@@ -22,18 +22,18 @@ module.exports = {
             // }
             // testimg测试环境
             // '/api': { //代理地址
-            //     target: 'https://testimgs.thankjava.com', //需要代理的地址
+            //     target: 'https://testimgs.acexy.cn', //需要代理的地址
             //     changeOrigin: true, //是否跨域
             //     secure: false,
-            //     baseURL: 'https://testimgs.thankjava.com'
+            //     baseURL: 'https://testimgs.acexy.cn'
             // }
 
             // 线上环境
             '/api': { //代理地址
-                target: 'https://imgs.thankjava.com', //需要代理的地址
+                target: 'https://imgs.acexy.cn', //需要代理的地址
                 changeOrigin: true, //是否跨域
                 secure: false,
-                baseURL: 'https://imgs.thankjava.com'
+                baseURL: 'https://imgs.acexy.cn'
             }
 
             // '/api': { //代理地址
