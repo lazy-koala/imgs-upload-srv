@@ -104,7 +104,13 @@ module.exports.imageCheck = (imgUri, urn) => {
 
     httpRequest.doRequestString(basicConfig.imageVerify + encodeURIComponent(imgUri)).then(res => {
         if (res.flag) {
-            let obj = JSON.parse(res.body);
+            let obj;
+            try {
+                obj = JSON.parse(res.body);
+            } catch (e) {
+                console.log('can not parse jsonString ', res.body);
+                return;
+            }
             let update = {
                 sysScyLevel: obj.rating_index,
                 sysScyLevelTime: Date.now(),
