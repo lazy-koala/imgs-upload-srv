@@ -1,4 +1,4 @@
-<template> 
+<template>
     <div class="">
         <div v-if="data.status == '00'" class="imgage-wrapper" v-loading="loading"   @mouseover="toggleShow(data._id, 1)" @mouseleave="toggleShow(data._id, 0)">
             <img class="image" :src="data.thumbUrl || data.url"  @load="hideLoading()" >
@@ -7,9 +7,9 @@
                     <el-button type="text" title="编辑图片" class="button icon el-icon-eidt" @click="zoomIn(data)"></el-button>
                     <el-button type="text" title="下载图片" class="button icon el-icon-download" @click="downLoadImg(data.url, data._id, data.suffix)"></el-button>
                     <el-button type="text" title="复制地址" class="button icon el-icon-fuzhi" @click="copyUrl(data.url)"></el-button>
-                    <el-button type="text" title="删除图片" class="button icon el-icon-delete" @click="delBox(data._id)"></el-button>                    
+                    <el-button type="text" title="删除图片" class="button icon el-icon-delete" @click="delBox(data._id)"></el-button>
                 </div>
-                <div class="time">{{dateFormat(data.createTime)}}</div>                    
+                <div class="time">{{dateFormat(data.createTime)}}</div>
             </div>
         </div>
         <div v-if="data.status == '01'" class="imgage-wrapper imgage-error">
@@ -30,7 +30,7 @@
             </el-popover>
             <img class="image" :src="data.thumbUrl || data.url"  @load="hideLoading()">
         </div>
-        <div class="bottom">                    
+        <div class="bottom">
             <span class="tag" @click="clickTag(tag)" v-for="tag in data.tags" :key="tag" >{{tag}}</span>
         </div>
             <!-- <el-button type="text" class="button" @click="copyUrl(data.url)">复制链接</el-button>
@@ -87,7 +87,7 @@
                         maxlength=6
                         minlength=3
                         @keyup.enter.native="handleInputConfirm"
-                        @blur="handleInputConfirm"                        
+                        @blur="handleInputConfirm"
                         >
                     </el-input>
                     <el-button v-show="tagList.length < 3" v-else class="button-new-tag" size="small" @click="showInput">添加标签</el-button>
@@ -149,7 +149,7 @@ export default {
                 this.$refs[id].style.display = "block";
             }
         },
-        hideLoading (id) {            
+        hideLoading (id) {
             this.loading = false;
         },
         // 删除图片弹框
@@ -196,7 +196,7 @@ export default {
             this.editLoading = true;
             // url需拼接https://imgs.thankjava.com/view/${urn}
             let urn = data.url && data.url.split('/view/')[1];
-            let origin = "https://imgs.thankjava.com/api/imgs/view/";
+            let origin = "https://imgs.acexy.com/api/imgs/view/";
             this.zoomInImg = origin + urn;
             this.showZoomIn = true;
             this.tagList = [...data.tags] || [];
@@ -216,7 +216,7 @@ export default {
                 sortId: this.selectedSort,
                 tags: this.tagList || [],
                 imgId: this.data._id
-            } 
+            }
             // 判断是否有修改
             let isChange = this.isChange(params);
             if(isChange) {
@@ -232,14 +232,14 @@ export default {
                         // 刷新列表
                         this.$parent.$emit('refreshImgList', '1')
                     }
-                })   
+                })
             } else {
                 this.showZoomIn = false;
                 Message.success({
                     message: '修改成功',
                     type: 'info',
                     center: true
-                });                
+                });
             }
         },
 
@@ -318,7 +318,7 @@ export default {
             alink.href = downLoadUrl;
             alink.download = id + '.' + ext;
             alink.click();
-            
+
         },
 
         findIndex: function (str, cha, num) {
@@ -400,7 +400,7 @@ export default {
 
     .button {
         display: inline-block;
-    } 
+    }
     .time {
         position: absolute;
         bottom: 0;
@@ -441,7 +441,7 @@ export default {
         width: 160px;
         text-align: center;
         .tag {
-            margin: 2px 5px 2px 0;            
+            margin: 2px 5px 2px 0;
             background: #f1f8ff;
             border-radius: 3px;
             display: inline-block;
@@ -474,11 +474,11 @@ export default {
         }
 
         .btn {
-            margin-top: 20px;            
+            margin-top: 20px;
         }
     }
     .sort {
-       margin-top: 20px; 
+       margin-top: 20px;
        margin-left: 0;
        width: 300px;
     }
