@@ -196,7 +196,7 @@ export default {
             this.editLoading = true;
             // url需拼接https://imgs.thankjava.com/view/${urn}
             let urn = data.url && data.url.split('/view/')[1];
-            let origin = "https://imgs.acexy.com/api/imgs/view/";
+            let origin = "https://imgs.acexy.cn/api/imgs/view/";
             this.zoomInImg = origin + urn;
             this.showZoomIn = true;
             this.tagList = [...data.tags] || [];
