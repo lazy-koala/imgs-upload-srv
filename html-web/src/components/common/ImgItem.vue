@@ -194,7 +194,6 @@ export default {
         // 图片编辑弹框
         zoomIn: function (data) {
             this.editLoading = true;
-            // url需拼接https://imgs.thankjava.com/view/${urn}
             let urn = data.url && data.url.split('/view/')[1];
             let origin = "https://imgs.acexy.cn/api/imgs/view/";
             this.zoomInImg = origin + urn;
@@ -309,7 +308,6 @@ export default {
             let urn = url.split('/view/')[1];
             var newDomain = window.location.protocol + "//" + window.location.host;
             // console.log(url);
-            // var newDomain = "https://imgs.thankjava.com";
             var downLoadUrl = newDomain + '/api/imgs/download/' + urn;
             var alink = document.createElement("a");
             var ext = suffix;
