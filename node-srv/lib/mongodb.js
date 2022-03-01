@@ -10,7 +10,7 @@ const mongoConfig = require('../config/mongo');
 module.exports.open = (cb) => {
 
     const connStr = 'mongodb://' + mongoConfig.username + ':' + mongoConfig.password + '@' + mongoConfig.host + ':' + mongoConfig.port + '/' + mongoConfig.dbname;
-    mongoose.connect(connStr, {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true,});
+    mongoose.connect(connStr);
 
     let db = mongoose.connection;
 
