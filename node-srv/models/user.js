@@ -15,7 +15,7 @@ class user extends baseModel {
             email: {type: String, required: true, unique: true},
             nickname: {type: String, required: true},
             headImg: {type: String, required: false},
-            lastLoginTime: {type: Number, default: Date.now}
+            lastLoginTime: {type: Number, required: false}
         };
     };
 
@@ -34,7 +34,7 @@ class user extends baseModel {
      */
     selectByUsernameOrEmail(loginId) {
         let query = {};
-        if (loginId.indexOf('@') != -1) {
+        if (loginId.indexOf('@') !== -1) {
             query.email = loginId;
         } else {
             query.username = loginId;
@@ -65,12 +65,12 @@ class user extends baseModel {
         return this.model.findOne({_id: baseModel.typeObject(id)}).exec();
     }
 
-    updateByUsername(condition, username) {
-        return this.model.updateOne({username: username}, condition).exec();
+    updateByUsername(value, username) {
+        return this.model.updateOne({username: username}, value).exec();
     }
 
     updateLastLoginTimeByUsername(username) {
-        return this.model.updateOne({lastLoginTime: Date.now}, {username: username});
+        return this.model.updateOne({username: username}, {lastLoginTime: new Date().getTime()}).exec();
     }
 }
 
