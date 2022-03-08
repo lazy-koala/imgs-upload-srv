@@ -40,7 +40,7 @@ module.exports = new Router(
         return baseController.responseWithCode(ctx, baseController.CODE.INVALID_ACCOUNT, '账号不存在');
     }
 
-    if (util.md5(user.username + password) != user.password) {
+    if (util.md5(user.username + password) !== user.password) {
         return baseController.responseWithCode(ctx, baseController.CODE.PASSWORD_ERROR, '密码错误');
     }
 
@@ -64,7 +64,7 @@ module.exports = new Router(
         cookiesName.COOKIE_NAME_UINFO
     ]);
 
-    baseController.response(ctx,'已安全退出');
+    baseController.response(ctx, '已安全退出');
 
 }).post('registe', async ctx => {
 
@@ -90,9 +90,9 @@ module.exports = new Router(
     if (!codeInfo) return baseController.responseWithCode(ctx, baseController.CODE.EXPIRED_MAIL_CODE, '验证码已过期或未获取验证码');
     codeInfo = codeInfo.split('|');
 
-    if (params.mailCode != codeInfo[0]) return baseController.responseWithCode(ctx, baseController.CODE.INVALID_MAIL_CODE, '邮箱验证码错误');
+    if (params.mailCode !== codeInfo[0]) return baseController.responseWithCode(ctx, baseController.CODE.INVALID_MAIL_CODE, '邮箱验证码错误');
 
-    if (params.username != codeInfo[1] || params.mail != codeInfo[2]) return baseController.responseWithCode(ctx, baseController.CODE.ERROR_REGISTE_DATA, '该验证码仅可用于邮件指定的帐号注册使用');
+    if (params.username !== codeInfo[1] || params.mail !== codeInfo[2]) return baseController.responseWithCode(ctx, baseController.CODE.ERROR_REGISTE_DATA, '该验证码仅可用于邮件指定的帐号注册使用');
 
     try {
         let info = await userModel.save({
@@ -150,7 +150,7 @@ module.exports = new Router(
 
     let params = ctx.request.body;
     if (!params) return baseController.response400(ctx);
-    if (!params.username && !params.mail) return baseController.response400(ctx,'用户名和邮箱不可同时为空');
+    if (!params.username && !params.mail) return baseController.response400(ctx, '用户名和邮箱不可同时为空');
     if (params.mail && !baseController.REG.IS_MAIL.test(params.mail)) return baseController.response400(ctx, '邮箱地址不合法');
 
     let query = {};
@@ -191,7 +191,7 @@ module.exports = new Router(
     let data = await asyncRedisClient.getAsync(redisKey.FORGET_MAIL_CODE(params.token));
     if (!data) return baseController.responseWithCode(ctx, baseController.CODE.EXPIRED_MAIL_CODE, "验证码已过期或未获取验证码");
     data = data.split('|');
-    if (params.mailCode != data[0]) return baseController.responseWithCode(ctx, baseController.CODE.INVALID_MAIL_CODE, '验证码错误');
+    if (params.mailCode !== data[0]) return baseController.responseWithCode(ctx, baseController.CODE.INVALID_MAIL_CODE, '验证码错误');
 
     let info = await userModel.selectByUsernameOrEmail(data[1]);
     await userModel.updatePasswordByUsername(data[1], util.md5(data[1] + params.password));
@@ -271,6 +271,7 @@ const doLogin = async (ctx, user, keepLogged, token, nowTime) => {
 
     // 写入redis验证数据
     await asyncRedisClient.setAsync(redisKey.AUTH_TOKEN(token), userInfoJsonStr, 'EX', parseInt(authExTime));
+    await userModel.updateLastLoginTimeByUsername(user.username);
 
     // 创建cookies会话凭证信息
     baseController.setCookie(ctx, cookiesName.COOKIE_NAME_TOKEN, token, cookieOpt);

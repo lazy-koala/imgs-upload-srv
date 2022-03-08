@@ -14,7 +14,8 @@ class user extends baseModel {
             password: {type: String, required: true},
             email: {type: String, required: true, unique: true},
             nickname: {type: String, required: true},
-            headImg: {type: String, required: false}
+            headImg: {type: String, required: false},
+            lastLoginTime: {type: Number, default: Date.now}
         };
     };
 
@@ -66,6 +67,10 @@ class user extends baseModel {
 
     updateByUsername(condition, username) {
         return this.model.updateOne({username: username}, condition).exec();
+    }
+
+    updateLastLoginTimeByUsername(username) {
+        return this.model.updateOne({lastLoginTime: Date.now}, {username: username});
     }
 }
 
