@@ -54,7 +54,8 @@ module.exports = new Router(
                 userId: userId,
                 url: uploadResult[index].path,
                 urn: '/' + algorithm10to64.number10to64(incr + Date.now()),
-                sortId: sortId
+                sortId: sortId,
+                fileName: uploadResult[index].fileName
             };
 
             if (fields && fields.tags && fields.tags.length > 0) {
@@ -158,6 +159,7 @@ module.exports = new Router(
             obj.suffix = list[index].url.split('.')[1];
             obj.sysScyLevel = list[index].sysScyLevel;
             obj.status = list[index].status;
+            obj.fileName = list[index].fileName;
             retList.push(obj);
         }
         response.list = retList;

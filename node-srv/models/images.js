@@ -28,6 +28,7 @@ class images extends baseModel {
             confirmScyLevel: {type: String, required: false},
             confirmScyLevelTime: {type: Number, required: false},
             confirmedByUser: {type: Boolean, required: false},
+            fileName: {type: String, required: true}
         };
     };
 
