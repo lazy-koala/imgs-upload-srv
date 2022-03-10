@@ -49,8 +49,8 @@
         <el-button v-show="tagList.length < 3" v-else class="button-new-tag" size="small" @click="showInput">添加标签</el-button>
     </div>
     <div class="btn">
-        <el-button type="primary" @click="uploadImg">确认</el-button>
         <el-button type="primary" @click="initUpload">取消</el-button>
+        <el-button type="primary" @click="uploadImg">确认</el-button>
     </div>
   </div>
 </template>

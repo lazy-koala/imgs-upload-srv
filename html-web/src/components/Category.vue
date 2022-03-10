@@ -100,7 +100,6 @@
 <script>
 import CommonHeader from "./common/CommonHeader";
 import CommonFooter from "./common/CommonFooter";
-import Cookies from "js-cookie";
 import $axios from 'axios';
 import { Message, Loading } from 'element-ui';
 import Common from "../assets/scripts/common.js";

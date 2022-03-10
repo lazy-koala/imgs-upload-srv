@@ -1,34 +1,45 @@
-// https://eslint.org/docs/user-guide/configuring
-
 module.exports = {
-  root: true,
-  parserOptions: {
-    parser: 'babel-eslint'
+  "root": true,
+  "parserOptions": {
+    "parser": "babel-eslint"
   },
-  env: {
-    browser: true,
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true
   },
-  extends: [
-    // https://github.com/vuejs/eslint-plugin-vue#priority-a-essential-error-prevention
-    // consider switching to `plugin:vue/strongly-recommended` or `plugin:vue/recommended` for stricter rules.
-    'plugin:vue/essential', 
-    // https://github.com/standard/standard/blob/master/docs/RULES-en.md
-    'standard'
-  ],
+  // consider switching to `plugin:vue/strongly-recommended` or `plugin:vue/recommended` for stricter rules.
+  "extends": ["plugin:vue/essential", "standard"],
   // required to lint *.vue files
-  plugins: [
-    'vue'
+  "plugins": [
+    "import",
+    "vue",
+    "html"
   ],
+  // check if imports actually resolve
+  "settings": {
+    "import/resolver": {
+      "webpack": {
+        "config": "./node_modules/start-kit-builder/build/webpack.base.conf.js"
+      }
+    },
+    "import/core-modules": ["env"]
+  },
   // add your custom rules here
-  rules: {
-    // allow async-await
-    'generator-star-spacing': 'off',
-    // allow debugger during development
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    "no-mixed-spaces-and-tabs": 0,
-    "no-tabs": 2,
-    "indent":  [0, 4, {"SwitchCase": 1}],
-    "semi": [0, "always"],
-    "eol-last": 0,
+  "rules": {
+    "import/extensions": "off",
+    "no-new": 0,
+    "no-param-reassign": 0,
+    "generator-star-spacing": "off",
+    "no-tabs": "off",
+    "vue/no-parsing-error": [2, {
+      "x-invalid-end-tag": false,
+      "invalid-first-character-of-tag-name": false
+    }],
+    "space-before-function-paren": 0,
+    "object-curly-spacing": 0,
+    "semi": "off",
+    "no-undef": "off",
+    "camelcase": "off"
   }
 }

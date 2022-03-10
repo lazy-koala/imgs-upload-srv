@@ -1,7 +1,7 @@
 <template>
 <div class="footer">
     <!-- <a href="https://github.com/lazy-koala/"><img src="https://img.shields.io/badge/org-@LazyKoala-yellow.svg" alt="org" data-canonical-src="https://img.shields.io/badge/org-@LazyKoala-yellow.svg" style="max-width:70%;"></a> -->
-    <span>{{`&copy;Copyright (C) 2018-${getFullYear()} All rights reserved`}}</span>
+    <span class="text">{{`&copy;Copyright (C) 2018-${getFullYear()} All rights reserved`}}</span>
 </div>
 </template>
 <script type="text/javascript">
@@ -15,7 +15,7 @@
         }
     }
 </script>
-<style type="text/css" scoped>
+<style type="text/css" scoped lang="less">
 .footer {
     position: fixed;
     bottom: 0;
@@ -30,10 +30,9 @@
     border-top: 1px solid #ccc;
     text-align: center;
     padding: 10px 0;
-    span {
-        color: #888;
-        /*color: #fff;*/
+    .text {
         font-size: 12px;
+        color: #909399;
     }
 }
 </style>
