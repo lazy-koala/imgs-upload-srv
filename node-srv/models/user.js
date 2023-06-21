@@ -33,7 +33,7 @@ class user extends baseModel {
      */
     selectByUsernameOrEmail(loginId) {
         let query = {};
-        if (loginId.indexOf('@') != -1) {
+        if (loginId.indexOf('@') !== -1) {
             query.email = loginId;
         } else {
             query.username = loginId;

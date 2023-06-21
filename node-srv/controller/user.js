@@ -24,11 +24,11 @@ module.exports = new Router(
     if (!params) return baseController.response400(ctx);
     if (!params.oldPassword || !params.newPassword || !params.verifyPassword) return baseController.response400(ctx);
     if (!baseController.REG.PASSWORD.test(params.password)) return baseController.response400(ctx, '密码不合法');
-    if (params.newPassword != params.verifyPassword) return baseController.response400(ctx, '两次密码不一致');
-    if (params.oldPassword == params.newPassword) return baseController.response400(ctx, '原密码和新密码相同');
+    if (params.newPassword !== params.verifyPassword) return baseController.response400(ctx, '两次密码不一致');
+    if (params.oldPassword === params.newPassword) return baseController.response400(ctx, '原密码和新密码相同');
     let authInfo = ctx.state.authInfo;
     let user = await userModel.selectById(authInfo.id);
-    if (user.password != util.md5(user.username + params.newPassword)) return baseController.responseWithCode(ctx, baseController.CODE.PASSWORD_ERROR, '原密码错误');
+    if (user.password !== util.md5(user.username + params.newPassword)) return baseController.responseWithCode(ctx, baseController.CODE.PASSWORD_ERROR, '原密码错误');
     await userModel.updatePasswordByUsername(user.username, util.md5(user.username + params.newPassword));
     baseController.response(ctx);
 
@@ -92,9 +92,9 @@ module.exports = new Router(
         let authMail = await asyncRedisClient.getAsync(redisKey.UPDATE_MAIL_CODE(params.token));
         if (!authMail) return baseController.responseWithCode(ctx, baseController.CODE.EXPIRED_MAIL_CODE, '验证码已过期或未获取验证码');
         authMail = authMail.split('|');
-        if (params.mailCode != authMail[0]) {
+        if (params.mailCode !== authMail[0]) {
             return baseController.responseWithCode(ctx, baseController.CODE.INVALID_MAIL_CODE, '邮箱验证码错误');
-        } else if (params.mail != authMail[1]) {
+        } else if (params.mail !== authMail[1]) {
             return baseController.responseWithCode(ctx, baseController.CODE.ERROR_REGISTE_DATA, '该验证码仅可用于验证指定的邮箱操作');
         }
         await asyncRedisClient.delAsync(redisKey.UPDATE_MAIL_CODE(params.token));

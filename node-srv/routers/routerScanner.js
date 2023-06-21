@@ -45,7 +45,7 @@ const findFiles = (dirpath) => {
         files.forEach((val, index) => {
             let fPath = path.join(_path, val);
             let stats = fs.statSync(fPath);
-            if (stats.isFile() && fPath != __filename) filesPath.push(fPath);
+            if (stats.isFile() && fPath !== __filename) filesPath.push(fPath);
         });
     }
 

@@ -23,11 +23,11 @@ module.exports = new Router(
 ).post('create_imgs', async ctx => {
 
     let params = ctx.request.body;
-    if (!params || !params.imgIds || !Array.isArray(params.imgIds) || params.imgIds.length == 0)
+    if (!params || !params.imgIds || !Array.isArray(params.imgIds) || params.imgIds.length === 0)
         return baseController.response400(ctx, '缺失参数或参数错误: imgIds');
 
     let imgs = await imagesModel.selectOwnByIds(params.imgIds, ctx.state.authInfo.id);
-    if (!imgs || imgs.length != params.imgIds.length) return baseController.response400(ctx, '存在无效的imgId 或指定的imgId无权操作');
+    if (!imgs || imgs.length !== params.imgIds.length) return baseController.response400(ctx, '存在无效的imgId 或指定的imgId无权操作');
 
     // 保存分类清单
     let shareId = (await shareListModel.save({
@@ -78,7 +78,7 @@ module.exports = new Router(
         sortId: params.sortId
     });
 
-    if (!images || images.length == 0) {
+    if (!images || images.length === 0) {
         return baseController.responseWithCode(ctx, baseController.CODE.NOT_EXISTED_ANY_IMG, '该分类下无任何图片');
     }
 
@@ -117,7 +117,7 @@ module.exports = new Router(
     let params = ctx.query;
 
     if (!params || !params.shareId) return baseController.response400(ctx, '无效的shareId');
-    if (params.shareId.length != 12 && params.shareId.length != 24) {
+    if (params.shareId.length !== 12 && params.shareId.length !== 24) {
         return baseController.response400(ctx, '无效的shareId');
     }
 
@@ -164,7 +164,7 @@ module.exports = new Router(
     let params = ctx.query;
     if (!params || !params.shareId) return baseController.response400(ctx, '无效的shareId');
 
-    if (params.shareId.length != 12 && params.shareId.length != 24) {
+    if (params.shareId.length !== 12 && params.shareId.length !== 24) {
         return baseController.response400(ctx, '不合法的shareId');
     }
 
